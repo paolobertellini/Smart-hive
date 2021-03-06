@@ -13,14 +13,14 @@ from flask_login import (
 
 from app import db, login_manager
 from app.base import blueprint
-from app.base.forms import LoginForm, CreateAccountForm, CreateApiaryForm
-from app.base.models import ApiaryModel, User
+from app.base.forms import LoginForm, CreateAccountForm, CreateApiaryForm, CreateHiveForm
+from app.base.models import ApiaryModel, User, HiveModel
 
 from app.base.util import verify_pass
 
 @blueprint.route('/')
 def route_default():
-    return redirect(url_for('base_blueprint.login'))
+    return redirect(url_for('home_blueprint.index'))
 
 ## Login & Registration
 
@@ -46,8 +46,7 @@ def login():
         return render_template( 'accounts/login.html', msg='Wrong user or password', form=login_form)
 
     if not current_user.is_authenticated:
-        return render_template( 'accounts/login.html',
-                                form=login_form)
+        return render_template( 'accounts/login.html', form=login_form)
     return redirect(url_for('home_blueprint.index'))
 
 @blueprint.route('/register', methods=['GET', 'POST'])
@@ -91,7 +90,7 @@ def register():
 @blueprint.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('base_blueprint.login'))
+    return redirect(url_for('home_blueprint.index'))
 
 @blueprint.route('/shutdown')
 def shutdown():
@@ -104,12 +103,13 @@ def shutdown():
 
 @blueprint.route('/new_apiary',methods=['POST', 'GET'])
 def new_apiary():
+    elenco = ApiaryModel.query.filter_by(id_utente = current_user.username).all()
     apiary_form = CreateApiaryForm(request.form)
     if 'new_apiary' in request.form:
 
         # read form data
         id_apiary = request.form['id_apiary']
-        id_user = request.form['id_user']
+        id_user = current_user.username
 
         apiary = ApiaryModel(id_apiario=id_apiary, id_utente=id_user)
         db.session.add(apiary)
@@ -119,11 +119,34 @@ def new_apiary():
         # user = User.query.filter_by(username=username).first()
 
         # Something (user or pass) is not ok
-        return render_template('transactions.html', msg="You already have an apiary called: " + id_apiary, form=apiary_form)
+        return redirect(url_for('base_blueprint.new_apiary'))
 
     if not current_user.is_authenticated:
-        return render_template('transactions.html', form=apiary_form)
-    return render_template('transactions.html', form=apiary_form)
+        return render_template('new_apiary.html', form=apiary_form, lista = elenco)
+    return render_template('new_apiary.html', form=apiary_form, lista = elenco)
+
+@blueprint.route('/hive',methods=['POST', 'GET'])
+@login_required
+def hive():
+    elenco = HiveModel.query.filter_by(id_utente = current_user.username).all()
+    hive_form = CreateHiveForm(request.form)
+    id_apiary = request.args['apiary']
+    if 'new_hive' in request.form:
+
+        # read form data
+        id_user = current_user.username
+        hive_description = request.form['hive_description']
+        association_code = request.form['association_code']
+
+        hive = HiveModel(id_apiario=id_apiary, id_utente=id_user, descrizione_arnia= hive_description, codice_associazione= association_code)
+        db.session.add(hive)
+        db.session.commit()
+
+        return redirect(url_for('base_blueprint.hive', apiary = id_apiary))
+
+    if not current_user.is_authenticated:
+        return render_template('hive.html', form=hive_form, lista = elenco, apiary = id_apiary)
+    return render_template('hive.html', form=hive_form, lista = elenco, apiary = id_apiary)
 
 # @blueprint.route('/new_apiary',methods=['POST', 'GET'])
 # @login_required

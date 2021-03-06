@@ -15,6 +15,13 @@ class ApiaryModel(db.Model):
     id_apiario = Column(String(80), primary_key=True)
     id_utente = Column(String(80),primary_key=True)
 
+class HiveModel(db.Model):
+    __tablename__ = 'Hive'
+    id_arnia = Column(Integer, primary_key=True)
+    id_apiario = Column(String(80))
+    id_utente = Column(String(80))
+    descrizione_arnia = Column(String(80))
+    codice_associazione = Column(String(80), nullable=False)
 
 class User(db.Model, UserMixin):
 

@@ -12,21 +12,10 @@ from app.base.models import *
 
 
 @blueprint.route('/index')
-@login_required
 def index():
 
     return render_template('index.html', segment='index')
 
-
-@blueprint.route('/transactions', methods=['GET'])
-@login_required
-def stampaListaApiari():
-    # apiario = ApiaryModel(id_apiario="dave", id_utente="300e")
-    # db.session.add(apiario)
-    # db.session.commit()
-    elenco = ApiaryModel.query.all()
-    print(elenco)
-    return render_template('transactions.html', lista=elenco)
 
 @blueprint.route('/<template>')
 @login_required

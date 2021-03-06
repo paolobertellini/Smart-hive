@@ -19,5 +19,12 @@ class CreateAccountForm(FlaskForm):
     password = PasswordField('Password' , id='pwd_create'      , validators=[DataRequired()])
 
 class CreateApiaryForm(FlaskForm):
-    id_apiary = TextField('Apiary id'     , id='apiary_id_create' , validators=[DataRequired()])
-    id_user    = TextField('User id'        , id='apiary_user_id_create'    , validators=[DataRequired()])
+    id_apiary = TextField('Apiary id'     , id='apiary_id_create'         , validators=[DataRequired()])
+
+
+class CreateHiveForm(FlaskForm):
+    id_hive = TextField('Hive id', id='hive_id_create', validators=[DataRequired()])
+    id_apiary = TextField('Apiary id', id='apiary_id_create', validators=[DataRequired()]) #forse non è necessario
+    hive_description = TextField('Hive description', id='hive_description_create', validators=[DataRequired()])
+    association_code = TextField('Association code', id='association_code_input', validators=[DataRequired()])
+

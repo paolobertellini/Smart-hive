@@ -15,13 +15,13 @@
                 <div class="d-block mb-4 mb-md-0">
                     <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
                         <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
-                          <li class="breadcrumb-item"><a href="#"><span class="fas fa-home"></span></a></li>
-                          <li class="breadcrumb-item"><a href="#">Volt</a></li>
-                          <li class="breadcrumb-item active" aria-current="page">Transactions</li>
+                          <li class="breadcrumb-item"><a href="{{ url_for('home_blueprint.index') }}"><span class="fas fa-home"></span></a></li>
+                          <li class="breadcrumb-item"><a href="#">SmartHive</a></li>
+                          <li class="breadcrumb-item active" aria-current="page">Apiary</li>
                         </ol>
                     </nav>
-                    <h2 class="h4">All Orders</h2>
-                    <p class="mb-0">Your web analytics dashboard template.</p>
+                    <h2 class="h4">All Apiaries</h2>
+                    <p class="mb-0">Here you have all your apiaries.</p>
                 </div>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group">
@@ -43,17 +43,6 @@
                                         <span class="input-group-text" id="basic-addon1"><span class="fas fa-user-circle"></span></span>
                                         {{ form.id_apiary(placeholder="Apiary id", class="form-control") }}
                                     </div>
-                                </div>
-                                <!-- End of Form -->
-                                <div class="form-group mb-4">
-                                    <label>Id user</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text" id="basic-addon1"><span class="fas fa-user-circle"></span></span>
-                                        {{ form.id_user(placeholder="User id", class="form-control") }}
-                                    </div>
-                                </div>
-                                <!-- End of Form -->
-
                                 </div>
                                 <button type="submit" name="new_apiary" class="btn btn-block btn-primary">Insert apiary</button>
                             </form>
@@ -81,13 +70,9 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>Id utente</th>
-                            <th>Id arnia</th>
-                            <th>Issue Date</th>
-                            <th>Due Date</th>
-                            <th>Total</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th>Id apiary</th>
+                            <th>Id user</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -95,17 +80,13 @@
                         {% for el in lista %}
                             <tr>
                                 <td>
-                                    <a href="/static/assets/invoice.html" class="font-weight-bold">
+                                    <a href="{{url_for('base_blueprint.hive', apiary=el.id_apiario)}}" class="font-weight-bold">
                                         {{el.id_apiario}}
                                     </a>
                                 </td>
                                 <td>
-                                    <span class="font-weight-normal">{{el.id_arnia}}</span>
+                                    <span class="font-weight-normal">{{el.id_utente}}</span>
                                 </td>
-                                <td><span class="font-weight-normal">1 May 2020</span></td>
-                                <td><span class="font-weight-normal">1 Jun 2020</span></td>
-                                <td><span class="font-weight-bold">$799,00</span></td>
-                                <td><span class="font-weight-bold text-warning">Due</span></td>
                                 <td>
                                     <div class="btn-group">
                                         <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -91,7 +91,7 @@
                             <a href="/dashboard.html" class="nav-link">Dashboard</a>
                         </li>
                         <li class="nav-item mr-2">
-                            <a href="/transactions.html" class="nav-link">Transactions</a>
+                            <a href="{{url_for('base_blueprint.new_apiary')}}" class="nav-link">Apiary</a>
                         </li>
                         <li class="nav-item mr-2">
                             <a href="/settings.html" class="nav-link">Profile</a>
@@ -99,17 +99,15 @@
                     </ul>
                 </div>
                 <div class="d-flex align-items-center ml-auto">
-                    <a href="https://appseed.us/admin-dashboards/flask-dashboard-volt" 
-                       target="_blank" class="btn btn-secondary text-dark mr-md-3">
-                       <span class="fas fa-rocket mr-2"></span>
-                       Product
-                       </a>
-                    <a href="{{ url_for('base_blueprint.logout') }}" 
-                       class="btn btn-outline-soft d-none d-lg-block">
-                       <span class="fas fa-sign-out-alt mr-2"></span> Logout</a>
-                    <button class="navbar-toggler ml-2" type="button" data-toggle="collapse" data-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+                    {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('base_blueprint.logout') }}" class="btn btn-outline-soft d-none d-lg-block">Logout {{ current_user }} <span class="fas fa-sign-out-alt mr-2"></span></a>
+                    {% else %}
+                        <a href="{{ url_for('base_blueprint.login') }}" class="btn btn-outline-soft d-none d-lg-block">Login</a>
+                    {% endif %}
+                    <a></a>
+                    <a href="{{ url_for('base_blueprint.register') }}" target="_blank" class="btn btn-secondary text-dark mr-md-3"> <span class="fas fa-rocket mr-2"></span>Register</a>
+
+
                 </div>
             </div>
         </nav>

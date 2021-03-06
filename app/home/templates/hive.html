@@ -1,0 +1,151 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Tables {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <main class="content">
+
+        {% include 'includes/navigation.html' %}
+
+        <div class="py-4">
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+                    <li class="breadcrumb-item"><a href="{{ url_for('home_blueprint.index') }}"><span
+                            class="fas fa-home"></span></a></li>
+                    <li class="breadcrumb-item"><a href="#">SmartHive</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Hives</li>
+                </ol>
+            </nav>
+            <div class="d-flex justify-content-between w-100 flex-wrap">
+                <div class="mb-3 mb-lg-0">
+                    <h1 class="h4">Hives of apiary: {{ apiary }}</h1>
+                    <p class="mb-0">Here you can see the hives of the apiary {{ apiary }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="table-settings mb-4">
+            <div class="row align-items-center justify-content-between">
+                <div class="col col-md-6 col-lg-3 col-xl-4">
+                    <div class="input-group">
+                        <form method="post" action="" class="mt-4">
+
+                            <!-- Form -->
+                            <div class="form-group mb-4">
+                                <div class="input-group">
+                                    <span class="input-group-text" id="basic-addon1"><span
+                                            class="fas fa-sticky-note"></span></span>
+                                    {{ form.hive_description(placeholder="Hive Description", class="form-control") }}
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-text" id="basic-addon1"><span
+                                            class="fas fa-code"></span></span>
+                                    {{ form.association_code(placeholder="Association Code", class="form-control") }}
+                                </div>
+                            </div>
+                            <button type="submit" name="new_hive" class="btn btn-block btn-primary">Insert Hive</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-4 col-md-2 col-xl-1 pl-md-0 text-right">
+                    <div class="btn-group">
+                        <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="icon icon-sm icon-gray">
+                                    <span class="fas fa-cog"></span>
+                                </span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-xs dropdown-menu-right">
+                            <span class="dropdown-item font-weight-bold text-dark">Show</span>
+                            <a class="dropdown-item d-flex font-weight-bold" href="#">10 <span
+                                    class="icon icon-small ml-auto"><span class="fas fa-check"></span></span></a>
+                            <a class="dropdown-item font-weight-bold" href="#">20</a>
+                            <a class="dropdown-item font-weight-bold" href="#">30</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-light shadow-sm mb-4">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-centered table-nowrap mb-0 rounded">
+                        <thead class="thead-light">
+                        <tr>
+                            <th class="border-0">Id Hive</th>
+                            <th class="border-0">Id Apiary</th>
+                            <th class="border-0">Id User</th>
+                            <th class="border-0">Hive Description</th>
+                            <th class="border-0">Association Code</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Item -->
+                        {% for el in lista %}
+                            <tr>
+                                <td class="border-0">
+                                    <a href="#" class="font-weight-bold">
+                                        {{ el.id_arnia }}
+                                    </a>
+                                </td>
+                                <td class="border-0">
+                                    <a href="#" class="font-weight-bold">
+                                        {{ el.id_apiario }}
+                                    </a>
+                                </td>
+                                <td class="border-0">
+                                    <a href="#" class="font-weight-bold">
+                                        {{ el.id_utente }}
+                                    </a>
+                                </td>
+                                <td class="border-0">
+                                    <a href="#" class="font-weight-bold">
+                                        {{ el.descrizione_arnia }}
+                                    </a>
+                                </td>
+                                <td class="border-0">
+                                    <a href="#" class="font-weight-bold">
+                                        {{ el.codice_associazione }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="icon icon-sm">
+                                                <span class="fas fa-ellipsis-h icon-dark"></span>
+                                            </span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="/static/assets/invoice.html"><span
+                                                    class="fas fa-eye mr-2"></span>View Details</a>
+                                            <a class="dropdown-item" href="#"><span class="fas fa-edit mr-2"></span>Edit</a>
+                                            <a class="dropdown-item text-danger" href="#"><span
+                                                    class="fas fa-trash-alt mr-2"></span>Remove</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        {% include 'includes/footer.html' %}
+
+    </main>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

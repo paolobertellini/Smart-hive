@@ -12,6 +12,8 @@ class Config(object):
 
     # Set up the App SECRET_KEY
     SECRET_KEY = config('SECRET_KEY', default='S#perS3crEt_007')
+    FLASK_RUN_HOST = '0.0.0.0'
+    FLASK_RUN_PORT = 8080
 
     # This will create a file in <app> FOLDER
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'db.sqlite3')
