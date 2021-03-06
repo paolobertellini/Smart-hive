@@ -133,7 +133,7 @@ def hive():
     id_apiary = request.args['apiary']
     if 'new_hive' in request.form:
 
-        # read form data
+        # read form dat
         id_user = current_user.username
         hive_description = request.form['hive_description']
         association_code = request.form['association_code']
