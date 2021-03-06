@@ -13,8 +13,8 @@ from flask_login import (
 
 from app import db, login_manager
 from app.base import blueprint
-from app.base.forms import LoginForm, CreateAccountForm
-from app.base.models import User
+from app.base.forms import LoginForm, CreateAccountForm, CreateApiaryForm
+from app.base.models import ApiaryModel, User
 
 from app.base.util import verify_pass
 
@@ -100,6 +100,50 @@ def shutdown():
         raise RuntimeError('Not running with the Werkzeug Server')
     func()
     return 'Server shutting down...'
+
+
+@blueprint.route('/new_apiary',methods=['POST', 'GET'])
+def new_apiary():
+    apiary_form = CreateApiaryForm(request.form)
+    if 'new_apiary' in request.form:
+
+        # read form data
+        id_apiary = request.form['id_apiary']
+        id_user = request.form['id_user']
+
+        apiary = ApiaryModel(id_apiario=id_apiary, id_utente=id_user)
+        db.session.add(apiary)
+        db.session.commit()
+
+        # Locate user
+        # user = User.query.filter_by(username=username).first()
+
+        # Something (user or pass) is not ok
+        return render_template('transactions.html', msg="You already have an apiary called: " + id_apiary, form=apiary_form)
+
+    if not current_user.is_authenticated:
+        return render_template('transactions.html', form=apiary_form)
+    return render_template('transactions.html', form=apiary_form)
+
+# @blueprint.route('/new_apiary',methods=['POST', 'GET'])
+# @login_required
+# def new_apiary():
+#     if request.method == 'POST':
+#         if request.form.get("Aggiungi_Apiario") == "Add apiary":
+#             id_apiario = request.form['nuovoApiario']
+#             user = current_user.email
+#             apiario = ApiaryModel(id_apiario=id_apiario, id_utente=user)
+#             try:
+#                 db.session.add(apiario)
+#                 db.session.commit()
+#             except Exception as e:
+#                 flash("You already have an apiary called: " + id_apiario)
+#                 return redirect(url_for('new_apiary'))
+#
+#             return render_template('aggiungiApiario.html')
+#
+#     return render_template('aggiungiApiario.html')
+
 
 ## Errors
 

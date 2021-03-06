@@ -10,6 +10,12 @@ from app import db, login_manager
 
 from app.base.util import hash_pass
 
+class ApiaryModel(db.Model):
+    __tablename__ = 'Apiary'
+    id_apiario = Column(String(80), primary_key=True)
+    id_utente = Column(String(80),primary_key=True)
+
+
 class User(db.Model, UserMixin):
 
     __tablename__ = 'User'

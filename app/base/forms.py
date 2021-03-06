@@ -17,3 +17,7 @@ class CreateAccountForm(FlaskForm):
     username = TextField('Username'     , id='username_create' , validators=[DataRequired()])
     email    = TextField('Email'        , id='email_create'    , validators=[DataRequired(), Email()])
     password = PasswordField('Password' , id='pwd_create'      , validators=[DataRequired()])
+
+class CreateApiaryForm(FlaskForm):
+    id_apiary = TextField('Apiary id'     , id='apiary_id_create' , validators=[DataRequired()])
+    id_user    = TextField('User id'        , id='apiary_user_id_create'    , validators=[DataRequired()])
