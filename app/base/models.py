@@ -10,23 +10,31 @@ from app import db, login_manager
 
 from app.base.util import hash_pass
 
+from datetime import datetime
+
 class ApiaryModel(db.Model):
     __tablename__ = 'Apiary'
-    id_apiario = Column(String(80), primary_key=True)
-    id_utente = Column(String(80),primary_key=True)
+    apiary_id = Column(String(80), primary_key=True)
+    user_id = Column(String(80), primary_key=True)
 
 class HiveModel(db.Model):
     __tablename__ = 'Hive'
-    id_arnia = Column(Integer, primary_key=True)
-    id_apiario = Column(String(80))
-    id_utente = Column(String(80))
-    descrizione_arnia = Column(String(80))
-    codice_associazione = Column(String(80), nullable=False)
+    hive_id = Column(Integer, primary_key=True)
+    apiary_id = Column(String(80))
+    user_id = Column(String(80))
+    hive_description = Column(String(80))
+    association_code = Column(String(80), nullable=False)
+
+class SensorFeed(db.Model):
+    __tablename__ = 'SensorFeed'
+    hive_id = db.Column(db.String(80), primary_key=True)
+    temperature = db.Column(db.Integer)
+    humidity = db.Column(db.Integer)
+    weight = db.Column(db.Integer)
+    timestamp = db.Column(db.DateTime(timezone=True), primary_key=True, default=datetime.utcnow)
 
 class User(db.Model, UserMixin):
-
     __tablename__ = 'User'
-
     id = Column(Integer, primary_key=True)
     username = Column(String, unique=True)
     email = Column(String, unique=True)

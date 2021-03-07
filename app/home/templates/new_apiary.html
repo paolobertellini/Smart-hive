@@ -80,12 +80,12 @@
                         {% for el in lista %}
                             <tr>
                                 <td>
-                                    <a href="{{url_for('base_blueprint.hive', apiary=el.id_apiario)}}" class="font-weight-bold">
-                                        {{el.id_apiario}}
+                                    <a href="{{url_for('base_blueprint.hive', apiary=el.apiary_id)}}" class="font-weight-bold">
+                                        {{el.apiary_id}}
                                     </a>
                                 </td>
                                 <td>
-                                    <span class="font-weight-normal">{{el.id_utente}}</span>
+                                    <span class="font-weight-normal">{{el.user_id}}</span>
                                 </td>
                                 <td>
                                     <div class="btn-group">

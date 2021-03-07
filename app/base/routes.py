@@ -103,7 +103,7 @@ def shutdown():
 
 @blueprint.route('/new_apiary',methods=['POST', 'GET'])
 def new_apiary():
-    elenco = ApiaryModel.query.filter_by(id_utente = current_user.username).all()
+    elenco = ApiaryModel.query.filter_by(user_id = current_user.username).all()
     apiary_form = CreateApiaryForm(request.form)
     if 'new_apiary' in request.form:
 
@@ -111,7 +111,7 @@ def new_apiary():
         id_apiary = request.form['id_apiary']
         id_user = current_user.username
 
-        apiary = ApiaryModel(id_apiario=id_apiary, id_utente=id_user)
+        apiary = ApiaryModel(apiary_id=id_apiary, user_id=id_user)
         db.session.add(apiary)
         db.session.commit()
 
@@ -128,39 +128,39 @@ def new_apiary():
 @blueprint.route('/hive',methods=['POST', 'GET'])
 @login_required
 def hive():
-    elenco = HiveModel.query.filter_by(id_utente = current_user.username).all()
+    elenco = HiveModel.query.filter_by(user_id = current_user.username).all()
     hive_form = CreateHiveForm(request.form)
-    id_apiary = request.args['apiary']
+    apiary_id = request.args['apiary']
     if 'new_hive' in request.form:
 
         # read form dat
-        id_user = current_user.username
+        user_id = current_user.username
         hive_description = request.form['hive_description']
         association_code = request.form['association_code']
 
-        hive = HiveModel(id_apiario=id_apiary, id_utente=id_user, descrizione_arnia= hive_description, codice_associazione= association_code)
+        hive = HiveModel(apiary_id=apiary_id, user_id=user_id, hive_description= hive_description, association_code= association_code)
         db.session.add(hive)
         db.session.commit()
 
-        return redirect(url_for('base_blueprint.hive', apiary = id_apiary))
+        return redirect(url_for('base_blueprint.hive', apiary = apiary_id))
 
     if not current_user.is_authenticated:
-        return render_template('hive.html', form=hive_form, lista = elenco, apiary = id_apiary)
-    return render_template('hive.html', form=hive_form, lista = elenco, apiary = id_apiary)
+        return render_template('hive.html', form=hive_form, lista = elenco, apiary = apiary_id)
+    return render_template('hive.html', form=hive_form, lista = elenco, apiary = apiary_id)
 
 # @blueprint.route('/new_apiary',methods=['POST', 'GET'])
 # @login_required
 # def new_apiary():
 #     if request.method == 'POST':
 #         if request.form.get("Aggiungi_Apiario") == "Add apiary":
-#             id_apiario = request.form['nuovoApiario']
+#             apiary_id = request.form['nuovoApiario']
 #             user = current_user.email
-#             apiario = ApiaryModel(id_apiario=id_apiario, id_utente=user)
+#             apiario = ApiaryModel(apiary_id=apiary_id, user_id=user)
 #             try:
 #                 db.session.add(apiario)
 #                 db.session.commit()
 #             except Exception as e:
-#                 flash("You already have an apiary called: " + id_apiario)
+#                 flash("You already have an apiary called: " + apiary_id)
 #                 return redirect(url_for('new_apiary'))
 #
 #             return render_template('aggiungiApiario.html')
