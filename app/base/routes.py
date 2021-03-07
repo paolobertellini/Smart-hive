@@ -101,7 +101,8 @@ def shutdown():
 
 @blueprint.context_processor
 def inject_apiaries():
-    return dict(apiaries=ApiaryModel.query.filter_by(user_id=current_user.username).all())
+    apiaries = ApiaryModel.query.filter_by(user_id=current_user.username).all()
+    return dict(apiaries=apiaries)
 
 @blueprint.route('/new_apiary',methods=['POST', 'GET'])
 def new_apiary():
