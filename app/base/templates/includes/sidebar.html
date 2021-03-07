@@ -83,7 +83,7 @@
                                 <ul class="flex-column nav">
 
                                     {% for hive in find_hives(apiary.apiary_id) %}
-                                        <li class="nav-item "><a class="nav-link" href="{{ url_for('base_blueprint.dashboard', apiary=apiary.apiary_id) }}"><span>{{ hive.hive_id }}</span></a></li>
+                                        <li class="nav-item "><a class="nav-link" href="{{ url_for('base_blueprint.sensorFeed', apiary=apiary.apiary_id) }}"><span>Hive :{{ hive.hive_id }}</span></a></li>
                                     {% endfor %}
 
                                 </ul>
