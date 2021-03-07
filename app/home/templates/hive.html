@@ -10,7 +10,7 @@
     <main class="content">
 
         {% include 'includes/navigation.html' %}
-
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <div class="py-4">
             <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
                 <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
@@ -160,12 +160,14 @@
     {% if messages %}
         {% for message in messages %}
             <script>
-                alert('{{ message }}')
+                swal('Warning','{{ message }}',"warning")
             </script>
         {% endfor %}
     {% endif %}
 {% endwith %}
+
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}{% endblock javascripts %}
+
