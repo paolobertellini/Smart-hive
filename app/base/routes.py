@@ -192,6 +192,14 @@ def sensorFeed():
 
     return render_template('sensor-feed.html',lista = elenco, apiary = apiary_id)
 
+@blueprint.route('/dashboard',methods=['POST', 'GET'])
+@login_required
+def dashboard():
+
+    sf = SensorFeed.query.filter_by(hive_id="1").all()
+    # elenco = SensorFeed.query.filter_by(hive_id="1").all()
+    return render_template('dashboard.html', SensorFeed = sf, hive_id = "1")
+
 ## Errors
 
 @login_manager.unauthorized_handler

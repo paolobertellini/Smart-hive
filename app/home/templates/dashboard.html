@@ -5,126 +5,182 @@
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
 
+
+
 {% block content %}
 
     <main class="content">
 
         {% include 'includes/navigation.html' %}
+        {% set last = SensorFeed|last %}
 
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
             <div class="btn-toolbar dropdown">
-                <button class="btn btn-primary btn-sm mr-2 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fas fa-plus mr-2"></span>New Task
+                <button class="btn btn-primary btn-sm mr-2 dropdown-toggle" type="button" onClick="window.location.reload();" aria-haspopup="true" aria-expanded="false"  >
+                    <span class="fas fa-sync-alt"></span> Refresh data
                 </button>
-                <div class="dropdown-menu dashboard-dropdown dropdown-menu-left mt-2">
-                    <a class="dropdown-item font-weight-bold" href="#"><span class="fas fa-tasks"></span>New Task</a>
-                    <a class="dropdown-item font-weight-bold" href="#"><span class="fas fa-cloud-upload-alt"></span>Upload Files</a>
-                    <a class="dropdown-item font-weight-bold" href="#"><span class="fas fa-user-shield"></span>Preview Security</a>
-                    <div role="separator" class="dropdown-divider"></div>
-                    <a class="dropdown-item font-weight-bold" href="#"><span class="fas fa-rocket text-danger"></span>Upgrade to Pro</a>
-                </div>
-            </div>
-            <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-primary">Share</button>
-                <button type="button" class="btn btn-sm btn-outline-primary">Export</button>
             </div>
         </div>
         <div class="row justify-content-md-center">
-            <div class="col-12 mb-4">
-                <div class="card bg-yellow-alt shadow-sm">
-                    <div class="card-header d-flex flex-row align-items-center flex-0">
-                        <div class="d-block">
-                            <div class="h5 font-weight-normal mb-2">Sales Value</div>
-                            <h2 class="h3">$10,567</h2>
-                            <div class="small mt-2"> 
-                                <span class="font-weight-bold mr-2">Yesterday</span>                              
-                                <span class="fas fa-angle-up text-success"></span>                                   
-                                <span class="text-success font-weight-bold">10.57%</span>
-                            </div>
-                        </div>
-                        <div class="d-flex ml-auto">
-                            <a href="#" class="btn btn-secondary text-dark btn-sm mr-2">Month</a>
-                            <a href="#" class="btn btn-primary btn-sm mr-3">Week</a>
-                        </div>
-                    </div>
-                    <div class="card-body p-2">
-                        <div class="ct-chart-sales-value ct-double-octave ct-series-g"></div>
-                    </div>
+            <!-- live situation -->
+            <div class="card border-light shadow-sm">
+                <!-- TITLE: live situation -->
+                <div class="card-header border-bottom border-light">
+                    <h2 class="h5 mb-0">Live situation</h2>
                 </div>
-            </div>
-            <div class="col-12 col-sm-6 col-xl-4 mb-4">
-                <div class="card border-light shadow-sm">
-                    <div class="card-body">
-                        <div class="row d-block d-xl-flex align-items-center">
-                            <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
-                                <div class="icon icon-shape icon-md icon-shape-blue rounded mr-4 mr-sm-0"><span class="fas fa-chart-line"></span></div>
-                                <div class="d-sm-none">
-                                    <h2 class="h5">Customers</h2>
-                                    <h3 class="mb-1">345,678</h3>
+                <br>
+                <div class="row justify-content-md-center">
+                    <div class="col-12 col-sm-6 col-xl-4 mb-4">
+                    <div class="card border-light shadow-sm">
+                        <div class="card-body">
+                            <div class="row d-block d-xl-flex align-items-center">
+                                <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+                                    <div class="icon icon-shape icon-md icon-shape-blue rounded mr-4 mr-sm-0"><span class="fas fa-temperature-high"></span></div>
+                                    <div class="d-sm-none">
+                                        <h2 class="h5">Temperature</h2>
+                                        <h3 class="mb-1">Error</h3>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-12 col-xl-7 px-xl-0">
-                                <div class="d-none d-sm-block">
-                                    <h2 class="h5">Customers</h2>
-                                    <h3 class="mb-1">345k</h3>
-                                </div>
-                                <small>Feb 1 - Apr 1,  <span class="icon icon-small"><span class="fas fa-globe-europe"></span></span> WorldWide</small> 
-                                <div class="small mt-2">                               
-                                    <span class="fas fa-angle-up text-success"></span>                                   
-                                    <span class="text-success font-weight-bold">18.2%</span> Since last month
+                                <div class="col-12 col-xl-7 px-xl-0">
+                                    <div class="d-none d-sm-block">
+                                        <h2 class="h5">Temperature</h2>
+                                        <h3 class="mb-1">{{last.temperature}} °C</h3>
+                                    </div>
+                                    <span class="icon icon-small"><span class="fas fa-clock"></span></span> {{ last.timestamp }}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-12 col-sm-6 col-xl-4 mb-4">
-                <div class="card border-light shadow-sm">
-                    <div class="card-body">
-                        <div class="row d-block d-xl-flex align-items-center">
-                            <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
-                                <div class="icon icon-shape icon-md icon-shape-secondary rounded mr-4"><span class="fas fa-cash-register"></span></div>
-                                <div class="d-sm-none">
-                                    <h2 class="h5">Revenue</h2>
-                                    <h3 class="mb-1">$43,594</h3>
-                                </div>
-                            </div>
-                            <div class="col-12 col-xl-7 px-xl-0">
-                                <div class="d-none d-sm-block">
-                                    <h2 class="h5">Revenue</h2>
-                                    <h3 class="mb-1">$43,594</h3>
-                                </div>
-                                <small>Feb 1 - Apr 1,  <span class="icon icon-small"><span class="fas fa-globe-europe"></span></span> Worldwide</small>
-                                <div class="small mt-2">                               
-                                    <span class="fas fa-angle-up text-success"></span>                                   
-                                    <span class="text-success font-weight-bold">28.2%</span> Since last month
+                    <div class="col-12 col-sm-6 col-xl-4 mb-4">
+                        <div class="card border-light shadow-sm">
+                            <div class="card-body">
+                                <div class="row d-block d-xl-flex align-items-center">
+                                    <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+                                        <div class="icon icon-shape icon-md icon-shape-blue rounded mr-4 mr-sm-0"><span class="fas fa-tint"></span></div>
+                                        <div class="d-sm-none">
+                                            <h2 class="h5">Humidity</h2>
+                                            <h3 class="mb-1">Error</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-xl-7 px-xl-0">
+                                        <div class="d-none d-sm-block">
+                                            <h2 class="h5">Humidity</h2>
+                                            <h3 class="mb-1"> {{ last.humidity }} % </h3>
+                                        </div>
+                                        <span class="icon icon-small"><span class="fas fa-clock"></span></span> {{ last.timestamp }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 col-xl-4 mb-4">
-                <div class="card border-light shadow-sm">
-                    <div class="card-body">
-                        <div class="row d-block d-xl-flex align-items-center">
-                            <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
-                                <div class="ct-chart-traffic-share ct-golden-section ct-series-a"></div>
-                            </div>
-                            <div class="col-12 col-xl-7 px-xl-0">
-                                <h2 class="h5 mb-3">Traffic Share</h2>
-                                <h6 class="font-weight-normal text-gray"><span class="icon w-20 icon-xs icon-secondary mr-1"><span class="fas fa-desktop"></span></span> Desktop <a href="#" class="h6">60%</a></h6>
-                                <h6 class="font-weight-normal text-gray"><span class="icon w-20 icon-xs icon-primary mr-1"><span class="fas fa-mobile-alt"></span></span> Mobile Web <a href="#" class="h6">30%</a></h6>
-                                <h6 class="font-weight-normal text-gray"><span class="icon w-20 icon-xs icon-tertiary mr-1"><span class="fas fa-tablet-alt"></span></span> Tablet Web <a href="#" class="h6">10%</a></h6>
+                    <div class="col-12 col-sm-6 col-xl-4 mb-4">
+                        <div class="card border-light shadow-sm">
+                            <div class="card-body">
+                                <div class="row d-block d-xl-flex align-items-center">
+                                    <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+                                        <div class="icon icon-shape icon-md icon-shape-blue rounded mr-4 mr-sm-0"><span class="fas fa-balance-scale"></span></div>
+                                        <div class="d-sm-none">
+                                            <h2 class="h5">Weight</h2>
+                                            <h3 class="mb-1">Error</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-xl-7 px-xl-0">
+                                        <div class="d-none d-sm-block">
+                                            <h2 class="h5">Weight</h2>
+                                            <h3 class="mb-1">{{last.weight}} g</h3>
+                                        </div>
+                                        <span class="icon icon-small"><span class="fas fa-clock"></span></span> {{ last.timestamp }}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <br>
+
+        <div class="row justify-content-md-center">
+            <!-- live situation -->
+            <div class="card border-light shadow-sm">
+                <!-- TITLE: live situation -->
+                <div class="card-header border-bottom border-light">
+                    <h2 class="h5 mb-0">Hive information</h2>
+                </div>
+                <br>
+                <div class="col-12 px-0 mb-4">
+                    <div class="card border-light shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between border-bottom border-light pb-3">
+                                <div>
+                                    <h6 class="mb-0"><span class="icon icon-xs mr-3"><span class="fas fa-passport"></span></span>Hive id</h6>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>{{hive_id}}</h6>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
+                                <div>
+                                    <h6 class="mb-0"><span class="icon icon-xs mr-3"><span class="fas fa-wifi"></span></span>Status</h6>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>Online</h6>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
+                                <div>
+                                    <h6 class="mb-0"><span class="icon icon-xs mr-3"><span class="fas fa-map-marker-alt"></span></span>Location</h6>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>Inserire località</h6>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between pt-3">
+                                <div>
+                                    <h6 class="mb-0"><span class="icon icon-xs mr-3"><span class="fas fa-cloud-sun"></span></span>Weather</h6>
+                                </div>
+                                <div>
+                                    <a href="#" class="text-primary font-weight-bold">Inserire meteo</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+         <!-- grafico -->
+        <div class="col-12 mb-4">
+            <div class="card bg-yellow-alt shadow-sm">
+                <div class="card-header d-flex flex-row align-items-center flex-0">
+                    <div class="d-block">
+                        <div class="h5 font-weight-normal mb-2">Temperature trend</div>
+                        <h2 class="h3">{{ last.temperature }} °C</h2>
+                        <div class="small mt-2">
+                            <span class="font-weight-bold mr-2">Yesterday</span>
+                            <span class="fas fa-angle-up text-success"></span>
+                            <span class="text-success font-weight-bold">10.57%</span>
+                        </div>
+                    </div>
+                    <div class="d-flex ml-auto">
+                        <a href="#" class="btn btn-secondary text-dark btn-sm mr-2">Temperature</a>
+                        <a href="#" class="btn btn-primary btn-sm mr-3">Humidity</a>
+                    </div>
+                </div>
+                <div>
+                    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-12 col-xl-8 mb-4">
                 <div class="row">
+                    <!-- lista -->
                     <div class="col-12 mb-4">
                         <div class="card border-light shadow-sm">
                             <div class="card-header">
@@ -223,6 +279,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- membri team -->
                     <div class="col-12 col-lg-6 mb-4">
                         <div class="card border-light shadow-sm">
                             <div class="card-header border-bottom border-light d-flex justify-content-between">
@@ -315,6 +372,7 @@
                             </div>
                             </div>
                     </div>
+                    <!-- progress -->
                     <div class="col-12 col-lg-6 mb-4">
                         <div class="card border-light shadow-sm">
                             <div class="card-header border-bottom border-light">
@@ -406,7 +464,9 @@
                     </div>
                 </div>
             </div>
+            <!-- colonna destra -->
             <div class="col-12 col-xl-4 mb-4">
+                <!-- graph -->
                 <div class="col-12 mb-4">
                     <div class="card border-light shadow-sm">
                         <div class="card-body d-flex flex-row align-items-center flex-0 border-bottom">
@@ -434,6 +494,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- summary -->
                 <div class="col-12 px-0 mb-4">
                     <div class="card border-light shadow-sm">
                         <div class="card-body">
@@ -466,6 +527,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- acquisition -->
                 <div class="col-12 px-0 mb-4">
                     <div class="card border-light shadow-sm">
                         <div class="card-body">
@@ -500,4 +562,91 @@
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script>
+window.onload = function () {
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	title:{
+		text: "Daily High Temperature at Different Beaches",
+        backgroundColor: rgba(0, 0, 0, 0)
+	},
+	axisX: {
+		valueFormatString: "DD MMM,YY"
+	},
+	axisY: {
+		title: "Temperature (in °C)",
+		suffix: " °C"
+	},
+	legend:{
+		cursor: "pointer",
+		fontSize: 16,
+		itemclick: toggleDataSeries
+	},
+	toolTip:{
+		shared: true
+	},
+	data: [{
+		name: "Myrtle Beach",
+		type: "spline",
+		yValueFormatString: "#0.## °C",
+		showInLegend: true,
+		dataPoints: [
+			{ x: new Date(2017,6,24), y: 31 },
+			{ x: new Date(2017,6,25), y: 31 },
+			{ x: new Date(2017,6,26), y: 29 },
+			{ x: new Date(2017,6,27), y: 29 },
+			{ x: new Date(2017,6,28), y: 31 },
+			{ x: new Date(2017,6,29), y: 30 },
+			{ x: new Date(2017,6,30), y: 29 }
+		]
+	},
+	{
+		name: "Martha Vineyard",
+		type: "spline",
+		yValueFormatString: "#0.## °C",
+		showInLegend: true,
+		dataPoints: [
+			{ x: new Date(2017,6,24), y: 20 },
+			{ x: new Date(2017,6,25), y: 20 },
+			{ x: new Date(2017,6,26), y: 25 },
+			{ x: new Date(2017,6,27), y: 25 },
+			{ x: new Date(2017,6,28), y: 25 },
+			{ x: new Date(2017,6,29), y: 25 },
+			{ x: new Date(2017,6,30), y: 25 }
+		]
+	},
+	{
+		name: "Nantucket",
+		type: "spline",
+		yValueFormatString: "#0.## °C",
+		showInLegend: true,
+		dataPoints: [
+			{ x: new Date(2017,6,24), y: 22 },
+			{ x: new Date(2017,6,25), y: 19 },
+			{ x: new Date(2017,6,26), y: 23 },
+			{ x: new Date(2017,6,27), y: 24 },
+			{ x: new Date(2017,6,28), y: 24 },
+			{ x: new Date(2017,6,29), y: 23 },
+			{ x: new Date(2017,6,30), y: 23 }
+		]
+	}]
+});
+chart.render();
+
+function toggleDataSeries(e){
+	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	}
+	else{
+		e.dataSeries.visible = true;
+	}
+	chart.render();
+}
+
+}
+</script>
+{% endblock javascripts %}
+
