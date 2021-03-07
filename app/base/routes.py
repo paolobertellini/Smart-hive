@@ -101,8 +101,17 @@ def shutdown():
 
 @blueprint.context_processor
 def inject_apiaries():
-    apiaries = ApiaryModel.query.filter_by(user_id=current_user.username).all()
-    return dict(apiaries=apiaries)
+    if current_user.is_authenticated:
+        apiaries = ApiaryModel.query.filter_by(user_id=current_user.username).all()
+    else:
+        apiaries=""
+
+    def find_hives(apiary):
+        hives = HiveModel.query.filter_by(user_id=current_user.username, apiary_id=apiary).all()
+        return hives
+    return dict(apiaries=apiaries, find_hives= find_hives)
+
+
 
 @blueprint.route('/new_apiary',methods=['POST', 'GET'])
 def new_apiary():
@@ -141,7 +150,6 @@ def hive():
         user_id = current_user.username
         hive_description = request.form['hive_description']
         association_code = request.form['association_code']
-        print(apiary_selected)
         if(apiary_selected==""):
             flash("Select an Apiary before to insert a new hive")
             return redirect(url_for('base_blueprint.hive',apiary = apiary_selected))
