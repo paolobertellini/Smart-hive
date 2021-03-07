@@ -3,14 +3,13 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
-from flask import jsonify, render_template, redirect, request, url_for
+from flask import jsonify, render_template, redirect, request, url_for, flash
 from flask_login import (
     current_user,
     login_required,
     login_user,
     logout_user
 )
-
 from app import db, login_manager
 from app.base import blueprint
 from app.base.forms import LoginForm, CreateAccountForm, CreateApiaryForm, CreateHiveForm
@@ -128,24 +127,29 @@ def new_apiary():
 @blueprint.route('/hive',methods=['POST', 'GET'])
 @login_required
 def hive():
-    elenco = HiveModel.query.filter_by(user_id = current_user.username).all()
+    apiaries= ApiaryModel.query.filter_by(user_id = current_user.username).all()
     hive_form = CreateHiveForm(request.form)
+    apiary_selected= request.args["apiary"]
+    hives = HiveModel.query.filter_by(user_id = current_user.username,apiary_id=apiary_selected).all()
     if 'new_hive' in request.form:
 
         # read form dat
         user_id = current_user.username
         hive_description = request.form['hive_description']
         association_code = request.form['association_code']
-        apiary_id = str(request.form.get("id_apiary"))
-        hive = HiveModel(apiary_id=apiary_id, user_id=user_id, hive_description= hive_description, association_code= association_code)
+        print(apiary_selected)
+        if(apiary_selected==""):
+            flash("Select an Apiary before to insert a new hive")
+            return render_template('hive.html', form=hive_form, hives=hives, apiaries=apiaries, apiary=apiary_selected)
+        hive = HiveModel(apiary_id=apiary_selected, user_id=user_id, hive_description= hive_description, association_code= association_code)
         db.session.add(hive)
         db.session.commit()
 
-        return redirect(url_for('base_blueprint.hive'))
+        return redirect(url_for('base_blueprint.hive', apiary=apiary_selected))
 
     if not current_user.is_authenticated:
-        return render_template('hive.html', form=hive_form, lista = elenco)
-    return render_template('hive.html', form=hive_form, lista = elenco)
+        return render_template('hive.html', form=hive_form, hives = hives, apiaries= apiaries)
+    return render_template('hive.html', form=hive_form, hives = hives, apiaries= apiaries,apiary=apiary_selected)
 
 # @blueprint.route('/new_apiary',methods=['POST', 'GET'])
 # @login_required

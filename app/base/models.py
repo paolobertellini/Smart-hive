@@ -20,7 +20,7 @@ class ApiaryModel(db.Model):
 class HiveModel(db.Model):
     __tablename__ = 'Hive'
     hive_id = Column(Integer, primary_key=True)
-    apiary_id = Column(String(80))
+    apiary_id = Column(String(80), nullable=False)
     user_id = Column(String(80))
     hive_description = Column(String(80))
     association_code = Column(String(80), nullable=False)
