@@ -51,7 +51,25 @@
                 <div class="multi-level collapse " role="list" id="submenu-app" aria-expanded="false">
                     <ul class="flex-column nav">
 
-                        {% for apiary in lista %}
+                        {% for apiary in apiaries %}
+                            <li class="nav-item "><a class="nav-link" href="{{ url_for('base_blueprint.hive', apiary=apiary.apiary_id) }}"><span>{{ apiary.apiary_id }}</span></a></li>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <span class="nav-link  collapsed  d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#submenu-app">
+                <span>
+                    <span class="sidebar-icon"><span class="fas fa-forumbee"></span></span>
+                    Hive data
+                </span>
+                <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
+                </span>
+                <div class="multi-level collapse " role="list" id="submenu-app" aria-expanded="false">
+                    <ul class="flex-column nav">
+
+                        {% for apiary in apiaries %}
                             <li class="nav-item "><a class="nav-link" href="{{ url_for('base_blueprint.hive', apiary=apiary.apiary_id) }}"><span>{{ apiary.apiary_id }}</span></a></li>
                         {% endfor %}
 
@@ -106,9 +124,9 @@
             <li class="nav-item">
                 <a href="/" class="nav-link d-flex align-items-center">
                 <span class="sidebar-icon">
-                    <img src="/static/assets/img/brand/light.svg" height="20" width="20" alt="Volt Logo">
+                    <img src="/static/bee.PNG" height="20" width="20" alt="Bee Logo">
                 </span>
-                <span class="mt-1">Presentation</span>
+                <span class="mt-1">Home</span>
                 </a>
             </li>
             <li class="nav-item">

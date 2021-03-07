@@ -99,10 +99,13 @@ def shutdown():
     func()
     return 'Server shutting down...'
 
+@blueprint.context_processor
+def inject_apiaries():
+    return dict(apiaries=ApiaryModel.query.filter_by(user_id=current_user.username).all())
 
 @blueprint.route('/new_apiary',methods=['POST', 'GET'])
 def new_apiary():
-    elenco = ApiaryModel.query.filter_by(user_id = current_user.username).all()
+    apiaries= ApiaryModel.query.filter_by(user_id = current_user.username).all()
     apiary_form = CreateApiaryForm(request.form)
     if 'new_apiary' in request.form:
 
@@ -121,8 +124,8 @@ def new_apiary():
         return redirect(url_for('base_blueprint.new_apiary'))
 
     if not current_user.is_authenticated:
-        return render_template('new_apiary.html', form=apiary_form, lista = elenco)
-    return render_template('new_apiary.html', form=apiary_form, lista = elenco)
+        return render_template('new_apiary.html', form=apiary_form, apiaries= apiaries)
+    return render_template('new_apiary.html', form=apiary_form,apiaries= apiaries)
 
 @blueprint.route('/hive',methods=['POST', 'GET'])
 @login_required
@@ -140,7 +143,7 @@ def hive():
         print(apiary_selected)
         if(apiary_selected==""):
             flash("Select an Apiary before to insert a new hive")
-            return render_template('hive.html', form=hive_form, hives=hives, apiaries=apiaries, apiary=apiary_selected)
+            return redirect(url_for('base_blueprint.hive',apiary = apiary_selected))
         hive = HiveModel(apiary_id=apiary_selected, user_id=user_id, hive_description= hive_description, association_code= association_code)
         db.session.add(hive)
         db.session.commit()
@@ -150,52 +153,6 @@ def hive():
     if not current_user.is_authenticated:
         return render_template('hive.html', form=hive_form, hives = hives, apiaries= apiaries)
     return render_template('hive.html', form=hive_form, hives = hives, apiaries= apiaries,apiary=apiary_selected)
-
-# @blueprint.route('/new_apiary',methods=['POST', 'GET'])
-# @login_required
-# def new_apiary():
-#     if request.method == 'POST':
-#         if request.form.get("Aggiungi_Apiario") == "Add apiary":
-#             apiary_id = request.form['nuovoApiario']
-#             user = current_user.email
-#             apiario = ApiaryModel(apiary_id=apiary_id, user_id=user)
-#             try:
-#                 db.session.add(apiario)
-#                 db.session.commit()
-#             except Exception as e:
-#                 flash("You already have an apiary called: " + apiary_id)
-#                 return redirect(url_for('new_apiary'))
-#
-#             return render_template('aggiungiApiario.html')
-#
-#     return render_template('aggiungiApiario.html')
-
-
-## Errors
-
-# @blueprint.route('/sensorfeed',methods=['POST', 'GET'])
-# @login_required
-# def hive():
-#     elenco = SensorFeed.query.filter_by(hive_id = current_user.username).all()
-#     hive_form = CreateHiveForm(request.form)
-#     apiary_id = request.args['apiary']
-#     if 'new_hive' in request.form:
-#
-#         # read form dat
-#         user_id = current_user.username
-#         hive_description = request.form['hive_description']
-#         association_code = request.form['association_code']
-#         # id_apiary= request.form['id_apiary']
-#         hive = HiveModel(apiary_id=apiary_id, user_id=user_id, hive_description= hive_description, association_code= association_code)
-#         db.session.add(hive)
-#         db.session.commit()
-#
-#         return redirect(url_for('base_blueprint.hive', apiary = apiary_id))
-#
-#     if not current_user.is_authenticated:
-#         return render_template('hive.html', form=hive_form, lista = elenco, apiary = apiary_id)
-#     return render_template('hive.html', form=hive_form, lista = elenco, apiary = apiary_id)
-
 
 @blueprint.route('/new-sensor-feed', methods=['GET','POST'])
 # @login_required
@@ -216,6 +173,7 @@ def newSensorFeed():
     else:
         return ({'hive_id': None, 'user_id': None, 'apiary_id': None})
 
+
 @blueprint.route('/sensorFeed',methods=['POST', 'GET'])
 @login_required
 def sensorFeed():
@@ -224,6 +182,8 @@ def sensorFeed():
     elenco = SensorFeed.query.filter_by(hive_id="1").all()
 
     return render_template('sensor-feed.html',lista = elenco, apiary = apiary_id)
+
+## Errors
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():

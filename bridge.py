@@ -5,9 +5,6 @@ import requests
 import serial
 import serial.tools.list_ports
 
-codice_associazione = '12345'
-id_arnia = ''
-
 
 class FBridge():
     def setup(self):
@@ -16,8 +13,8 @@ class FBridge():
         ports = serial.tools.list_ports.comports()
         self.portname = None
         for port in ports:
-            print("DEVICE: " + str(port.device))
-            print("DESCRIPTION: " + str(port.description))
+            # print("DEVICE: " + str(port.device))
+            # print("DESCRIPTION: " + str(port.description))
             if 'arduino' in port.description.lower():
                 self.portname = port.device
 
@@ -57,7 +54,7 @@ class FBridge():
                         if self.data["type"] == "D":
                             print("[DATA]: " + str(self.data))
                             try:
-                                r1 = requests.get('http://localhost:80/new-sensor-feed', json=self.data)
+                                r1 = requests.get('http://blallo.ddns.net:8080/new-sensor-feed', json=self.data)
                                 ser_resp = json.loads(r1.text)
                                 if ser_resp["hive_id"] is not None:
                                     json_id = "{\"type\":\"A\",\"id\":\"" + str(ser_resp["hive_id"]) + "\"}"
