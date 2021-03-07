@@ -34,11 +34,16 @@
                         <form method="post" action="" class="mt-4">
 
                             <!-- Form -->
-{#                            <div class="input-group">#}
-{#                                <span class="input-group-text" id="basic-addon1"><span#}
-{#                                        class="fas fa-code"></span></span>#}
-{#                                {{ form.id_apiary(placeholder="Apiary of belonging", class="form-control") }}#}
-{#                            </div>#}
+                            <div class="form-group" >
+                                <label for="exampleFormControlSelect2">Your Apiaries</label>
+                                <select multiple class="form-control" name="id_apiary">
+                                    {% for apiary in lista %}
+                                      <option>{{ apiary.apiary_id }}</option>
+                                     {% endfor %}
+
+                                </select>
+                            </div>
+
                             <div class="form-group mb-4">
                                 <div class="input-group">
                                     <span class="input-group-text" id="basic-addon1"><span
