@@ -14,7 +14,7 @@ from flask_login import (
 from app import db, login_manager
 from app.base import blueprint
 from app.base.forms import LoginForm, CreateAccountForm, CreateApiaryForm, CreateHiveForm
-from app.base.models import ApiaryModel, User, HiveModel
+from app.base.models import ApiaryModel, User, HiveModel, SensorFeed
 
 from app.base.util import verify_pass
 
@@ -169,6 +169,58 @@ def hive():
 
 
 ## Errors
+
+# @blueprint.route('/sensorfeed',methods=['POST', 'GET'])
+# @login_required
+# def hive():
+#     elenco = SensorFeed.query.filter_by(hive_id = current_user.username).all()
+#     hive_form = CreateHiveForm(request.form)
+#     apiary_id = request.args['apiary']
+#     if 'new_hive' in request.form:
+#
+#         # read form dat
+#         user_id = current_user.username
+#         hive_description = request.form['hive_description']
+#         association_code = request.form['association_code']
+#         # id_apiary= request.form['id_apiary']
+#         hive = HiveModel(apiary_id=apiary_id, user_id=user_id, hive_description= hive_description, association_code= association_code)
+#         db.session.add(hive)
+#         db.session.commit()
+#
+#         return redirect(url_for('base_blueprint.hive', apiary = apiary_id))
+#
+#     if not current_user.is_authenticated:
+#         return render_template('hive.html', form=hive_form, lista = elenco, apiary = apiary_id)
+#     return render_template('hive.html', form=hive_form, lista = elenco, apiary = apiary_id)
+
+
+@blueprint.route('/new-sensor-feed', methods=['GET','POST'])
+# @login_required
+def newSensorFeed():
+    req = request.get_json(force=True)
+    hive_id = HiveModel.query.filter_by(association_code=req['association_code']).first().hive_id
+
+    if (hive_id is not None):
+        user_id = HiveModel.query.filter_by(hive_id=hive_id).first().user_id
+        apiary_id = HiveModel.query.filter_by(hive_id=hive_id).first().apiary_id
+        sensorFeed = SensorFeed(hive_id=req['hive_id'],
+                                temperature=req['temperature'],
+                                humidity=req['humidity'],
+                                weight=req['weight'])
+        db.session.add(sensorFeed)
+        db.session.commit()
+        return ({'hive_id': hive_id, 'user_id': user_id, 'apiary_id': apiary_id})
+    else:
+        return ({'hive_id': None, 'user_id': None, 'apiary_id': None})
+
+@blueprint.route('/sensorFeed',methods=['POST', 'GET'])
+@login_required
+def sensorFeed():
+
+    apiary_id = HiveModel.query.filter_by(hive_id="1").first().apiary_id
+    elenco = SensorFeed.query.filter_by(hive_id="1").all()
+
+    return render_template('sensor-feed.html',lista = elenco, apiary = apiary_id)
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
