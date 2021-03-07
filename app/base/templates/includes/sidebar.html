@@ -30,7 +30,7 @@
             <li class="nav-item  {% if 'new_apiary' in segment %} active {% endif %}">
                 <a href="{{ url_for('base_blueprint.new_apiary') }}" class="nav-link">
 
-                    <span class="sidebar-icon"><span class="fab fa-forumbee"></span></span>
+                    <span class="sidebar-icon"><img src="static\assets\img\favicon\apiary.png" width="27" height="27"></span>
                     <span>Your apiaries</span>
                 </a>
             </li>
@@ -52,7 +52,7 @@
                     <ul class="flex-column nav">
 
                         {% for apiary in lista %}
-                            <li class="nav-item "><a class="nav-link" href="{{ url_for('base_blueprint.hive', apiary=apiary.id_apiario) }}"><span>{{ apiary.id_apiario }}</span></a></li>
+                            <li class="nav-item "><a class="nav-link" href="{{ url_for('base_blueprint.hive', apiary=apiary.apiary_id) }}"><span>{{ apiary.apiary_id }}</span></a></li>
                         {% endfor %}
 
                     </ul>

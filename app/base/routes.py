@@ -137,7 +137,7 @@ def hive():
         user_id = current_user.username
         hive_description = request.form['hive_description']
         association_code = request.form['association_code']
-
+        # id_apiary= request.form['id_apiary']
         hive = HiveModel(apiary_id=apiary_id, user_id=user_id, hive_description= hive_description, association_code= association_code)
         db.session.add(hive)
         db.session.commit()
