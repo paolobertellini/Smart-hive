@@ -54,7 +54,7 @@ class FBridge():
                         if self.data["type"] == "D":
                             print("[DATA]: " + str(self.data))
                             try:
-                                r1 = requests.get('http://localhost:80/new-sensor-feed', json=self.data)
+                                r1 = requests.get('http://blallo.ddns.net:8080/new-sensor-feed', json=self.data)
                                 ser_resp = json.loads(r1.text)
                                 if ser_resp["hive_id"] is not None:
                                     json_id = "{\"type\":\"A\",\"id\":\"" + str(ser_resp["hive_id"]) + "\"}"

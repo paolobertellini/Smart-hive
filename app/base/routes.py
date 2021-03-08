@@ -196,12 +196,34 @@ def sensorFeed():
 @blueprint.route('/dashboard',methods=['POST', 'GET'])
 @login_required
 def dashboard():
-
-    sf = SensorFeed.query.filter_by(hive_id="2").all()
+    hive = request.args["hive"]
+    apiary = request.args["apiary"]
+    sf = SensorFeed.query.filter_by(hive_id=hive).all()
     # elenco = SensorFeed.query.filter_by(hive_id="1").all()
-    location = ApiaryModel.query.filter_by(hive_id="2").first().location
-    w= "It is currently " + weather(location)['temperature'] + " degrees and " + weather(location)['status']
-    return render_template('dashboard.html', SensorFeed = sf, hive_id = "2", weather= w)
+    location = ApiaryModel.query.filter_by(apiary_id=apiary).first().location
+    w= "It is currently " + str(weather(location)['temperature']['temp']) + " °C and " + str(weather(location)['status'])
+    return render_template('dashboard.html', SensorFeed = sf, hive_id = hive, weather= w, location= location)
+
+@blueprint.route('/removeApiary',methods=['GET'])
+@login_required
+def removeApiary():
+    to_remove = request.args['to_remove']
+    apiary_to_remove = ApiaryModel.query.filter_by(apiary_id=to_remove, user_id = current_user.username).first()
+    hives_to_remove = HiveModel.query.filter_by(apiary_id=to_remove, user_id=current_user.username).all()
+    #data_to_modify = SensorFeed.query(hive_id=HiveModel.hive_id).filter_by(apiary_id=to_remove, user_id=current_user.username).all()
+    for el in hives_to_remove:
+        db.session.delete(el)
+    db.session.delete(apiary_to_remove)
+    db.session.commit()
+    return redirect(url_for('base_blueprint.new_apiary'))
+
+
+@blueprint.route('/removeHive', methods=['GET'])
+@login_required
+def removeHive():
+    to_remove = request.args['to_remove']
+
+    return ("pescifritti")
 
 ## Errors
 
