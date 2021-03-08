@@ -239,7 +239,7 @@ def dashboard():
 
     try:
         return render_template('dashboard.html', SensorFeed=sf, hive_id=hive, weather=w, location=location, alarm=alarm,
-                               entrance=entrance, apiary=apiary)
+                               entrance=entrance, apiary=apiary, type = "none")
     except:
         flash("There are no data belonging to this specific hive.")
         return redirect(url_for('base_blueprint.new_apiary'))
