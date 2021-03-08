@@ -102,7 +102,7 @@
                     {% if current_user.is_authenticated %}
                         <a href="{{ url_for('base_blueprint.logout') }}" class="btn btn-outline-soft d-none d-lg-block" style="margin: 15px">Logout {{ current_user }} <span class="fas fa-sign-out-alt mr-2"></span></a>
                     {% else %}
-                        <a href="{{ url_for('base_blueprint.login') }}" class="btn btn-outline-soft d-none d-lg-block">Login</a>
+                        <a href="{{ url_for('base_blueprint.login') }}" class="btn btn-outline-soft d-none d-lg-block" style="margin: 15px">Login</a>
                     {% endif %}
                     <a></a>
                     <a href="{{ url_for('base_blueprint.register') }}" target="_blank" class="btn btn-secondary text-dark mr-md-3"> <span class="fas fa-rocket mr-2"></span>Register</a>
