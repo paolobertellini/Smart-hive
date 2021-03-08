@@ -47,7 +47,7 @@
                                         <h2 class="h5">Temperature</h2>
                                         <h3 class="mb-1">{{last.temperature}} °C</h3>
                                     </div>
-                                    <span class="icon icon-small"><span class="fas fa-clock"></span></span> {{ last.timestamp }}
+                                    <span class="icon icon-small"><span class="fas fa-clock"></span></span> {{ last.timestamp.strftime("%b %d %Y %H:%M:%S") }}
                                 </div>
                             </div>
                         </div>
@@ -69,7 +69,7 @@
                                             <h2 class="h5">Humidity</h2>
                                             <h3 class="mb-1"> {{ last.humidity }} % </h3>
                                         </div>
-                                        <span class="icon icon-small"><span class="fas fa-clock"></span></span> {{ last.timestamp }}
+                                        <span class="icon icon-small"><span class="fas fa-clock"></span></span> {{ last.timestamp.strftime("%b %d %Y %H:%M:%S") }}
                                     </div>
                                 </div>
                             </div>
@@ -91,7 +91,7 @@
                                             <h2 class="h5">Weight</h2>
                                             <h3 class="mb-1">{{last.weight}} g</h3>
                                         </div>
-                                        <span class="icon icon-small"><span class="fas fa-clock"></span></span> {{ last.timestamp }}
+                                        <span class="icon icon-small"><span class="fas fa-clock"></span></span> {{ last.timestamp.strftime("%b %d %Y %H:%M:%S") }}
                                     </div>
                                 </div>
                             </div>
@@ -159,16 +159,11 @@
             <div class="card bg-yellow-alt shadow-sm">
                 <div class="card-header d-flex flex-row align-items-center flex-0">
                     <div class="d-block">
-                        <div class="h5 font-weight-normal mb-2">Temperature trend</div>
-                        <h2 class="h3">{{ last.temperature }} °C</h2>
-                        <div class="small mt-2">
-                            <span class="font-weight-bold mr-2">Yesterday</span>
-                            <span class="fas fa-angle-up text-success"></span>
-                            <span class="text-success font-weight-bold">10.57%</span>
-                        </div>
+                        <div class="h5 font-weight-normal mb-2">Trend</div>
+
                     </div>
                     <div class="d-flex ml-auto">
-                        <a href="#" class="btn btn-secondary text-dark btn-sm mr-2">Temperature</a>
+                        <button class="btn btn-secondary text-dark btn-sm mr-2" onclick="function(toggleDataSeries())">Temperature</button>
                         <a href="#" class="btn btn-primary btn-sm mr-3">Humidity</a>
                     </div>
                 </div>
@@ -571,13 +566,13 @@ window.onload = function () {
 var chart = new CanvasJS.Chart("chartContainer", {
 	animationEnabled: true,
     backgroundColor: "#FCE1C3",
-	
+    zoomEnabled: true,
+	animationEnabled: true,
 	axisX: {
 		valueFormatString: "DD MMM,YY"
 	},
 	axisY: {
-		title: "Temperature (in °C)",
-		suffix: " °C"
+		title: "Graph"
 	},
 	legend:{
 		cursor: "pointer",
@@ -588,51 +583,40 @@ var chart = new CanvasJS.Chart("chartContainer", {
 		shared: true
 	},
 	data: [{
-		name: "Myrtle Beach",
+		name: "Temperature",
 		type: "spline",
 		yValueFormatString: "#0.## °C",
 		showInLegend: true,
 		dataPoints: [
-			{ x: new Date(2017,6,24), y: 31 },
-			{ x: new Date(2017,6,25), y: 31 },
-			{ x: new Date(2017,6,26), y: 29 },
-			{ x: new Date(2017,6,27), y: 29 },
-			{ x: new Date(2017,6,28), y: 31 },
-			{ x: new Date(2017,6,29), y: 30 },
-			{ x: new Date(2017,6,30), y: 29 }
+            {% for p in SensorFeed %}
+                {label: "{{ p.timestamp.strftime("%b %d %Y %H:%M:%S") }}", y: {{p.temperature}}},
+            {% endfor %}
 		]
 	},
 	{
-		name: "Martha Vineyard",
+		name: "Humidity",
 		type: "spline",
-		yValueFormatString: "#0.## °C",
+		yValueFormatString: "##,##%",
 		showInLegend: true,
 		dataPoints: [
-			{ x: new Date(2017,6,24), y: 20 },
-			{ x: new Date(2017,6,25), y: 20 },
-			{ x: new Date(2017,6,26), y: 25 },
-			{ x: new Date(2017,6,27), y: 25 },
-			{ x: new Date(2017,6,28), y: 25 },
-			{ x: new Date(2017,6,29), y: 25 },
-			{ x: new Date(2017,6,30), y: 25 }
+			{% for p in SensorFeed %}
+                {label: "{{ p.timestamp.strftime("%b %d %Y %H:%M:%S") }}", y: {{p.humidity}}},
+            {% endfor %}
 		]
 	},
-	{
-		name: "Nantucket",
+    {
+		name: "Weight",
 		type: "spline",
-		yValueFormatString: "#0.## °C",
+		yValueFormatString: "#0.## g",
 		showInLegend: true,
 		dataPoints: [
-			{ x: new Date(2017,6,24), y: 22 },
-			{ x: new Date(2017,6,25), y: 19 },
-			{ x: new Date(2017,6,26), y: 23 },
-			{ x: new Date(2017,6,27), y: 24 },
-			{ x: new Date(2017,6,28), y: 24 },
-			{ x: new Date(2017,6,29), y: 23 },
-			{ x: new Date(2017,6,30), y: 23 }
+			{% for p in SensorFeed %}
+                {label: "{{ p.timestamp.strftime("%b %d %Y %H:%M:%S") }}", y: {{p.weight}}},
+            {% endfor %}
 		]
 	}]
 });
+
 chart.render();
 
 function toggleDataSeries(e){
@@ -644,6 +628,7 @@ function toggleDataSeries(e){
 	}
 	chart.render();
 }
+
 
 }
 </script>

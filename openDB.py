@@ -6,7 +6,7 @@ from app.base.models import ApiaryModel
 connection = sqlite3.connect("db.sqlite3")
 cursor = connection.cursor()
 # cursor.execute("INSERT INTO Apiary VALUES ('100', 'vg')") # clear table
-cursor.execute("SELECT * FROM SensorFeed") # clear table
+cursor.execute("SELECT * FROM Hive") # clear table
 results = cursor.fetchall()
 for r in results:
     print(r)

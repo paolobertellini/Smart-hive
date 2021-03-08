@@ -180,7 +180,7 @@ def hive():
 # @login_required
 def newSensorFeed():
     req = request.get_json(force=True)
-    hive_id = HiveModel.query.filter_by(association_code=req['association_code']).first().hive_id
+    hive_id = db.session.query(HiveModel.hive_id).filter_by(association_code=req['association_code']).scalar()
 
     if (hive_id is not None):
         user_id = HiveModel.query.filter_by(hive_id=hive_id).first().user_id
