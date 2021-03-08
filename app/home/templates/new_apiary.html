@@ -10,7 +10,7 @@
     <main class="content">
 
         {% include 'includes/navigation.html' %}
-
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
             <div class="d-block mb-4 mb-md-0">
                 <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
@@ -162,6 +162,15 @@
 
     </main>
 
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <script>
+                swal('Warning','{{ message }}',"warning")
+            </script>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
