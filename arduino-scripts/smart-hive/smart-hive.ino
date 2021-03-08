@@ -138,7 +138,7 @@ void loop() { //0 IDLE 1 WRITE-MES 2 WRITE-DATA 3 READ
       jdata["humidity"] = hum;
       jdata["temperature"] = temp;
       jdata["weight"] = weight;
-      jdata["association_code"] = 11111;
+      jdata["association_code"] = 22222;
       iState = 0;
       serializeJson(jdata, Serial);
       Serial.println();
