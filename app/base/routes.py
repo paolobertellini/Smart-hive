@@ -125,9 +125,12 @@ def new_apiary():
         id_user = current_user.username
         location = request.form['location']
         apiary = ApiaryModel(apiary_id=id_apiary, user_id=id_user, location = location )
-        db.session.add(apiary)
-        db.session.commit()
-
+        try:
+            db.session.add(apiary)
+            db.session.commit()
+        except Exception as e:
+            flash("You already have an apiary called: " + id_apiary)
+            return redirect(url_for('base_blueprint.new_apiary'))
         # Locate user
         # user = User.query.filter_by(username=username).first()
 
@@ -155,8 +158,14 @@ def hive():
             flash("Select an Apiary before to insert a new hive")
             return redirect(url_for('base_blueprint.hive',apiary = apiary_selected))
         hive = HiveModel(apiary_id=apiary_selected, user_id=user_id, hive_description= hive_description, association_code= association_code)
-        db.session.add(hive)
-        db.session.commit()
+        if (db.session.query(HiveModel.hive_id).filter_by(apiary_id=hive.apiary_id,
+                                                            hive_description=hive_description,
+                                                            user_id=user_id).scalar() is not None):
+            flash("Hive description already used in this apiary. Please try again.")
+            return redirect(url_for('base_blueprint.hive', apiary=apiary_selected))
+        else:
+            db.session.add(hive)
+            db.session.commit()
 
         return redirect(url_for('base_blueprint.hive', apiary=apiary_selected))
 
