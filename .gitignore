@@ -7,8 +7,6 @@ __pycache__/
 .coverage
 
 # database & logs
-*.db
-*.sqlite3
 *.log
 
 # venv
@@ -26,3 +24,6 @@ _templates
 # javascript
 package-lock.json
 .vscode/symbols.json
+
+# arduino
+*.ino

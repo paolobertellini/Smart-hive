@@ -29,3 +29,5 @@ class CreateHiveForm(FlaskForm):
     hive_description = TextField('Hive description', id='hive_description_create', validators=[DataRequired()])
     association_code = TextField('Association code', id='association_code_input', validators=[DataRequired()])
 
+class CreateAlarmForm(FlaskForm):
+    duration = TextField('Sound duration', id='alarm_duration')

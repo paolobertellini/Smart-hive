@@ -20,12 +20,14 @@ unsigned long lasttime;
 String error;
 //buzzer
 int duration = 500;  // 500 miliseconds
+bool alarm = false;
 //weight
 HX711_ADC LoadCell(weight_dataPin, weight_sckPin);
 float calibrationValue;
 float weight;
 //servo
 Servo myservo;
+bool entrance = false;
 unsigned long currentMillis;
 unsigned long startMillis;
 int pos = 0;
@@ -103,9 +105,19 @@ void loop() { //0 IDLE 1 WRITE-MES 2 WRITE-DATA 3 READ
       }
     }
     if (doc["type"] == "C") {
-      if (doc["description"] == "open") openServo();
-      if (doc["description"] == "close") closeServo();
-      if (doc["description"] == "sound") tone(8, NOTE_C3, duration);
+      if (doc["entrance"] == "True" && entrance == false) {
+        openServo();
+        entrance = true;
+      }
+      if (doc["entrance"] == "False" && entrance == true) {
+        closeServo();
+        entrance = false;
+      }
+      if (doc["alarm"] == "True") {
+        int d = doc["duration"];
+        tone(8, NOTE_C3, d);
+        doc["alarm"] = "False";
+      }
     }
 
     iState = 0;
@@ -138,7 +150,7 @@ void loop() { //0 IDLE 1 WRITE-MES 2 WRITE-DATA 3 READ
       jdata["humidity"] = hum;
       jdata["temperature"] = temp;
       jdata["weight"] = weight;
-      jdata["association_code"] = 11111;
+      jdata["association_code"] = 33333;
       iState = 0;
       serializeJson(jdata, Serial);
       Serial.println();

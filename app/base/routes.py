@@ -110,7 +110,7 @@ def inject_apiaries():
     def find_hives(apiary):
         hives = HiveModel.query.filter_by(user_id=current_user.username, apiary_id=apiary).all()
         return hives
-    return dict(apiaries=apiaries, find_hives= find_hives)
+    return dict(apiaries=apiaries, find_hives=find_hives, type="none")
 
 
 
@@ -176,6 +176,16 @@ def hive():
         return render_template('hive.html', form=hive_form, hives = hives, apiaries= apiaries)
     return render_template('hive.html', form=hive_form, hives = hives, apiaries= apiaries,apiary=apiary_selected)
 
+@blueprint.route('/bridge-channel', methods=['GET','POST'])
+def hiveState():
+    req = request.get_json(force=True)
+    hive_id = req['id']
+    entrance = HiveModel.query.filter_by(hive_id=hive_id).first().entrance
+    alarm = HiveModel.query.filter_by(hive_id=hive_id).first().alarm
+    return ({'entrance': entrance, 'alarm': alarm})
+
+
+
 @blueprint.route('/new-sensor-feed', methods=['GET','POST'])
 # @login_required
 def newSensorFeed():
@@ -200,12 +210,11 @@ def newSensorFeed():
 @blueprint.route('/sensorFeed',methods=['POST', 'GET'])
 @login_required
 def sensorFeed():
-    hive = request.args["hive_id"]
 
-    # apiary_id = HiveModel.query.filter_by(hive_id="2").first().apiary_id
-    elenco = SensorFeed.query.filter_by(hive_id=hive).all()
+    apiary_id = HiveModel.query.filter_by(hive_id="1").first().apiary_id
+    elenco = SensorFeed.query.filter_by(hive_id="1").all()
 
-    return render_template('sensor-feed.html',lista = elenco)
+    return render_template('sensor-feed.html',lista = elenco, apiary = apiary_id)
 
 @blueprint.route('/dashboard',methods=['POST', 'GET'])
 @login_required
@@ -216,12 +225,25 @@ def dashboard():
     sf = SensorFeed.query.filter_by(hive_id=hive).all()
     # elenco = SensorFeed.query.filter_by(hive_id="1").all()
     location = ApiaryModel.query.filter_by(apiary_id=apiary).first().location
-    w= "It is currently " + str(weather(location)['temperature']['temp']) + " °C and " + str(weather(location)['status'])
+    entrance = HiveModel.query.filter_by(hive_id=hive).first().entrance
+    alarm = HiveModel.query.filter_by(hive_id=hive).first().alarm
+    w = {"temp": weather(location)['temperature']['temp'], "status":weather(location)['status']}
+    if request.args["type"] == "alarm":
+        alarm = not alarm
+        db.session.query(HiveModel).filter(HiveModel.hive_id == hive).update({'alarm': alarm})
+        db.session.commit()
+    if request.args["type"] == "entrance":
+        entrance = not entrance
+        db.session.query(HiveModel).filter(HiveModel.hive_id == hive).update({'entrance': entrance})
+        db.session.commit()
+
     try:
-        return render_template('dashboard.html', SensorFeed = sf, hive_id = hive, weather= w, location= location)
+        return render_template('dashboard.html', SensorFeed=sf, hive_id=hive, weather=w, location=location, alarm=alarm,
+                               entrance=entrance, apiary=apiary)
     except:
         flash("There are no data belonging to this specific hive.")
         return redirect(url_for('base_blueprint.new_apiary'))
+
 
 
 @blueprint.route('/removeApiary',methods=['GET'])

@@ -4,8 +4,9 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from flask_login import UserMixin
-from sqlalchemy import Binary, Column, Integer, String
+from sqlalchemy import Binary, Column, Integer, String, Boolean
 from pytz import timezone
+
 
 from app import db, login_manager
 
@@ -26,6 +27,8 @@ class HiveModel(db.Model):
     user_id = Column(String(80))
     hive_description = Column(String(80))
     association_code = Column(String(80), nullable=False)
+    entrance = Column(Boolean, default=False)
+    alarm = Column(Boolean, default=False)
 
 class SensorFeed(db.Model):
     __tablename__ = 'SensorFeed'

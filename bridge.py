@@ -5,6 +5,10 @@ import requests
 import serial
 import serial.tools.list_ports
 
+online = 'http://blallo.ddns.net:8080'
+locale = 'http://127.0.0.1:8080'
+
+server = locale
 
 class FBridge():
     def setup(self):
@@ -15,7 +19,7 @@ class FBridge():
         for port in ports:
             # print("DEVICE: " + str(port.device))
             # print("DESCRIPTION: " + str(port.description))
-            if 'arduino' in port.description.lower():
+            if 'usb' in port.description.lower():
                 self.portname = port.device
 
         print("Trying to connect to: " + self.portname)
@@ -35,6 +39,7 @@ class FBridge():
         startTimeArd = time.time()
         self.inbuffer = ""
         self.data = None
+        self.hive_id = None
 
         print("Waiting for data..")
 
@@ -50,14 +55,33 @@ class FBridge():
                         pass
 
                     # server communication
+                    if time.time() > startTimeArd + 2 and self.data is not None:
+                        if self.hive_id is not None:
+                            try:
+                                mammt = {"id": self.hive_id}
+                                r = requests.get(server + '/bridge-channel', json=mammt)
+                                ser_resp = json.loads(r.text)
+                                duration = 500
+                                json_comando = "{\"type\":\"C\",\"entrance\":\"" + str(ser_resp["entrance"]) + "\", \"alarm\":\"" + str(ser_resp["alarm"]) + "\", \"duration\":\"" + str(duration) + "\"}"
+                                print("BRIDGE SENDS COMMAND: " + json_comando)
+                                self.ser.write(json_comando.encode())
+                                self.ser.write(b'\n')
+                                self.inbuffer = ""
+                                startTimeArd = time.time()
+
+                            except:
+                                print("ATTENTION! Hive state is unable to update with the server")
+
+                    # server communication
                     if time.time() > startTimeServ + 2 and self.data is not None:
                         if self.data["type"] == "D":
                             print("[DATA]: " + str(self.data))
                             try:
-                                r1 = requests.get('http://localhost/new-sensor-feed', json=self.data)
+                                r1 = requests.get(server + '/new-sensor-feed', json=self.data)
                                 ser_resp = json.loads(r1.text)
                                 if ser_resp["hive_id"] is not None:
                                     json_id = "{\"type\":\"A\",\"id\":\"" + str(ser_resp["hive_id"]) + "\"}"
+                                    self.hive_id = str(ser_resp["hive_id"])
                                     self.ser.write(json_id.encode())
                                     self.ser.write(b'\n')
                                     # print("RECEIVED HIVE ID: " + json_id)
@@ -72,15 +96,6 @@ class FBridge():
 
                         self.inbuffer = ""
                         startTimeServ = time.time()
-
-                    # arduino communication
-                    if time.time() > startTimeArd + 60 and self.data is not None:
-                        json_comando = "{\"type\":\"C\",\"description\":\"sound\"}"
-                        print("BRIDGE SENDS COMMAND: " + json_comando)
-                        self.ser.write(json_comando.encode())
-                        self.ser.write(b'\n')
-                        self.inbuffer = ""
-                        startTimeArd = time.time()
 
                 else:
                     self.inbuffer = self.inbuffer + lastchar
