@@ -158,6 +158,9 @@ def hive():
             flash("Select an Apiary before to insert a new hive")
             return redirect(url_for('base_blueprint.hive',apiary = apiary_selected))
         hive = HiveModel(apiary_id=apiary_selected, user_id=user_id, hive_description= hive_description, association_code= association_code)
+        if (db.session.query(HiveModel.hive_id).filter_by(association_code=hive.association_code).scalar() is not None):
+            flash("Control the correctness of the association code or contact the assistence.")
+            return redirect(url_for('base_blueprint.hive', apiary=apiary_selected))
         if (db.session.query(HiveModel.hive_id).filter_by(apiary_id=hive.apiary_id,
                                                             hive_description=hive_description,
                                                             user_id=user_id).scalar() is not None):
@@ -196,9 +199,10 @@ def newSensorFeed():
 @blueprint.route('/sensorFeed',methods=['POST', 'GET'])
 @login_required
 def sensorFeed():
+    hive = request.args["hive_id"]
 
     # apiary_id = HiveModel.query.filter_by(hive_id="2").first().apiary_id
-    elenco = SensorFeed.query.all()
+    elenco = SensorFeed.query.filter_by(hive_id=hive).all()
 
     return render_template('sensor-feed.html',lista = elenco)
 

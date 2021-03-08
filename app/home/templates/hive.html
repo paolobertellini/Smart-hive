@@ -101,27 +101,27 @@
                         {% for hive in hives %}
                             <tr>
                                 <td class="border-0">
-                                    <a href="#" class="font-weight-bold">
+                                    <a href="{{ url_for('base_blueprint.sensorFeed', hive_id = hive.hive_id)}}" class="font-weight-bold">
                                         {{ hive.hive_id }}
                                     </a>
                                 </td>
                                 <td class="border-0">
-                                    <a href="#" class="font-weight-bold">
+                                    <a href="{{ url_for('base_blueprint.sensorFeed', hive_id = hive.hive_id)}}" class="font-weight-bold">
                                         {{ hive.apiary_id }}
                                     </a>
                                 </td>
                                 <td class="border-0">
-                                    <a href="#" class="font-weight-bold">
+                                    <a href="{{ url_for('base_blueprint.sensorFeed', hive_id = hive.hive_id)}}" class="font-weight-bold">
                                         {{ hive.user_id }}
                                     </a>
                                 </td>
                                 <td class="border-0">
-                                    <a href="#" class="font-weight-bold">
+                                    <a href="{{ url_for('base_blueprint.sensorFeed', hive_id = hive.hive_id)}}" class="font-weight-bold">
                                         {{ hive.hive_description }}
                                     </a>
                                 </td>
                                 <td class="border-0">
-                                    <a href="#" class="font-weight-bold">
+                                    <a href="{{ url_for('base_blueprint.sensorFeed', hive_id = hive.hive_id)}}" class="font-weight-bold">
                                         {{ hive.association_code }}
                                     </a>
                                 </td>
