@@ -16,6 +16,7 @@ class ApiaryModel(db.Model):
     __tablename__ = 'Apiary'
     apiary_id = Column(String(80), primary_key=True)
     user_id = Column(String(80), primary_key=True)
+    location = Column(String(80))
 
 class HiveModel(db.Model):
     __tablename__ = 'Hive'

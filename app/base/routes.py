@@ -4,6 +4,7 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from flask import jsonify, render_template, redirect, request, url_for, flash
+from weather import weather
 from flask_login import (
     current_user,
     login_required,
@@ -122,8 +123,8 @@ def new_apiary():
         # read form data
         id_apiary = request.form['id_apiary']
         id_user = current_user.username
-
-        apiary = ApiaryModel(apiary_id=id_apiary, user_id=id_user)
+        location = request.form['location']
+        apiary = ApiaryModel(apiary_id=id_apiary, user_id=id_user, location = location )
         db.session.add(apiary)
         db.session.commit()
 
@@ -196,9 +197,11 @@ def sensorFeed():
 @login_required
 def dashboard():
 
-    sf = SensorFeed.query.filter_by(hive_id="1").all()
+    sf = SensorFeed.query.filter_by(hive_id="2").all()
     # elenco = SensorFeed.query.filter_by(hive_id="1").all()
-    return render_template('dashboard.html', SensorFeed = sf, hive_id = "1")
+    location = ApiaryModel.query.filter_by(hive_id="2").first().location
+    w= "It is currently " + weather(location)['temperature'] + " degrees and " + weather(location)['status']
+    return render_template('dashboard.html', SensorFeed = sf, hive_id = "2", weather= w)
 
 ## Errors
 

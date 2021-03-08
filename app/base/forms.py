@@ -20,6 +20,7 @@ class CreateAccountForm(FlaskForm):
 
 class CreateApiaryForm(FlaskForm):
     id_apiary = TextField('Apiary id'     , id='apiary_id_create'         , validators=[DataRequired()])
+    location = TextField('Location', id='location')
 
 
 class CreateHiveForm(FlaskForm):
