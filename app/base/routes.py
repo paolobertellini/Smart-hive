@@ -189,8 +189,9 @@ def newSensorFeed():
                                 temperature=req['temperature'],
                                 humidity=req['humidity'],
                                 weight=req['weight'])
-        db.session.add(sensorFeed)
-        db.session.commit()
+        if(str(hive_id)==req['hive_id']):
+            db.session.add(sensorFeed)
+            db.session.commit()
         return ({'hive_id': hive_id, 'user_id': user_id, 'apiary_id': apiary_id})
     else:
         return ({'hive_id': None, 'user_id': None, 'apiary_id': None})
@@ -211,11 +212,17 @@ def sensorFeed():
 def dashboard():
     hive = request.args["hive"]
     apiary = request.args["apiary"]
+
     sf = SensorFeed.query.filter_by(hive_id=hive).all()
     # elenco = SensorFeed.query.filter_by(hive_id="1").all()
     location = ApiaryModel.query.filter_by(apiary_id=apiary).first().location
     w= "It is currently " + str(weather(location)['temperature']['temp']) + " °C and " + str(weather(location)['status'])
-    return render_template('dashboard.html', SensorFeed = sf, hive_id = hive, weather= w, location= location)
+    try:
+        return render_template('dashboard.html', SensorFeed = sf, hive_id = hive, weather= w, location= location)
+    except:
+        flash("There are no data belonging to this specific hive.")
+        return redirect(url_for('base_blueprint.new_apiary'))
+
 
 @blueprint.route('/removeApiary',methods=['GET'])
 @login_required

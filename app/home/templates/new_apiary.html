@@ -6,6 +6,11 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
+ <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
 
     <main class="content">
 
@@ -79,7 +84,7 @@
         </div>
 
         <div class="card card-body border-light shadow-sm table-wrapper table-responsive pt-0">
-            <table class="table table-hover">
+            <table id="apiarytable" class="table table-hover">
                 <thead>
                 <tr>
                     <th>Id apiary</th>
@@ -171,6 +176,11 @@
         {% endfor %}
     {% endif %}
 {% endwith %}
+            <script>
+$(document).ready(function() {
+    $('#apiarytable').DataTable();
+} );
+</script>
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->

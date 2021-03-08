@@ -7,6 +7,13 @@
 
 {% block content %}
 
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+
+
     <main class="content">
 
         {% include 'includes/navigation.html' %}
@@ -37,7 +44,7 @@
         <div class="card border-light shadow-sm mb-4">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-centered table-nowrap mb-0 rounded">
+                    <table id="mydatatable" class="table table-centered table-nowrap mb-0 rounded">
                         <thead class="thead-light">
                         <tr>
                             <th class="border-0">Id Hive</th>
@@ -80,7 +87,11 @@
         {% include 'includes/footer.html' %}
 
     </main>
-
+    <script>
+$(document).ready(function() {
+    $('#mydatatable').DataTable();
+} );
+</script>
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->

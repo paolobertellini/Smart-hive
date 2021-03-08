@@ -6,8 +6,14 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
 
     <main class="content">
+
 
         {% include 'includes/navigation.html' %}
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -63,22 +69,7 @@
                     </div>
                 </div>
                 <div class="col-4 col-md-2 col-xl-1 pl-md-0 text-right">
-                    <div class="btn-group">
-                        <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="icon icon-sm icon-gray">
-                                    <span class="fas fa-cog"></span>
-                                </span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-xs dropdown-menu-right">
-                            <span class="dropdown-item font-weight-bold text-dark">Show</span>
-                            <a class="dropdown-item d-flex font-weight-bold" href="#">10 <span
-                                    class="icon icon-small ml-auto"><span class="fas fa-check"></span></span></a>
-                            <a class="dropdown-item font-weight-bold" href="#">20</a>
-                            <a class="dropdown-item font-weight-bold" href="#">30</a>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -86,7 +77,7 @@
         <div class="card border-light shadow-sm mb-4">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-centered table-nowrap mb-0 rounded">
+                    <table id="mytable" class="table table-centered table-nowrap mb-0 rounded">
                         <thead class="thead-light">
                         <tr>
                             <th class="border-0">Id Hive</th>
@@ -135,7 +126,7 @@
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="{{url_for('base_blueprint.hive', apiary = hive.apiary_id)}}"><span
+                                            <a class="dropdown-item" href="{{ url_for('base_blueprint.dashboard', apiary=hive.apiary_id, hive = hive.hive_id) }}"><span
                                                     class="fas fa-eye mr-2"></span>View Details</a>
                                             <a class="dropdown-item text-danger" href="{{ url_for('base_blueprint.removeHive', to_remove = hive.hive_id, apiary = hive.apiary_id) }}"><span
                                                     class="fas fa-trash-alt mr-2"></span>Remove</a>
@@ -155,6 +146,12 @@
         {% include 'includes/footer.html' %}
 
     </main>
+    <script>
+$(document).ready(function() {
+    $('#mytablek').DataTable();
+} );
+</script>
+
 {% with messages = get_flashed_messages() %}
     {% if messages %}
         {% for message in messages %}
@@ -164,6 +161,7 @@
         {% endfor %}
     {% endif %}
 {% endwith %}
+
 
 {% endblock content %}
 
