@@ -135,10 +135,9 @@
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="/static/assets/invoice.html"><span
+                                            <a class="dropdown-item" href="{{url_for('base_blueprint.hive', apiary = hive.apiary_id)}}"><span
                                                     class="fas fa-eye mr-2"></span>View Details</a>
-                                            <a class="dropdown-item" href="#"><span class="fas fa-edit mr-2"></span>Edit</a>
-                                            <a class="dropdown-item text-danger" href="#"><span
+                                            <a class="dropdown-item text-danger" href="{{ url_for('base_blueprint.removeHive', to_remove = hive.hive_id, apiary = hive.apiary_id) }}"><span
                                                     class="fas fa-trash-alt mr-2"></span>Remove</a>
                                         </div>
                                     </div>

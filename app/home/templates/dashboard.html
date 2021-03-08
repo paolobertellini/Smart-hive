@@ -12,8 +12,9 @@
     <main class="content">
 
         {% include 'includes/navigation.html' %}
+        {% if SensorFeed %}
         {% set last = SensorFeed|last %}
-
+        {% endif %}
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
             <div class="btn-toolbar dropdown">
                 <button class="btn btn-primary btn-sm mr-2 dropdown-toggle" type="button" onClick="window.location.reload();" aria-haspopup="true" aria-expanded="false"  >

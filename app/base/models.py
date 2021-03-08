@@ -5,6 +5,7 @@ Copyright (c) 2019 - present AppSeed.us
 
 from flask_login import UserMixin
 from sqlalchemy import Binary, Column, Integer, String
+from pytz import timezone
 
 from app import db, login_manager
 
@@ -32,7 +33,7 @@ class SensorFeed(db.Model):
     temperature = db.Column(db.Integer)
     humidity = db.Column(db.Integer)
     weight = db.Column(db.Integer)
-    timestamp = db.Column(db.DateTime(timezone=True), primary_key=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime(timezone=True), primary_key=True, default=datetime.now)
 
 class User(db.Model, UserMixin):
     __tablename__ = 'User'

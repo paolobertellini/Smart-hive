@@ -197,10 +197,10 @@ def newSensorFeed():
 @login_required
 def sensorFeed():
 
-    apiary_id = HiveModel.query.filter_by(hive_id="1").first().apiary_id
-    elenco = SensorFeed.query.filter_by(hive_id="1").all()
+    # apiary_id = HiveModel.query.filter_by(hive_id="2").first().apiary_id
+    elenco = SensorFeed.query.all()
 
-    return render_template('sensor-feed.html',lista = elenco, apiary = apiary_id)
+    return render_template('sensor-feed.html',lista = elenco)
 
 @blueprint.route('/dashboard',methods=['POST', 'GET'])
 @login_required
@@ -219,9 +219,11 @@ def removeApiary():
     to_remove = request.args['to_remove']
     apiary_to_remove = ApiaryModel.query.filter_by(apiary_id=to_remove, user_id = current_user.username).first()
     hives_to_remove = HiveModel.query.filter_by(apiary_id=to_remove, user_id=current_user.username).all()
-    #data_to_modify = SensorFeed.query(hive_id=HiveModel.hive_id).filter_by(apiary_id=to_remove, user_id=current_user.username).all()
     for el in hives_to_remove:
         db.session.delete(el)
+        data_to_modify = SensorFeed.query.filter_by(hive_id=el.hive_id).all()
+        for x in data_to_modify:
+            x.hive_id=''
     db.session.delete(apiary_to_remove)
     db.session.commit()
     return redirect(url_for('base_blueprint.new_apiary'))
@@ -231,8 +233,14 @@ def removeApiary():
 @login_required
 def removeHive():
     to_remove = request.args['to_remove']
-
-    return ("pescifritti")
+    apiary = request.args['apiary']
+    hives_to_remove = HiveModel.query.filter_by(hive_id=to_remove, user_id=current_user.username).first()
+    data_to_modify = SensorFeed.query.filter_by(hive_id=hives_to_remove.hive_id).all()
+    db.session.delete(hives_to_remove)
+    for x in data_to_modify:
+        x.hive_id=''
+    db.session.commit()
+    return redirect(url_for('base_blueprint.hive', apiary = apiary))
 
 ## Errors
 
