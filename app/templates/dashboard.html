@@ -16,9 +16,10 @@
     <main class="content">
 
         {% include 'includes/navigation.html' %}
-        {% if SensorFeed %}
-            {% set last = SensorFeed|last %}
+        {% if d.sf %}
+            {% set last = d.sf|last %}
         {% endif %}
+{#        {% load my_tags %}#}
         <br>
 
         <!-- live data -->
@@ -129,7 +130,7 @@
                                                     class="fas fa-passport"></span></span>Hive id</h6>
                                         </div>
                                         <div>
-                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>{{ hive_id }}</h6>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>{{ d.hive.hive_id }}</h6>
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
@@ -138,7 +139,14 @@
                                                     class="fas fa-wifi"></span></span>Status</h6>
                                         </div>
                                         <div>
-                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>Online</h6>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>
+                                                {% if d.time %}
+                                                    Online
+                                                {% endif %}
+                                                {% if not d.time %}
+                                                    Offline
+                                                {% endif %}
+                                            </h6>
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
@@ -147,7 +155,7 @@
                                                     class="fas fa-layer-group"></span></span>Number of supers</h6>
                                         </div>
                                         <div>
-                                            <a href="#" class="text-primary font-weight-bold">{{ hive.n_supers }}</a>
+                                            <a href="#" class="text-primary font-weight-bold">{{ d.hive.n_supers }}</a>
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
@@ -156,7 +164,7 @@
                                                     class="fas fa-map-marker-alt"></span></span>Location</h6>
                                         </div>
                                         <div>
-                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>{{ location }}</h6>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>{{ d.loc }}</h6>
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
@@ -166,7 +174,7 @@
                                             </h6>
                                         </div>
                                         <div>
-                                            <a href="#" class="text-primary font-weight-bold">{{ weather.temp }} °C</a>
+                                            <a href="#" class="text-primary font-weight-bold">{{ d.w.temp }} °C</a>
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
@@ -175,7 +183,7 @@
                                                     class="fas fa-cloud-sun"></span></span>Weather conditions</h6>
                                         </div>
                                         <div>
-                                            <a href="#" class="text-primary font-weight-bold">{{ weather.status }}</a>
+                                            <a href="#" class="text-primary font-weight-bold">{{ d.w.status }}</a>
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
@@ -185,10 +193,10 @@
                                         </div>
                                         <div>
                                             <a href="#" class="text-primary font-weight-bold">
-                                                {% if hive.alarm %}
+                                                {% if d.hive.alarm %}
                                                     Active
                                                 {% endif %}
-                                                {% if not hive.alarm %}
+                                                {% if not d.hive.alarm %}
                                                     Inactive
                                                 {% endif %}
                                             </a>
@@ -203,10 +211,10 @@
                                             <div class="form-check form-switch">
                                                 <label class="form-check-label" for="flexSwitchCheckDefault">
                                                     <a class="text-primary font-weight-bold">
-                                                        {% if hive.entrance %}
+                                                        {% if d.hive.entrance %}
                                                             Open
                                                         {% endif %}
-                                                        {% if not hive.entrance %}
+                                                        {% if not d.hive.entrance %}
                                                             Closed
                                                         {% endif %}
                                                     </a>
@@ -231,7 +239,7 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between border-bottom border-light pb-3">
                                 <a class="nav-link"
-                                   href="{{ url_for('home_blueprint.dashboard', apiary=apiary, hive_id=hive_id, type="none") }}">
+                                   href="{{ url_for('home_blueprint.dashboard', apiary=d.apiary, hive_id=d.hive.hive_id, type="none") }}">
                                     <button class="btn btn-primary" type="button" aria-haspopup="true"
                                             aria-expanded="false">
                                         <span class="fas fa-sync-alt"> Refresh data </span>
@@ -240,14 +248,14 @@
                             </div>
                             <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
                                 <a class="nav-link"
-                                   href="{{ url_for('home_blueprint.dashboard', apiary=apiary, hive_id=hive_id, type="alarm") }}">
+                                   href="{{ url_for('home_blueprint.dashboard', apiary=d.apiary, hive_id=d.hive.hive_id, type="alarm") }}">
                                     <button class="btn btn-primary" type="button" aria-haspopup="true"
                                             aria-expanded="false">
                                         <span class="fas fa-volume-up"></span>
-                                        {% if hive.alarm %}
+                                        {% if d.hive.alarm %}
                                             Turn alarm off
                                         {% endif %}
-                                        {% if not hive.alarm %}
+                                        {% if not d.hive.alarm %}
                                             Turn alarm on
                                         {% endif %}
                                     </button>
@@ -255,14 +263,14 @@
                             </div>
                             <div class="d-flex align-items-center justify-content-between pt-3">
                                 <a class="nav-link"
-                                   href="{{ url_for('home_blueprint.dashboard', apiary=apiary, hive_id=hive_id, type="entrance") }}">
+                                   href="{{ url_for('home_blueprint.dashboard', apiary=d.apiary, hive_id=d.hive.hive_id, type="entrance") }}">
                                     <button class="btn btn-primary" type="button" aria-haspopup="true"
                                             aria-expanded="false">
                                         <span class="fas fa-door-open"></span>
-                                        {% if hive.entrance %}
+                                        {% if d.hive.entrance %}
                                             Close hive entrance
                                         {% endif %}
-                                        {% if not hive.entrance %}
+                                        {% if not d.hive.entrance %}
                                             Open hive entrance
                                         {% endif %}
                                     </button>
@@ -289,12 +297,15 @@
                                     <div class="progress-wrapper">
                                         <div class="progress-info">
                                             <div class="h6 mb-0">Honey quantity</div>
-                                            <div class="small font-weight-bold text-dark"><span>{{ (last.weight * 100)/((hive.n_supers*30) + 50) }} %</span></div>
+
+                                            <div class="small font-weight-bold text-dark"><span>{{ p }} %</span></div>
                                         </div>
                                         <div class="progress mb-0">
                                             <div class="progress-bar bg-warning" role="progressbar"
-                                                 aria-valuenow="{{ last.weight }}" aria-valuemin="0" aria-valuemax="{{ (hive.n_supers*30) + 50  }}"
-                                                 style="width: {{ (last.weight * 100)/((hive.n_supers*30) + 50) }}%;"></div>
+
+                                                 aria-valuenow="{{ last.weight }}" aria-valuemin="0" aria-valuemax="{{ (d.hive.n_supers*30) + 50  }}"
+                                                 style="width: {{ (last.weight * 100)/((d.hive.n_supers*30) + 50) }}%;"></div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -332,7 +343,7 @@
                                         <h2 class="h5">History data</h2>
                                     </div>
                                     <div class="col text-right">
-                                        <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = hive_id)}}" class="btn btn-sm btn-secondary">See all</a>
+                                        <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = d.hive_id)}}" class="btn btn-sm btn-secondary">See all</a>
                                     </div>
                                 </div>
                             </div>
@@ -348,7 +359,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for el in lista %}
+                                    {% for el in d.sf %}
                                         <tr>
                                             <td class="border-0">
                                                 {{ el.hive_id }}
@@ -415,7 +426,7 @@ $(document).ready(function() {
                     yValueFormatString: "#0.## °C",
                     showInLegend: true,
                     dataPoints: [
-                        {% for p in SensorFeed %}
+                        {% for p in d.sf %}
                             {label: "{{ p.timestamp.strftime("%b %d %Y %H:%M:%S") }}", y: {{p.temperature}}},
                         {% endfor %}
                     ]
@@ -426,7 +437,7 @@ $(document).ready(function() {
                         yValueFormatString: "##,##%",
                         showInLegend: true,
                         dataPoints: [
-                            {% for p in SensorFeed %}
+                            {% for p in d.sf %}
                                 {label: "{{ p.timestamp.strftime("%b %d %Y %H:%M:%S") }}", y: {{p.humidity}}},
                             {% endfor %}
                         ]
@@ -437,7 +448,7 @@ $(document).ready(function() {
                         yValueFormatString: "#0.## g",
                         showInLegend: true,
                         dataPoints: [
-                            {% for p in SensorFeed %}
+                            {% for p in d.sf %}
                                 {label: "{{ p.timestamp.strftime("%b %d %Y %H:%M:%S") }}", y: {{p.weight}}},
                             {% endfor %}
                         ]
