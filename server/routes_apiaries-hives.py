@@ -189,12 +189,8 @@ def dashboard():
         db.session.query(HiveModel).filter(HiveModel.hive_id == hive_id).update({'entrance': entrance})
         db.session.commit()
 
-
-
-
-
     try:
         return render_template('dashboard.html', d=dashboard, type="none")
     except:
         flash("There are no data belonging to this specific hive.")
-        return redirect(url_for('home_blueprintx.hive', hive_id=hive_id, apiary=apiary))
+        return redirect(url_for('home_blueprint.hive', hive_id=hive_id, apiary=apiary))
