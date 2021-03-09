@@ -9,7 +9,7 @@ online = 'http://blallo.ddns.net:8080'
 locale = 'http://127.0.0.1:8080'
 davide = 'http://localhost'
 
-server = online
+server = locale
 
 
 class FBridge():
@@ -21,7 +21,7 @@ class FBridge():
         for port in ports:
             # print("DEVICE: " + str(port.device))
             # print("DESCRIPTION: " + str(port.description))
-            if 'arduino' in port.description.lower():
+            if 'usb' in port.description.lower():
                 self.portname = port.device
 
         print("Trying to connect to: " + self.portname)

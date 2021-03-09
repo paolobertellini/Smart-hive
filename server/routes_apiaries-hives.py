@@ -15,6 +15,7 @@ from database.models import ApiaryModel, HiveModel, SensorFeed
 from server import db
 from utility.weather import weather
 
+from datetime import datetime
 
 # ----------------- APIARY ----------------- #
 
@@ -72,9 +73,7 @@ def hive():
     apiaries = db.session.query(ApiaryModel.apiary_id).filter_by(user_id=current_user.username).all()
     ids = []
     for el in apiaries:
-        print(el.apiary_id)
         ids.append(el.apiary_id)
-    print(ids)
     hive_form = CreateHiveForm(request.form)
     hive_form.id_apiary.choices = ids
     apiary_selected = request.args["apiary"]
@@ -167,12 +166,20 @@ def dashboard():
     apiary = request.args["apiary"]
 
     sf = SensorFeed.query.filter_by(hive_id=hive_id).all()
-    elenco = SensorFeed.query.filter_by(hive_id=hive_id).all()
-    location = ApiaryModel.query.filter_by(apiary_id=apiary).first().location
+    loc = ApiaryModel.query.filter_by(apiary_id=apiary).first().location
     hive = HiveModel.query.filter_by(hive_id=hive_id).first()
     entrance = hive.entrance
     alarm = hive.alarm
-    w = {"temp": weather(location)['temperature']['temp'], "status": weather(location)['status']}
+    w = {"temp": weather(loc)['temperature']['temp'], "status": weather(loc)['status']}
+    honey_prod = (sf[-1].weight * 100) / ((hive.n_supers * 30) + 50)
+    min = (datetime.now() - sf[-1].timestamp).total_seconds() / 60.0
+    if (min > 1):
+        time = False
+    else:
+        time = True
+
+    dashboard = {"hive":hive, "apiary":apiary, "sf":sf, "time":time, "sf":sf, "loc":loc, "w":w, "hp":int(honey_prod) }
+
     if request.args["type"] == "alarm":
         alarm = not alarm
         db.session.query(HiveModel).filter(HiveModel.hive_id == hive_id).update({'alarm': alarm})
@@ -182,9 +189,12 @@ def dashboard():
         db.session.query(HiveModel).filter(HiveModel.hive_id == hive_id).update({'entrance': entrance})
         db.session.commit()
 
+
+
+
+
     try:
-        return render_template('dashboard.html', SensorFeed=sf, hive_id=hive_id, weather=w, location=location,
-                               hive=hive, apiary=apiary, type="none", lista = elenco)
+        return render_template('dashboard.html', d=dashboard, type="none")
     except:
         flash("There are no data belonging to this specific hive.")
-        return redirect(url_for('home_blueprint.hive', hive_id=hive_id, apiary=apiary))
+        return redirect(url_for('home_blueprintx.hive', hive_id=hive_id, apiary=apiary))
