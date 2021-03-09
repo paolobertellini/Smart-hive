@@ -197,4 +197,4 @@ def dashboard():
         return render_template('dashboard.html', d=dashboard, type="none")
     except:
         flash("There are no data belonging to this specific hive.")
-        return redirect(url_for('home_blueprintx.hive', hive_id=hive_id, apiary=apiary))
+        return redirect(url_for('home_blueprint.hive', hive_id=hive_id, apiary=apiary))
