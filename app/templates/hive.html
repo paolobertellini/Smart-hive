@@ -56,6 +56,11 @@
                                 </div>
                                 <div class="input-group">
                                     <span class="input-group-text" id="basic-addon1"><span
+                                            class="fas fa-layers"></span></span>
+                                    {{ form.n_supers(placeholder="Number of supers", class="form-control") }}
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-text" id="basic-addon1"><span
                                             class="fas fa-code"></span></span>
                                     {{ form.association_code(placeholder="Association Code", class="form-control") }}
                                 </div>
@@ -79,6 +84,7 @@
                             <th class="border-0">Id Hive</th>
                             <th class="border-0">Id Apiary</th>
                             <th class="border-0">Id User</th>
+                            <th class="border-0">Number of supers</th>
                             <th class="border-0">Hive Description</th>
                             <th class="border-0">Association Code</th>
                         </tr>
@@ -103,6 +109,12 @@
                                     <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = hive.hive_id) }}"
                                        class="font-weight-bold">
                                         {{ hive.user_id }}
+                                    </a>
+                                </td>
+                                <td class="border-0">
+                                    <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = hive.hive_id) }}"
+                                       class="font-weight-bold">
+                                        {{ hive.n_supers }}
                                     </a>
                                 </td>
                                 <td class="border-0">

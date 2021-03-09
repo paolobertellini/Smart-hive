@@ -25,6 +25,7 @@ class HiveModel(db.Model):
     apiary_id = Column(String(80), nullable=False)
     user_id = Column(String(80))
     hive_description = Column(String(80))
+    n_supers = Column(Integer, default=0)
     association_code = Column(String(80), nullable=False)
     entrance = Column(Boolean, default=False)
     alarm = Column(Boolean, default=False)
