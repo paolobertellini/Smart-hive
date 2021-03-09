@@ -9,7 +9,7 @@ online = 'http://blallo.ddns.net:8080'
 locale = 'http://127.0.0.1:8080'
 davide = 'http://localhost'
 
-server = davide
+server = online
 
 
 class FBridge():
