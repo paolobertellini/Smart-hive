@@ -4,7 +4,7 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from flask_wtf import FlaskForm
-from wtforms import TextField, PasswordField
+from wtforms import TextField, PasswordField, SelectField
 from wtforms.validators import Email, DataRequired
 
 
@@ -28,7 +28,7 @@ class CreateApiaryForm(FlaskForm):
 
 class CreateHiveForm(FlaskForm):
     id_hive = TextField('Hive id', id='hive_id_create', validators=[DataRequired()])
-    id_apiary = TextField('Apiary id', id='apiary_id_create', validators=[DataRequired()])  # forse non è necessario
+    id_apiary = SelectField('Apiary id', id='apiary_id_create', validators=[DataRequired()])  # forse non è necessario
     hive_description = TextField('Hive description', id='hive_description_create', validators=[DataRequired()])
     n_supers = TextField('Number of supers', id='n_supers_input')
     association_code = TextField('Association code', id='association_code_input', validators=[DataRequired()])

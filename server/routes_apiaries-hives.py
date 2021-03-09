@@ -69,17 +69,23 @@ def removeApiary():
 @blueprint.route('/hive', methods=['POST', 'GET'])
 @login_required
 def hive():
-    apiaries = ApiaryModel.query.filter_by(user_id=current_user.username).all()
+    apiaries = db.session.query(ApiaryModel.apiary_id).filter_by(user_id=current_user.username).all()
+    ids = []
+    for el in apiaries:
+        print(el.apiary_id)
+        ids.append(el.apiary_id)
+    print(ids)
     hive_form = CreateHiveForm(request.form)
+    hive_form.id_apiary.choices = ids
     apiary_selected = request.args["apiary"]
     hives = HiveModel.query.filter_by(user_id=current_user.username, apiary_id=apiary_selected).all()
     if 'new_hive' in request.form:
-
-        # read form dat
         user_id = current_user.username
         hive_description = request.form['hive_description']
         association_code = request.form['association_code']
+        apiary_selected = hive_form.id_apiary.data
         n_supers = request.form['n_supers']
+
         if (apiary_selected == ""):
             flash("Select an Apiary before to insert a new hive")
             return redirect(url_for('home_blueprint.hive', apiary=apiary_selected))
