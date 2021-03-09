@@ -19,7 +19,6 @@
         {% if SensorFeed %}
             {% set last = SensorFeed|last %}
         {% endif %}
-
         <br>
 
         <!-- live data -->
@@ -28,7 +27,7 @@
             <div class="card border-light shadow-sm">
                 <!-- TITLE: live situation -->
                 <div class="card-header border-bottom border-light">
-                    <h2 class="h5 mb-0">Live situation</h2>
+                    <h2 class="h5 mb-0">Live situation </h2>
                 </div>
                 <br>
                 <div class="row justify-content-md-center">
@@ -411,7 +410,7 @@
                                         <h2 class="h5">Page visits</h2>
                                     </div>
                                     <div class="col text-right">
-                                        <a href="{{ url_for('base_blueprint.sensorFeed', hive_id = hive_id)}}" class="btn btn-sm btn-secondary">See all</a>
+                                        <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = hive_id)}}" class="btn btn-sm btn-secondary">See all</a>
                                     </div>
                                 </div>
                             </div>
