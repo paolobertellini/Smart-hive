@@ -103,7 +103,7 @@
                         <a href="{{ url_for('home_blueprint.apiaries') }}" class="nav-link">Apiary</a>
                     </li>
                     <li class="nav-item mr-2">
-                        <a href="settings.html" class="nav-link">Profile</a>
+                        <a href="{{ url_for('home_blueprint.hive', apiary="") }}" class="nav-link">Hives</a>
                     </li>
                 </ul>
             </div>
@@ -136,7 +136,7 @@
                     <div class="mb-5">
                         <h2 class="h3 text-muted mr-3">Welcome to the new revolution of beekeeping!</h2>
                     </div>
-                    <!-- Button Modal -->
+                    <!-- Button login/logout -->
                     <div class="d-flex justify-content-center align-items-end flex-wrap mb-6">
                         {% if current_user.is_authenticated %}
                             <a href="{{ url_for('home_blueprint.logout') }}"
@@ -149,7 +149,7 @@
                     </div>
                     <div class="d-flex justify-content-center flex-column mb-6">
                         <a href="#" target="_blank">
-                            <img src="static/flybee.png" class="d-block mx-auto mb-3" height="25" width="50"
+                            <img src="static/assets/img/v1.png" class="d-block mx-auto mb-3" height="100" width="120"
                                  alt="Themesberg Logo">
                             <span class="text-muted font-small">
                                 &copy; Vombati
@@ -185,7 +185,7 @@
             </div>
             <div class="row mb-5">
                 <div class="col-6 mb-5">
-                    <a href="dashboard.html" class="page-preview page-preview-lg scale-up-hover-2">
+                    <a href="{{ url_for('home_blueprint.dashboard') }}" class="page-preview page-preview-lg scale-up-hover-2">
                         <img class="shadow-lg rounded scale" src="static/assets/img/pages/overview.jpg"
                              alt="Dashboard page preview">
                         <div class="text-center show-on-hover">
@@ -195,27 +195,27 @@
                     </a>
                 </div>
                 <div class="col-6 mb-5">
-                    <a href="/hive.html" class="page-preview page-preview-lg scale-up-hover-2">
+                    <a href="{{ url_for('home_blueprint.hive', apiary="") }}" class="page-preview page-preview-lg scale-up-hover-2">
                         <img class="shadow-lg rounded scale" src="static/assets/img/pages/transactions.jpg"
                              alt="Transactions page preview">
                         <div class="text-center show-on-hover">
-                            <h6 class="m-0 text-center text-white">Transactions <i
+                            <h6 class="m-0 text-center text-white">Hives <i
                                     class="fas fa-external-link-alt ml-2"></i></h6>
                         </div>
                     </a>
                 </div>
                 <div class="col-6 mb-5">
-                    <a href="/settings.html" class="page-preview page-preview-lg scale-up-hover-2">
+                    <a href="{{ url_for('home_blueprint.apiaries') }}" class="page-preview page-preview-lg scale-up-hover-2">
                         <img class="shadow-lg rounded scale" src="static/assets/img/pages/settings.jpg"
                              alt="Settings page preview">
                         <div class="text-center show-on-hover">
-                            <h6 class="m-0 text-center text-white">Settings <i
+                            <h6 class="m-0 text-center text-white">Apiary <i
                                     class="fas fa-external-link-alt ml-2"></i></h6>
                         </div>
                     </a>
                 </div>
                 <div class="col-6 mb-5">
-                    <a href="login-register/sign-in.html" class="page-preview page-preview-lg scale-up-hover-2">
+                    <a href="{{ url_for('home_blueprint.login') }}" class="page-preview page-preview-lg scale-up-hover-2">
                         <img class="shadow-lg rounded scale" src="static/assets/img/pages/sign-in.jpg"
                              alt="Sign In page preview">
                         <div class="text-center show-on-hover">
@@ -225,7 +225,7 @@
                     </a>
                 </div>
                 <div class="col-6 mb-5">
-                    <a href="login-register/sign-up.html" class="page-preview page-preview-lg scale-up-hover-2">
+                    <a href="{{ url_for('home_blueprint.logout') }}" class="page-preview page-preview-lg scale-up-hover-2">
                         <img class="shadow-lg rounded scale" src="static/assets/img/pages/sign-up.jpg"
                              alt="Sign Up page preview">
                         <div class="text-center show-on-hover">
@@ -234,38 +234,9 @@
                         </div>
                     </a>
                 </div>
+
                 <div class="col-6 mb-5">
-                    <a href="/lock.html" class="page-preview page-preview-lg scale-up-hover-2">
-                        <img class="shadow-lg rounded scale" src="static/assets/img/pages/lock.jpg"
-                             alt="Lock page preview">
-                        <div class="text-center show-on-hover">
-                            <h6 class="m-0 text-center text-white">Sign Up <i class="fas fa-external-link-alt ml-2"></i>
-                            </h6>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-6 mb-5">
-                    <a href="/forgot-password.html" class="page-preview page-preview-lg scale-up-hover-2">
-                        <img class="shadow-lg rounded scale" src="static/assets/img/pages/forgot-password.jpg"
-                             alt="Forgot password preview">
-                        <div class="text-center show-on-hover">
-                            <h6 class="m-0 text-center text-white">Forgot password <i
-                                    class="fas fa-external-link-alt ml-2"></i></h6>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-6 mb-5">
-                    <a href="/reset-password.html" class="page-preview page-preview-lg scale-up-hover-2">
-                        <img class="shadow-lg rounded scale" src="static/assets/img/pages/reset-password.jpg"
-                             alt="Reset password preview">
-                        <div class="text-center show-on-hover">
-                            <h6 class="m-0 text-center text-white">Reset password <i
-                                    class="fas fa-external-link-alt ml-2"></i></h6>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-6 mb-5">
-                    <a href="errors/page-404.html" class="page-preview page-preview-lg scale-up-hover-2">
+                    <a href="{{ url_for('home_blueprint.route_template', template='vombatiforever') }}" class="page-preview page-preview-lg scale-up-hover-2">
                         <img class="shadow-lg rounded scale" src="static/assets/img/pages/404.jpg"
                              alt="404 error preview">
                         <div class="text-center show-on-hover">
@@ -275,7 +246,7 @@
                     </a>
                 </div>
                 <div class="col-6 mb-5">
-                    <a href="errors/page-500.html" class="page-preview page-preview-lg scale-up-hover-2">
+                    <a href="{{ url_for('home_blueprint.route_template', template='none') }}" class="page-preview page-preview-lg scale-up-hover-2">
                         <img class="shadow-lg rounded scale" src="static/assets/img/pages/500.jpg"
                              alt="500 error preview">
                         <div class="text-center show-on-hover">
@@ -290,29 +261,29 @@
                     <div class="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle icon-secondary mb-4">
                         <span class="fas fa-pager"></span>
                     </div>
-                    <h3 class="font-weight-bolder">20</h3>
-                    <p class="text-gray">Dashboard Pages</p>
+                    <h3 class="font-weight-bolder">Dashboard</h3>
+                    <p class="text-gray">Page</p>
                 </div>
                 <div class="col-6 col-md-3 text-center mb-4">
                     <div class="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle icon-secondary mb-4">
                         <span class="fas fa-puzzle-piece"></span>
                     </div>
-                    <h3 class="font-weight-bolder">800+</h3>
-                    <p class="text-gray">Premium Components</p>
+                    <h3 class="font-weight-bolder">A lot of</h3>
+                    <p class="text-gray">features</p>
                 </div>
                 <div class="col-6 col-md-3 text-center">
                     <div class="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle icon-secondary mb-4">
-                        <span class="fab fa-sass"></span>
+                        <span class="fas fa-charging-station"></span>
                     </div>
-                    <h3 class="font-weight-bolder">Workflow</h3>
-                    <p class="text-gray">Sass & Gulp</p>
+                    <h3 class="font-weight-bolder">Comfortable</h3>
+                    <p class="text-gray">Managing</p>
                 </div>
                 <div class="col-6 col-md-3 text-center">
                     <div class="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle icon-secondary mb-4">
-                        <span class="fab fa-js-square"></span>
+                        <span class="fab fa-forumbee"></span>
                     </div>
-                    <h3 class="font-weight-bolder">Vanilla</h3>
-                    <p class="text-gray">Javascript</p>
+                    <h3 class="font-weight-bolder">Healty</h3>
+                    <p class="text-gray">bees</p>
                 </div>
             </div>
         </div>
@@ -322,7 +293,7 @@
             <div class="row justify-content-center mb-5 mb-lg-6">
                 <div class="col-12 text-center">
                     <h2 class="h1 px-lg-5">Awesome Features</h2>
-                    <p class="lead px-lg-8">You get all Bootstrap components fully customized. Besides, you receive
+                    <p class="lead px-lg-8">You get a lot of components fully customized. Besides, you receive
                         numerous plugins out of the box and ready to use.</p>
                 </div>
             </div>
@@ -330,18 +301,22 @@
                 <div class="col-12 col-sm-6 col-lg-3">
                     <div class="card bg-white shadow-soft text-primary rounded mb-4">
                         <div class="px-3 px-lg-4 py-5 text-center">
-                            <span class="icon icon-lg mb-4"><span class="fab fa-bootstrap"></span></span>
-                            <h5 class="font-weight-bold text-primary">Bootstrap 5</h5>
-                            <p>Built with the most popular CSS Framework</p>
+                            <span>
+                                <img src="/static/assets/img/arduino.svg" height="75" width="75" alt="Bee Logo">&nbsp;
+                            </span>
+                            <h5 class="font-weight-bold text-primary">Arduino Uno</h5>
+                            <p>To have the best performances!</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3">
                     <div class="card bg-white shadow-soft text-primary rounded mb-4">
                         <div class="px-3 px-lg-4 py-5 text-center">
-                            <span class="icon icon-lg mb-4"><span class="fab fa-sass"></span></span>
-                            <h5 class="font-weight-bold text-primary">Sass</h5>
-                            <p>Variables and mixins to empower development</p>
+                            <span>
+                                <img src="/static/assets/img/buzzer.png" height="75" width="75">&nbsp;
+                            </span>
+                            <h5 class="font-weight-bold text-primary">Buzzer</h5>
+                            <p>To simulate the sound to call back the swarms!</p>
                         </div>
                     </div>
                 </div>
@@ -357,18 +332,20 @@
                 <div class="col-12 col-sm-6 col-lg-3">
                     <div class="card bg-white shadow-soft text-primary rounded mb-4">
                         <div class="px-3 px-lg-4 py-5 text-center">
-                            <span class="icon icon-lg mb-4"><span class="fab fa-gulp"></span></span>
-                            <h5 class="font-weight-bold text-primary">Gulp</h5>
-                            <p>Gulp & BrowserSync for a flawless workflow</p>
+                            <span class="icon icon-lg mb-4"><span class="fas fa-weight"></span></span>
+                            <h5 class="font-weight-bold text-primary">Weight sensor</h5>
+                            <p>4 x 50 Kg load cell and HX711</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3">
                     <div class="card bg-white shadow-soft text-primary rounded mb-4">
                         <div class="px-3 px-lg-4 py-5 text-center">
-                            <span class="icon icon-lg mb-4"><span class="far fa-images"></span></span>
-                            <h5 class="font-weight-bold text-primary">Creative rights</h5>
-                            <p>All images, icons and fonts are licensed & free to use</p>
+                            <span>
+                                <img src="/static/assets/img/servo.png" height="75" width="75">&nbsp;
+                            </span>
+                            <h5 class="font-weight-bold text-primary">Servo motor</h5>
+                            <p>The servo is used to open and close the hive's entrance</p>
                         </div>
                     </div>
                 </div>
@@ -377,16 +354,18 @@
                         <div class="px-3 px-lg-4 py-5 text-center">
                             <span class="icon icon-lg mb-4"><span class="far fa-file-alt"></span></span>
                             <h5 class="font-weight-bold text-primary">Documentation</h5>
-                            <p>Everything that comes with Volt is well documented</p>
+                            <p>Everything with Smart Hive is well documented</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-sm-6 col-lg-3">
                     <div class="card bg-white shadow-soft text-primary rounded mb-4">
                         <div class="px-3 px-lg-4 py-5 text-center">
-                            <span class="icon icon-lg mb-4"><span class="fab fa-js-square"></span></span>
-                            <h5 class="font-weight-bold text-primary">Vanilla JS</h5>
-                            <p>jQuery is not a required dependency for Volt</p>
+                            <span>
+                                <img src="/static/assets/img/dht11.svg" height="75" width="75">&nbsp;
+                            </span>
+                            <h5 class="font-weight-bold text-primary">DHT11</h5>
+                            <p>Temperature and Humidity Module</p>
                         </div>
                     </div>
                 </div>
@@ -402,297 +381,18 @@
             </div>
         </div>
     </section>
-    <section class="section section-lg line-bottom-soft">
-        <div class="container">
-            <div class="row justify-content-center mb-5 mb-lg-6">
-                <div class="col-12 text-center">
-                    <h2 class="h1 px-lg-5">What's inside?</h2>
-                    <p class="lead px-lg-8">We have carefully crafted the perfect folder structure to ensure that
-                        finding the files you're looking for are easily reachable and well organized.</p>
-                </div>
-            </div>
-            <div class="row d-flex align-items-center">
-                <div class="col-12 col-lg-6 mb-4">
-                    <div class="d-none d-lg-block mt-5">
-                        <h4>You need only HTML, CSS and Javascript?</h4>
-                        <p class="lead mb-4">Don't worry, we got you covered. We have a folder called <code
-                                class="text-danger">html&css</code> which includes only the basic HTML5, CSS3 and
-                            Javascript technologies.</p>
-                        <a href="https://themesberg.com/docs/volt-bootstrap-5-dashboard/getting-started/file-structure/"
-                           target="_blank" class="btn btn-md btn-secondary text-dark"><i class="fas fa-book mr-2"></i>
-                            Docs v1.2</a>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-6 order-lg-first d-flex justify-content-center">
-                    <ul class="d-block fmw-100 list-style-none folder-structure">
-                        <li data-toggle="tooltip" data-placement="left"
-                            title="Main folder that you will be working with"><i class="fas fa-folder mr-2"></i>src
-                        </li>
-                        <li>
-                            <ul class="list-style-none pl-4">
-                                <li data-toggle="tooltip" data-placement="left"
-                                    title="CSS, Images, Fonts and Javascript"><i class="fas fa-folder mr-2"></i> assets
-                                </li>
-                                <li data-toggle="tooltip" data-placement="left" title="HTML templates"><i
-                                        class="fas fa-folder mr-2"></i> pages
-                                </li>
-                                <li data-toggle="tooltip" data-placement="left"
-                                    title="Partials are HTML snippets that are included in multiple pages, such as the menu or footer">
-                                    <i class="fas fa-folder mr-2"></i> partials
-                                </li>
-                                <li data-toggle="tooltip" data-placement="left" title="Sass source files"><i
-                                        class="fas fa-folder mr-2"></i> scss
-                                </li>
-                                <li data-toggle="tooltip" data-placement="left"
-                                    title="The page you're looking at right now. Call it inception."><i
-                                        class="fab fa-html5 mr-2 text-secondary"></i> index.html
-                                </li>
-                            </ul>
-                        </li>
-                        <li data-toggle="tooltip" data-placement="left" title="Volt with only HTML, CSS and Javascript">
-                            <i class="fas fa-folder mr-2 text-muted"></i> html&css
-                        </li>
-                        <li data-toggle="tooltip" data-placement="left"
-                            title="Temporary folder that is created when serving files with BrowserSync"><i
-                                class="fas fa-folder text-muted mr-2"></i>.temp
-                        </li>
-                        <li data-toggle="tooltip" data-placement="left" title="Minified version of the project"><i
-                                class="fas fa-folder mr-2 text-muted"></i> dist
-                        </li>
-                        <li data-toggle="tooltip" data-placement="left" title="Project dependencies from package.json">
-                            <i class="fas fa-folder text-muted mr-2"></i> node_modules
-                        </li>
-                        <li data-toggle="tooltip" data-placement="left"
-                            title="Development workflow commands. We have them well documented."><i
-                                class="fab fa-js-square mr-2 text-warning"></i> gulpfile.js
-                        </li>
-                        <li data-toggle="tooltip" data-placement="left" title="Project details and dependencies."><i
-                                class="fas fa-file-code mr-2 text-tertiary"></i> package.json
-                        </li>
-                        <li data-toggle="tooltip" data-placement="left" title="No project can miss a README :)"><i
-                                class="fas fa-file-code mr-2 text-tertiary"></i> README.md
-                        </li>
-                        <li data-toggle="tooltip" data-placement="left"
-                            title="This file ensures that generated files and folder are ignored by Git. (eg. node_modules)">
-                            <i class="fas fa-file-code mr-2 text-tertiary"></i> .gitignore
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-12 mt-5 d-lg-none">
-                    <h5>You need only HTML, CSS and Javascript?</h5>
-                    <p>Don't worry, we got you covered. We have a folder called <code
-                            class="text-danger">html&css</code> which includes only the basic HTML5, CSS3 and Javascript
-                        technologies.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="section section-lg bg-primary">
-        <div class="container">
-            <div class="row justify-content-center text-center text-white mb-5">
-                <div class="col-12">
-                    <h2 class="h1 font-weight-light mb-3">Less <span class="font-weight-bold">work</span>, more <span
-                            class="font-weight-bold">flow</span>.</h2>
-                    <p class="lead px-lg-8">
-                        Boost productivity with BrowserSync. Sass changes are reflected instantly and pages scroll and
-                        refresh on devices as you work.
-                    </p>
-                </div>
-            </div>
-            <div class="row justify-content-center mb-6">
-                <div class="col-md-10 col-xl-9">
-                    <div class="position-relative">
-                        <div class="rounded bg-white p-4 text-dark mb-2">
-                            <div class="mb-3">
-                                <div class="font-weight-bold">&gt; $ npm install</div>
-                                <div class="text-gray">Everything’s installed!</div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="font-weight-bold">&gt; $ gulp</div>
-                                <div class="text-gray">SCSS watching</div>
-                                <div class="text-gray">LiveReload started</div>
-                                <div class="text-gray">Opening localhost:3000</div>
-                            </div>
-                            <div>
-                                <div class="font-weight-bold">&gt; $ that's it?</div>
-                                <div class="text-gray">It's that simple!</div>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="mt-4 text-white text-center">Looks unfamiliar? Don’t worry! Our <a
-                            class="text-white text-underline font-weight-bold"
-                            href="https://themesberg.com/docs/volt-bootstrap-5-dashboard/getting-started/quick-start/"
-                            target="_blank">documentation</a> has got you covered.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="section section-lg bg-white">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 col-lg-8">
-                    <h2 class="h1 font-weight-light mb-3">Open source</h2>
-                    <p class="lead mb-4">Volt is an open source project under the MIT License. Give us a lucky star to
-                        spread the open source love ❤️</p>
-                    <div class="d-flex align-items-center">
-                        <a href="https://github.com/app-generator/flask-dashboard-volt" target="_blank"
-                           class="btn btn-dark mr-4">
-                            View on GitHub
-                        </a>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-4">
-                    <div class="github-big-icon">
-                        <span class="fab fa-github"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="row mt-6">
-                <div class="col-12 col-md-6 col-lg-4 mb-5 mb-lg-0">
-                    <div class="card border-light p-4">
-                        <!-- Header -->
-                        <div class="card-header bg-white border-0 pb-0">
-                                <span class="d-block">
-                                    <span class="h2 text-primary font-weight-bold align-top">Free Demo</span>
-                                </span>
-                        </div>
-                        <!-- End Header -->
-                        <!-- Content -->
-                        <div class="card-body">
-                            <ul class="list-group list-group-flush price-list">
-                                <li class="list-group-item bg-white border-0 pl-0"><strong>100</strong> Components</li>
-                                <li class="list-group-item bg-white border-0 pl-0"><strong>11</strong> Example Pages
-                                </li>
-                                <li class="list-group-item bg-white border-0 pl-0"><span class="icon-danger mr-2"><span
-                                        class="fas fa-times-circle"></span></span> Toggleable sidebar
-                                </li>
-                                <li class="list-group-item bg-white border-0 pl-0"><span class="icon-danger mr-2"><span
-                                        class="fas fa-times-circle"></span></span> MapBox
-                                </li>
-                                <li class="list-group-item bg-white border-0 pl-0"><span class="icon-danger mr-2"><span
-                                        class="fas fa-times-circle"></span></span> Calendar
-                                </li>
-                                <li class="list-group-item bg-white border-0 pl-0"><span class="icon-danger mr-2"><span
-                                        class="fas fa-times-circle"></span></span> SVG Map
-                                </li>
-                                <li class="list-group-item bg-white border-0 pl-0"><span class="icon-danger mr-2"><span
-                                        class="fas fa-times-circle"></span></span> Widgets
-                                </li>
-                                <li class="list-group-item bg-white border-0 pl-0 pb-0"><span
-                                        class="icon-danger mr-2"><span class="fas fa-times-circle"></span></span>
-                                    Premium Support
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- End Content -->
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-4 mb-5 mb-lg-0">
-                    <div class="card border-light p-4 pt-5 pb-4 mt-lg-n5">
-                        <!-- Header -->
-                        <div class="card-header bg-white border-0 pb-0">
-                                <span class="d-block">
-                                    <span class="h2 text-primary font-weight-bold align-top">Flask PRO</span>
-                                </span>
-                        </div>
-                        <!-- End Header -->
-                        <!-- Content -->
-                        <div class="card-body">
-                            <ul class="list-group list-group-flush price-list">
-                                <li class="list-group-item bg-white border-0 pl-0"><strong>1000+</strong> Components
-                                </li>
-                                <li class="list-group-item bg-white border-0 pl-0"><strong>20</strong> Example Pages
-                                </li>
-                                <li class="list-group-item bg-white border-0 pl-0">Dashboard included</li>
-                                <li class="list-group-item bg-white border-0 pl-0"><span class="icon-success mr-2"><span
-                                        class="fas fa-check-circle"></span></span> Toggleable sidebar
-                                </li>
-                                <li class="list-group-item bg-white border-0 pl-0"><span class="icon-success mr-2"><span
-                                        class="fas fa-check-circle"></span></span> MapBox
-                                </li>
-                                <li class="list-group-item bg-white border-0 pl-0"><span class="icon-success mr-2"><span
-                                        class="fas fa-check-circle"></span></span> Calendar
-                                </li>
-                                <li class="list-group-item bg-white border-0 pl-0"><span class="icon-success mr-2"><span
-                                        class="fas fa-check-circle"></span></span> SVG Map
-                                </li>
-                                <li class="list-group-item bg-white border-0 pl-0"><span class="icon-success mr-2"><span
-                                        class="fas fa-check-circle"></span></span> Widgets
-                                </li>
-                                <li class="list-group-item bg-white border-0 border-0 pl-0 pb-0"><span
-                                        class="icon-success mr-2"><span class="fas fa-check-circle"></span></span>
-                                    Premium Support
-                                </li>
-                            </ul>
-                            <a href="https://appseed.us/admin-dashboards/flask-dashboard-volt-pro"
-                               target="_blank" class="btn btn-secondary text-dark mt-4 btn-block">
-                                Flask Volt Pro <i class="fas fa-external-link-alt ml-2"></i>
-                            </a>
-                        </div>
-                        <!-- End Content -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 </main>
 
 <footer class="footer py-6 bg-primary text-white">
     <div class="container">
         <div class="row">
             <div class="col-md-4">
-                <img class="navbar-brand-dark mb-4" height="35" src="/static/assets/img/brand/light.svg"
+                <img class="navbar-brand-dark mb-4" height="35" src="/static/bee.PNG"
                      alt="Logo light">
-                <p>Volt is a Premium Bootstrap 5 Admin Dashboard bringing together beautiful UI/UX design and functional
+                <p>Smart Hive is a premium solution for beekeeping bringing together beautiful UI/UX design and functional
                     elements.</p>
-                <ul class="social-buttons mb-5 mb-lg-0">
-                    <li>
-                        <a href="https://twitter.com/themesberg" aria-label="twitter social link"
-                           class="icon-white mr-2">
-                            <span class="fab fa-twitter"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.facebook.com/themesberg/" class="icon-white mr-2"
-                           aria-label="facebook social link">
-                            <span class="fab fa-facebook"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://github.com/themesberg" aria-label="github social link" class="icon-white mr-2">
-                            <span class="fab fa-github"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://dribbble.com/themesberg" class="icon-white" aria-label="dribbble social link">
-                            <span class="fab fa-dribbble"></span>
-                        </a>
-                    </li>
-                </ul>
             </div>
-            <div class="col-6 col-md-2 mb-5 mb-lg-0">
-                <span class="h5">Themesberg</span>
-                <ul class="links-vertical mt-2">
-                    <li><a target="_blank" href="https://themesberg.com/blog">Blog</a></li>
-                    <li><a target="_blank" href="https://themesberg.com/products">Products</a></li>
-                    <li><a target="_blank" href="https://themesberg.com/about">About Us</a></li>
-                    <li><a target="_blank" href="https://themesberg.com/contact">Contact Us</a></li>
-                </ul>
-            </div>
-            <div class="col-6 col-md-2 mb-5 mb-lg-0">
-                <span class="h5">Other</span>
-                <ul class="links-vertical mt-2">
-                    <li><a href="https://themesberg.com/docs/volt-bootstrap-5-dashboard/getting-started/quick-start/"
-                           target="_blank">Docs
-                        <span class="badge badge-sm bg-secondary text-dark ml-2">v1.2</span></a></li>
-                    <li><a href="https://themesberg.com/docs/volt-bootstrap-5-dashboard/getting-started/changelog/"
-                           target="_blank">Changelog</a></li>
-                    <li><a target="_blank" href="https://themesberg.com/licensing">License</a>
-                    </li>
-                    <li><a target="_blank" href="https://github.com/themesberg/volt-bootstrap-5-dashboard/issues">Support</a>
-                    </li>
-                </ul>
-            </div>
+
             <div class="col-12 col-md-4 mb-5 mb-lg-0">
                 <span class="h5 mb-3 d-block">Subscribe</span>
                 <form action="#">
@@ -717,13 +417,11 @@
         <hr class="bg-gray my-5">
         <div class="row">
             <div class="col mb-md-0">
-                <a href="https://themesberg.com" target="_blank" class="d-flex justify-content-center">
-                    <img src="/static/assets/img/themesberg.svg" height="25" class="mb-3" alt="Themesberg Logo">
-                </a>
+                <a href="#" target="_blank">
+                    <img src="static/assets/img/v1.png" class="d-block mx-auto mb-3" height="100" width="120" alt="Themesberg Logo"></a>
                 <div class="d-flex text-center justify-content-center align-items-center" role="contentinfo">
                     <p class="font-weight-normal font-small mb-0">
-                        &copy; Themesberg 2019-<span class="current-year">2020</span> - coded by <a target="_blank"
-                                                                                                    href="https://appseed.us">AppSeed</a>.
+                        &copy; Vombati 2019-<span class="current-year">2020</span> - coded by <a target="_blank">PaDaGi</a>.
                     </p>
                 </div>
             </div>
