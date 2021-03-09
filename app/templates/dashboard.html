@@ -145,6 +145,15 @@
                                     <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
                                         <div>
                                             <h6 class="mb-0"><span class="icon icon-xs mr-3"><span
+                                                    class="fas fa-layer-group"></span></span>Number of supers</h6>
+                                        </div>
+                                        <div>
+                                            <a href="#" class="text-primary font-weight-bold">{{ hive.n_supers }}</a>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
+                                        <div>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"><span
                                                     class="fas fa-map-marker-alt"></span></span>Location</h6>
                                         </div>
                                         <div>
@@ -177,10 +186,10 @@
                                         </div>
                                         <div>
                                             <a href="#" class="text-primary font-weight-bold">
-                                                {% if alarm %}
+                                                {% if hive.alarm %}
                                                     Active
                                                 {% endif %}
-                                                {% if not alarm %}
+                                                {% if not hive.alarm %}
                                                     Inactive
                                                 {% endif %}
                                             </a>
@@ -195,10 +204,10 @@
                                             <div class="form-check form-switch">
                                                 <label class="form-check-label" for="flexSwitchCheckDefault">
                                                     <a class="text-primary font-weight-bold">
-                                                        {% if entrance %}
+                                                        {% if hive.entrance %}
                                                             Open
                                                         {% endif %}
-                                                        {% if not entrance %}
+                                                        {% if not hive.entrance %}
                                                             Closed
                                                         {% endif %}
                                                     </a>
@@ -328,7 +337,7 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between border-bottom border-light pb-3">
                                 <a class="nav-link"
-                                   href="{{ url_for('home_blueprint.dashboard', apiary=apiary, hive=hive_id, type="none") }}">
+                                   href="{{ url_for('home_blueprint.dashboard', apiary=apiary, hive_id=hive_id, type="none") }}">
                                     <button class="btn btn-primary" type="button" aria-haspopup="true"
                                             aria-expanded="false">
                                         <span class="fas fa-sync-alt"> Refresh data </span>
@@ -337,14 +346,14 @@
                             </div>
                             <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
                                 <a class="nav-link"
-                                   href="{{ url_for('home_blueprint.dashboard', apiary=apiary, hive=hive_id, type="alarm") }}">
+                                   href="{{ url_for('home_blueprint.dashboard', apiary=apiary, hive_id=hive_id, type="alarm") }}">
                                     <button class="btn btn-primary" type="button" aria-haspopup="true"
                                             aria-expanded="false">
                                         <span class="fas fa-volume-up"></span>
-                                        {% if alarm %}
+                                        {% if hive.alarm %}
                                             Turn alarm off
                                         {% endif %}
-                                        {% if not alarm %}
+                                        {% if not hive.alarm %}
                                             Turn alarm on
                                         {% endif %}
                                     </button>
@@ -352,14 +361,14 @@
                             </div>
                             <div class="d-flex align-items-center justify-content-between pt-3">
                                 <a class="nav-link"
-                                   href="{{ url_for('home_blueprint.dashboard', apiary=apiary, hive=hive_id, type="entrance") }}">
+                                   href="{{ url_for('home_blueprint.dashboard', apiary=apiary, hive_id=hive_id, type="entrance") }}">
                                     <button class="btn btn-primary" type="button" aria-haspopup="true"
                                             aria-expanded="false">
                                         <span class="fas fa-door-open"></span>
-                                        {% if entrance %}
+                                        {% if hive.entrance %}
                                             Close hive entrance
                                         {% endif %}
-                                        {% if not entrance %}
+                                        {% if not hive.entrance %}
                                             Open hive entrance
                                         {% endif %}
                                     </button>
@@ -419,24 +428,24 @@
                                     </thead>
                                     <tbody>
                                     {% for el in lista %}
-                            <tr>
-                                <td class="border-0">
-                                    {{ el.hive_id }}
-                                </td>
-                                <td class="border-0">
-                                    {{ el.temperature }}
-                                </td>
-                                <td class="border-0">
-                                    {{ el.humidity }}
-                                </td>
-                                <td class="border-0">
-                                    {{ el.weight }}
-                                </td>
-                                <td class="border-0">
-                                    {{ el.timestamp }}
-                                </td>
-                            </tr>
-                        {% endfor %}
+                                        <tr>
+                                            <td class="border-0">
+                                                {{ el.hive_id }}
+                                            </td>
+                                            <td class="border-0">
+                                                {{ el.temperature }}
+                                            </td>
+                                            <td class="border-0">
+                                                {{ el.humidity }}
+                                            </td>
+                                            <td class="border-0">
+                                                {{ el.weight }}
+                                            </td>
+                                            <td class="border-0">
+                                                {{ el.timestamp }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
                                     </tbody>
                                 </table>
                             </div>

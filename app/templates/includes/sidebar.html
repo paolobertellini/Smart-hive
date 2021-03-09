@@ -99,7 +99,7 @@
 
                                         {% for hive in find_hives(apiary.apiary_id) %}
                                             <li class="nav-item "><a class="nav-link"
-                                                                     href="{{ url_for('home_blueprint.dashboard', apiary=apiary.apiary_id, hive = hive.hive_id, type="none") }}"><span>Hive: {{ hive.hive_id }}</span></a>
+                                                                     href="{{ url_for('home_blueprint.dashboard', apiary=apiary.apiary_id, hive_id = hive.hive_id, type="none") }}"><span>Hive: {{ hive.hive_id }}</span></a>
                                             </li>
                                         {% endfor %}
 

@@ -133,27 +133,28 @@ def sensorFeed():
 @blueprint.route('/dashboard', methods=['POST', 'GET'])
 @login_required
 def dashboard():
-    hive = request.args["hive"]
+    hive_id = request.args["hive_id"]
     apiary = request.args["apiary"]
 
-    sf = SensorFeed.query.filter_by(hive_id=hive).all()
-    elenco = SensorFeed.query.filter_by(hive_id=hive).all()
+    sf = SensorFeed.query.filter_by(hive_id=hive_id).all()
+    elenco = SensorFeed.query.filter_by(hive_id=hive_id).all()
     location = ApiaryModel.query.filter_by(apiary_id=apiary).first().location
-    entrance = HiveModel.query.filter_by(hive_id=hive).first().entrance
-    alarm = HiveModel.query.filter_by(hive_id=hive).first().alarm
+    hive = HiveModel.query.filter_by(hive_id=hive_id).first()
+    entrance = hive.entrance
+    alarm = hive.alarm
     w = {"temp": weather(location)['temperature']['temp'], "status": weather(location)['status']}
     if request.args["type"] == "alarm":
         alarm = not alarm
-        db.session.query(HiveModel).filter(HiveModel.hive_id == hive).update({'alarm': alarm})
+        db.session.query(HiveModel).filter(HiveModel.hive_id == hive_id).update({'alarm': alarm})
         db.session.commit()
     if request.args["type"] == "entrance":
         entrance = not entrance
-        db.session.query(HiveModel).filter(HiveModel.hive_id == hive).update({'entrance': entrance})
+        db.session.query(HiveModel).filter(HiveModel.hive_id == hive_id).update({'entrance': entrance})
         db.session.commit()
 
     try:
-        return render_template('dashboard.html', SensorFeed=sf, hive_id=hive, weather=w, location=location, alarm=alarm,
-                               entrance=entrance, apiary=apiary, type="none", lista = elenco)
+        return render_template('dashboard.html', SensorFeed=sf, hive_id=hive_id, weather=w, location=location,
+                               hive=hive, apiary=apiary, type="none", lista = elenco)
     except:
         flash("There are no data belonging to this specific hive.")
-        return redirect(url_for('home_blueprint.new_apiary'))
+        return redirect(url_for('home_blueprint.hive', hive_id=hive_id, apiary=apiary))
