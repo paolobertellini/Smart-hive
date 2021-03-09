@@ -1,0 +1,577 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+
+
+{% block content %}
+
+    <main class="content">
+
+        {% include 'includes/navigation.html' %}
+        {% if SensorFeed %}
+            {% set last = SensorFeed|last %}
+        {% endif %}
+
+        <br>
+
+        <!-- live data -->
+        <div class="row justify-content-md-center">
+            <!-- live situation -->
+            <div class="card border-light shadow-sm">
+                <!-- TITLE: live situation -->
+                <div class="card-header border-bottom border-light">
+                    <h2 class="h5 mb-0">Live situation</h2>
+                </div>
+                <br>
+                <div class="row justify-content-md-center">
+                    <div class="col-12 col-sm-6 col-xl-4 mb-4">
+                        <div class="card border-light shadow-sm">
+                            <div class="card-body">
+                                <div class="row d-block d-xl-flex align-items-center">
+                                    <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+                                        <div class="icon icon-shape icon-md icon-shape-blue rounded mr-4 mr-sm-0"><span
+                                                class="fas fa-temperature-high"></span></div>
+                                        <div class="d-sm-none">
+                                            <h2 class="h5">Temperature</h2>
+                                            <h3 class="mb-1">Error</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-xl-7 px-xl-0">
+                                        <div class="d-none d-sm-block">
+                                            <h2 class="h5">Temperature</h2>
+                                            <h3 class="mb-1">{{ last.temperature }} °C</h3>
+                                        </div>
+                                        <span class="icon icon-small"><span
+                                                class="fas fa-clock"></span></span> {{ last.timestamp.strftime("%b %d %Y %H:%M:%S") }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-xl-4 mb-4">
+                        <div class="card border-light shadow-sm">
+                            <div class="card-body">
+                                <div class="row d-block d-xl-flex align-items-center">
+                                    <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+                                        <div class="icon icon-shape icon-md icon-shape-blue rounded mr-4 mr-sm-0"><span
+                                                class="fas fa-tint"></span></div>
+                                        <div class="d-sm-none">
+                                            <h2 class="h5">Humidity</h2>
+                                            <h3 class="mb-1">Error</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-xl-7 px-xl-0">
+                                        <div class="d-none d-sm-block">
+                                            <h2 class="h5">Humidity</h2>
+                                            <h3 class="mb-1"> {{ last.humidity }} % </h3>
+                                        </div>
+                                        <span class="icon icon-small"><span
+                                                class="fas fa-clock"></span></span> {{ last.timestamp.strftime("%b %d %Y %H:%M:%S") }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-xl-4 mb-4">
+                        <div class="card border-light shadow-sm">
+                            <div class="card-body">
+                                <div class="row d-block d-xl-flex align-items-center">
+                                    <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+                                        <div class="icon icon-shape icon-md icon-shape-blue rounded mr-4 mr-sm-0"><span
+                                                class="fas fa-balance-scale"></span></div>
+                                        <div class="d-sm-none">
+                                            <h2 class="h5">Weight</h2>
+                                            <h3 class="mb-1">Error</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-xl-7 px-xl-0">
+                                        <div class="d-none d-sm-block">
+                                            <h2 class="h5">Weight</h2>
+                                            <h3 class="mb-1">{{ last.weight }} g</h3>
+                                        </div>
+                                        <span class="icon icon-small"><span
+                                                class="fas fa-clock"></span></span> {{ last.timestamp.strftime("%b %d %Y %H:%M:%S") }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <div class="row">
+            <div class="col-12 col-xl-8 mb-4">
+                <div class="row">
+                    <!-- lista -->
+                    <div class="col-12 mb-4">
+                        <div class="card border-light shadow-sm">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h2 class="h5">Hive status</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card border-light shadow-sm">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center justify-content-between border-bottom border-light pb-3">
+                                        <div>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"><span
+                                                    class="fas fa-passport"></span></span>Hive id</h6>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>{{ hive_id }}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
+                                        <div>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"><span
+                                                    class="fas fa-wifi"></span></span>Status</h6>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>Online</h6>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
+                                        <div>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"><span
+                                                    class="fas fa-map-marker-alt"></span></span>Location</h6>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>{{ location }}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
+                                        <div>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"><span
+                                                    class="fas fa-temperature-low"></span></span>External temperature
+                                            </h6>
+                                        </div>
+                                        <div>
+                                            <a href="#" class="text-primary font-weight-bold">{{ weather.temp }} °C</a>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
+                                        <div>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"><span
+                                                    class="fas fa-cloud-sun"></span></span>Weather conditions</h6>
+                                        </div>
+                                        <div>
+                                            <a href="#" class="text-primary font-weight-bold">{{ weather.status }}</a>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
+                                        <div>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"><span
+                                                    class="fas fa-volume-up"></span></span>Alarm</h6>
+                                        </div>
+                                        <div>
+                                            <a href="#" class="text-primary font-weight-bold">
+                                                {% if alarm %}
+                                                    Active
+                                                {% endif %}
+                                                {% if not alarm %}
+                                                    Inactive
+                                                {% endif %}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between pt-3">
+                                        <div>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"><span
+                                                    class="fas fa-door-open"></span></span>Entrance</h6>
+                                        </div>
+                                        <div>
+                                            <div class="form-check form-switch">
+                                                <label class="form-check-label" for="flexSwitchCheckDefault">
+                                                    <a class="text-primary font-weight-bold">
+                                                        {% if entrance %}
+                                                            Open
+                                                        {% endif %}
+                                                        {% if not entrance %}
+                                                            Closed
+                                                        {% endif %}
+                                                    </a>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- progress -->
+                    <div class="col-12 col-lg-6 mb-4">
+                        <div class="card border-light shadow-sm">
+                            <div class="card-header border-bottom border-light">
+                                <h2 class="h5 mb-0">Progress track</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="row align-items-center mb-4">
+                                    <div class="col-auto">
+                                        <span class="icon icon-md text-purple"><span
+                                                class="fab fa-bootstrap"></span></span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="progress-wrapper">
+                                            <div class="progress-info">
+                                                <div class="h6 mb-0">Rocket - SaaS Template</div>
+                                                <div class="small font-weight-bold text-dark"><span>34 %</span></div>
+                                            </div>
+                                            <div class="progress mb-0">
+                                                <div class="progress-bar bg-purple" role="progressbar"
+                                                     aria-valuenow="34" aria-valuemin="0" aria-valuemax="100"
+                                                     style="width: 34%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center mb-4">
+                                    <div class="col-auto">
+                                        <span class="icon icon-md text-danger"><span
+                                                class="fab fa-angular"></span></span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="progress-wrapper">
+                                            <div class="progress-info">
+                                                <div class="h6 mb-0">Pixel - Design System</div>
+                                                <div class="small font-weight-bold text-dark"><span>60 %</span></div>
+                                            </div>
+                                            <div class="progress mb-0">
+                                                <div class="progress-bar bg-danger" role="progressbar"
+                                                     aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                                                     style="width: 60%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center mb-4">
+                                    <div class="col-auto">
+                                        <span class="icon icon-md text-success"><span
+                                                class="fab fa-vuejs"></span></span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="progress-wrapper">
+                                            <div class="progress-info">
+                                                <div class="h6 mb-0">Spaces - Listings Template</div>
+                                                <div class="small font-weight-bold text-dark"><span>45 %</span></div>
+                                            </div>
+                                            <div class="progress mb-0">
+                                                <div class="progress-bar bg-tertiary" role="progressbar"
+                                                     aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"
+                                                     style="width: 45%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center mb-4">
+                                    <div class="col-auto">
+                                        <span class="icon icon-md text-info"><span class="fab fa-react"></span></span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="progress-wrapper">
+                                            <div class="progress-info">
+                                                <div class="h6 mb-0">Stellar - Dashboard</div>
+                                                <div class="small font-weight-bold text-dark"><span>35 %</span></div>
+                                            </div>
+                                            <div class="progress mb-0">
+                                                <div class="progress-bar bg-info" role="progressbar" aria-valuenow="35"
+                                                     aria-valuemin="0" aria-valuemax="100" style="width: 35%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <span class="icon icon-md text-purple"><span
+                                                class="fab fa-bootstrap"></span></span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="progress-wrapper">
+                                            <div class="progress-info">
+                                                <div class="h6 mb-0">Volt - Dashboard</div>
+                                                <div class="small font-weight-bold text-dark"><span>34 %</span></div>
+                                            </div>
+                                            <div class="progress mb-0">
+                                                <div class="progress-bar bg-purple" role="progressbar"
+                                                     aria-valuenow="34" aria-valuemin="0" aria-valuemax="100"
+                                                     style="width: 34%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- colonna destra -->
+            <div class="col-12 col-xl-4 mb-4">
+
+                <!-- summary -->
+                <div class="col-12 px-0 mb-4">
+                    <div class="card border-light shadow-sm">
+                        <div class="card-header border-bottom border-light d-flex justify-content-between">
+                            <h2 class="h5 mb-0">Control hive</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between border-bottom border-light pb-3">
+                                <a class="nav-link"
+                                   href="{{ url_for('home_blueprint.dashboard', apiary=apiary, hive=hive_id, type="none") }}">
+                                    <button class="btn btn-primary" type="button" aria-haspopup="true"
+                                            aria-expanded="false">
+                                        <span class="fas fa-sync-alt"> Refresh data </span>
+                                    </button>
+                                </a>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
+                                <a class="nav-link"
+                                   href="{{ url_for('home_blueprint.dashboard', apiary=apiary, hive=hive_id, type="alarm") }}">
+                                    <button class="btn btn-primary" type="button" aria-haspopup="true"
+                                            aria-expanded="false">
+                                        <span class="fas fa-volume-up"></span>
+                                        {% if alarm %}
+                                            Turn alarm off
+                                        {% endif %}
+                                        {% if not alarm %}
+                                            Turn alarm on
+                                        {% endif %}
+                                    </button>
+                                </a>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between pt-3">
+                                <a class="nav-link"
+                                   href="{{ url_for('home_blueprint.dashboard', apiary=apiary, hive=hive_id, type="entrance") }}">
+                                    <button class="btn btn-primary" type="button" aria-haspopup="true"
+                                            aria-expanded="false">
+                                        <span class="fas fa-door-open"></span>
+                                        {% if entrance %}
+                                            Close hive entrance
+                                        {% endif %}
+                                        {% if not entrance %}
+                                            Open hive entrance
+                                        {% endif %}
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <br>
+
+        <!-- grafico -->
+        <div class="col-12 mb-4">
+            <div class="card bg-yellow-alt shadow-sm">
+                <div class="card-header d-flex flex-row align-items-center flex-0">
+                    <div class="d-block">
+                        <div class="h5 font-weight-normal mb-2">Trend</div>
+
+                    </div>
+
+                </div>
+                <div>
+                    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-xl-8 mb-4">
+                <div class="row">
+                    <!-- lista -->
+                    <div class="col-12 mb-4">
+                        <div class="card border-light shadow-sm">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h2 class="h5">Page visits</h2>
+                                    </div>
+                                    <div class="col text-right">
+                                        <a href="#" class="btn btn-sm btn-secondary">See all</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table align-items-center table-flush">
+                                    <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">Page name</th>
+                                        <th scope="col">Page Views</th>
+                                        <th scope="col">Page Value</th>
+                                        <th scope="col">Bounce rate</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">
+                                            /demo/admin/index.html
+                                        </th>
+                                        <td>
+                                            3,225
+                                        </td>
+                                        <td>
+                                            $20
+                                        </td>
+                                        <td>
+                                            <span class="fas fa-arrow-up text-danger mr-3"></span> 42,55%
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            /demo/admin/forms.html
+                                        </th>
+                                        <td>
+                                            2,987
+                                        </td>
+                                        <td>
+                                            0
+                                        </td>
+                                        <td>
+                                            <span class="fas fa-arrow-down text-success mr-3"></span> 43,52%
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            /demo/admin/util.html
+                                        </th>
+                                        <td>
+                                            2,844
+                                        </td>
+                                        <td>
+                                            294
+                                        </td>
+                                        <td>
+                                            <span class="fas fa-arrow-down text-success mr-3"></span> 32,35%
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            /demo/admin/validation.html
+                                        </th>
+                                        <td>
+                                            2,050
+                                        </td>
+                                        <td>
+                                            $147
+                                        </td>
+                                        <td>
+                                            <span class="fas fa-arrow-up text-danger mr-3"></span> 50,87%
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            /demo/admin/modals.html
+                                        </th>
+                                        <td>
+                                            1,483
+                                        </td>
+                                        <td>
+                                            $19
+                                        </td>
+                                        <td>
+                                            <span class="fas fa-arrow-down text-success mr-3"></span> 32,24%
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        {% include 'includes/footer.html' %}
+
+    </main>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script>
+        window.onload = function () {
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                backgroundColor: "#FCE1C3",
+                zoomEnabled: true,
+                animationEnabled: true,
+                axisX: {
+                    valueFormatString: "DD MMM,YY"
+                },
+                axisY: {
+                    title: "Graph"
+                },
+                legend: {
+                    cursor: "pointer",
+                    fontSize: 16,
+                    itemclick: toggleDataSeries
+                },
+                toolTip: {
+                    shared: true
+                },
+                data: [{
+                    name: "Temperature",
+                    type: "spline",
+                    yValueFormatString: "#0.## °C",
+                    showInLegend: true,
+                    dataPoints: [
+                        {% for p in SensorFeed %}
+                            {label: "{{ p.timestamp.strftime("%b %d %Y %H:%M:%S") }}", y: {{p.temperature}}},
+                        {% endfor %}
+                    ]
+                },
+                    {
+                        name: "Humidity",
+                        type: "spline",
+                        yValueFormatString: "##,##%",
+                        showInLegend: true,
+                        dataPoints: [
+                            {% for p in SensorFeed %}
+                                {label: "{{ p.timestamp.strftime("%b %d %Y %H:%M:%S") }}", y: {{p.humidity}}},
+                            {% endfor %}
+                        ]
+                    },
+                    {
+                        name: "Weight",
+                        type: "spline",
+                        yValueFormatString: "#0.## g",
+                        showInLegend: true,
+                        dataPoints: [
+                            {% for p in SensorFeed %}
+                                {label: "{{ p.timestamp.strftime("%b %d %Y %H:%M:%S") }}", y: {{p.weight}}},
+                            {% endfor %}
+                        ]
+                    }]
+            });
+
+            chart.render();
+
+            function toggleDataSeries(e) {
+                if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                    e.dataSeries.visible = false;
+                } else {
+                    e.dataSeries.visible = true;
+                }
+                chart.render();
+            }
+
+
+        }
+    </script>
+{% endblock javascripts %}
+
