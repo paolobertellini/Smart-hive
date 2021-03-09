@@ -8,7 +8,11 @@
 
 
 {% block content %}
+     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
 
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
     <main class="content">
 
         {% include 'includes/navigation.html' %}
@@ -398,91 +402,41 @@
                                         <h2 class="h5">Page visits</h2>
                                     </div>
                                     <div class="col text-right">
-                                        <a href="#" class="btn btn-sm btn-secondary">See all</a>
+                                        <a href="{{ url_for('base_blueprint.sensorFeed', hive_id = hive_id)}}" class="btn btn-sm btn-secondary">See all</a>
                                     </div>
                                 </div>
                             </div>
                             <div class="table-responsive">
-                                <table class="table align-items-center table-flush">
+                                  <table id="mydatatable" class="table align-items-center table-flush">
                                     <thead class="thead-light">
                                     <tr>
-                                        <th scope="col">Page name</th>
-                                        <th scope="col">Page Views</th>
-                                        <th scope="col">Page Value</th>
-                                        <th scope="col">Bounce rate</th>
+                                        <th class="border-0">Id Hive</th>
+                                        <th class="border-0">Temperature</th>
+                                        <th class="border-0">Humidity</th>
+                                        <th class="border-0">Weight</th>
+                                        <th class="border-0">Time</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <th scope="row">
-                                            /demo/admin/index.html
-                                        </th>
-                                        <td>
-                                            3,225
-                                        </td>
-                                        <td>
-                                            $20
-                                        </td>
-                                        <td>
-                                            <span class="fas fa-arrow-up text-danger mr-3"></span> 42,55%
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">
-                                            /demo/admin/forms.html
-                                        </th>
-                                        <td>
-                                            2,987
-                                        </td>
-                                        <td>
-                                            0
-                                        </td>
-                                        <td>
-                                            <span class="fas fa-arrow-down text-success mr-3"></span> 43,52%
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">
-                                            /demo/admin/util.html
-                                        </th>
-                                        <td>
-                                            2,844
-                                        </td>
-                                        <td>
-                                            294
-                                        </td>
-                                        <td>
-                                            <span class="fas fa-arrow-down text-success mr-3"></span> 32,35%
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">
-                                            /demo/admin/validation.html
-                                        </th>
-                                        <td>
-                                            2,050
-                                        </td>
-                                        <td>
-                                            $147
-                                        </td>
-                                        <td>
-                                            <span class="fas fa-arrow-up text-danger mr-3"></span> 50,87%
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">
-                                            /demo/admin/modals.html
-                                        </th>
-                                        <td>
-                                            1,483
-                                        </td>
-                                        <td>
-                                            $19
-                                        </td>
-                                        <td>
-                                            <span class="fas fa-arrow-down text-success mr-3"></span> 32,24%
-                                        </td>
-                                    </tr>
+                                    {% for el in lista %}
+                            <tr>
+                                <td class="border-0">
+                                    {{ el.hive_id }}
+                                </td>
+                                <td class="border-0">
+                                    {{ el.temperature }}
+                                </td>
+                                <td class="border-0">
+                                    {{ el.humidity }}
+                                </td>
+                                <td class="border-0">
+                                    {{ el.weight }}
+                                </td>
+                                <td class="border-0">
+                                    {{ el.timestamp }}
+                                </td>
+                            </tr>
+                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -496,7 +450,11 @@
         {% include 'includes/footer.html' %}
 
     </main>
-
+    <script>
+$(document).ready(function() {
+    $('#mydatatable').DataTable();
+} );
+</script>
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->

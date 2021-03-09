@@ -122,8 +122,9 @@ def removeHive():
 @blueprint.route('/sensorFeed', methods=['POST', 'GET'])
 @login_required
 def sensorFeed():
-    apiary_id = HiveModel.query.filter_by(hive_id="1").first().apiary_id
-    elenco = SensorFeed.query.filter_by(hive_id="1").all()
+    hive = request.args["hive_id"]
+    apiary_id = HiveModel.query.filter_by(hive_id=hive).first().apiary_id
+    elenco = SensorFeed.query.filter_by(hive_id=hive).all()
 
     return render_template('sensor-feed.html', lista=elenco, apiary=apiary_id)
 
@@ -135,7 +136,7 @@ def dashboard():
     apiary = request.args["apiary"]
 
     sf = SensorFeed.query.filter_by(hive_id=hive).all()
-    # elenco = SensorFeed.query.filter_by(hive_id="1").all()
+    elenco = SensorFeed.query.filter_by(hive_id=hive).all()
     location = ApiaryModel.query.filter_by(apiary_id=apiary).first().location
     entrance = HiveModel.query.filter_by(hive_id=hive).first().entrance
     alarm = HiveModel.query.filter_by(hive_id=hive).first().alarm
@@ -151,7 +152,7 @@ def dashboard():
 
     try:
         return render_template('dashboard.html', SensorFeed=sf, hive_id=hive, weather=w, location=location, alarm=alarm,
-                               entrance=entrance, apiary=apiary, type="none")
+                               entrance=entrance, apiary=apiary, type="none", lista = elenco)
     except:
         flash("There are no data belonging to this specific hive.")
         return redirect(url_for('home_blueprint.new_apiary'))
