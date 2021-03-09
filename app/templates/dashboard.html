@@ -274,34 +274,35 @@
 
                 <!-- progress -->
                 <div class="col-12 px-0 mb-4">
-                            <div class="card border-light shadow-sm">
-                                <div class="card-header border-bottom border-light">
-                                    <h2 class="h5 mb-0">Honey production</h2>
+                    <div class="card border-light shadow-sm">
+                        <div class="card-header border-bottom border-light">
+                            <h2 class="h5 mb-0">Honey production</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="row align-items-center mb-4">
+                                <div class="col-auto">
+                                    <span class="sidebar-icon">
+                                        <img src="/static/assets/img/honey.svg" height="40" width="40" alt="Bee Logo">&nbsp;
+                                    </span>
                                 </div>
-                                <div class="card-body">
-                                    <div class="row align-items-center mb-4">
-                                        <div class="col-auto">
-                                            <span class="sidebar-icon">
-                                                <img src="/static/assets/img/honey.svg" height="40" width="40" alt="Bee Logo">&nbsp;
-                                            </span>
+                                <div class="col">
+                                    <div class="progress-wrapper">
+                                        <div class="progress-info">
+                                            <div class="h6 mb-0">Honey quantity</div>
+                                            <div class="small font-weight-bold text-dark"><span>{{ (last.weight * 100)/((hive.n_supers*30) + 50) }} %</span></div>
                                         </div>
-                                        <div class="col">
-                                            <div class="progress-wrapper">
-                                                <div class="progress-info">
-                                                    <div class="h6 mb-0">Honey quantity</div>
-                                                    <div class="small font-weight-bold text-dark"><span>{{ (last.weight * 100)/((hive.n_supers*30) + 50) }} %</span></div>
-                                                </div>
-                                                <div class="progress mb-0">
-                                                    <div class="progress-bar bg-purple" role="progressbar"
-                                                         aria-valuenow="{{ last.weight }}" aria-valuemin="0" aria-valuemax="{{ (hive.n_supers*30) + 50  }}"
-                                                         style="width: {{ (last.weight * 100)/((hive.n_supers*30) + 50) }}%;"></div>
-                                                </div>
-                                            </div>
+                                        <div class="progress mb-0">
+                                            <div class="progress-bar bg-warning" role="progressbar"
+                                                 aria-valuenow="{{ last.weight }}" aria-valuemin="0" aria-valuemax="{{ (hive.n_supers*30) + 50  }}"
+                                                 style="width: {{ (last.weight * 100)/((hive.n_supers*30) + 50) }}%;"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                </div>
             </div>
         </div>
         <br>
