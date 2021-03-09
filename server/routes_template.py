@@ -8,6 +8,7 @@ from flask_login import (
     current_user,
     login_required
 )
+from jinja2 import TemplateNotFound
 
 from app import blueprint
 from database.models import ApiaryModel, HiveModel
