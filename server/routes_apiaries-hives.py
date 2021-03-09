@@ -19,6 +19,7 @@ from utility.weather import weather
 # ----------------- APIARY ----------------- #
 
 @blueprint.route('/new_apiary', methods=['POST', 'GET'])
+@login_required
 def new_apiary():
     apiaries = ApiaryModel.query.filter_by(user_id=current_user.username).all()
     apiary_form = CreateApiaryForm(request.form)
