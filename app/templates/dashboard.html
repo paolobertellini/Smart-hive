@@ -16,6 +16,8 @@
     <main class="content">
 
         {% include 'includes/navigation.html' %}
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
         {% if SensorFeed %}
             {% set last = SensorFeed|last %}
         {% endif %}
@@ -147,7 +149,8 @@
                                                     class="fas fa-layer-group"></span></span>Number of supers</h6>
                                         </div>
                                         <div>
-                                            <a href="#" class="text-primary font-weight-bold">{{ hive.n_supers }}</a>
+                                            <a href="#" class="text-primary font-weight-bold"><a style="width:25px" class="btn btn-outline-primary btn-sm " href="{{ url_for('home_blueprint.removeSupers',  hive_id = hive.hive_id, apiary = hive.apiary_id) }}" role="button"> - </a>
+                                                   {{ hive.n_supers }}   <a style="width:25px" class="btn btn-outline-primary btn-sm " href="{{ url_for('home_blueprint.addSupers',  hive_id = hive.hive_id, apiary = hive.apiary_id) }}" role="button">+</a> </a>
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
@@ -382,6 +385,15 @@ $(document).ready(function() {
     $('#mydatatable').DataTable();
 } );
 </script>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <script>
+                    swal('Warning', '{{ message }}', "warning")
+                </script>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->

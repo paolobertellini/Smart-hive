@@ -150,6 +150,7 @@
                                     <a class="dropdown-item"
                                        href="{{ url_for('home_blueprint.dashboard', apiary=hive.apiary_id, hive_id = hive.hive_id, type = "none") }}"><span
                                             class="fas fa-eye mr-2"></span>View Details</a>
+
                                     <a class="dropdown-item text-danger"
                                        href="{{ url_for('home_blueprint.removeHive', to_remove = hive.hive_id, apiary = hive.apiary_id) }}"><span
                                             class="fas fa-trash-alt mr-2"></span>Remove</a>

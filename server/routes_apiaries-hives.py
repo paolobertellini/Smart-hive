@@ -123,6 +123,29 @@ def removeHive():
     db.session.commit()
     return redirect(url_for('home_blueprint.hive', apiary=apiary))
 
+@blueprint.route('/addSupers', methods=['GET'])
+@login_required
+def addSupers():
+    hive_id = request.args['hive_id']
+    apiary = request.args['apiary']
+    data_to_modify = HiveModel.query.filter_by(hive_id=hive_id).first()
+    data_to_modify.n_supers = data_to_modify.n_supers+1
+    db.session.commit()
+    return redirect(url_for('home_blueprint.dashboard', apiary=apiary, hive_id=hive_id, type="none"))
+
+@blueprint.route('/removeSupers', methods=['GET'])
+@login_required
+def removeSupers():
+    hive_id = request.args['hive_id']
+    apiary = request.args['apiary']
+    data_to_modify = HiveModel.query.filter_by(hive_id=hive_id).first()
+    data_to_modify.n_supers = data_to_modify.n_supers-1
+    if (data_to_modify.n_supers < 0):
+        flash("There are no supers to remove.")
+        return redirect(url_for('home_blueprint.dashboard', apiary=apiary, hive_id=hive_id, type="none"))
+    db.session.commit()
+    return redirect(url_for('home_blueprint.dashboard', apiary=apiary, hive_id=hive_id, type="none"))
+
 
 # ----------------- SENSOR FEED AND DASHBOARD CONTROLLER ----------------- #
 
