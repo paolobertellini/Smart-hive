@@ -18,9 +18,9 @@ from utility.weather import weather
 
 # ----------------- APIARY ----------------- #
 
-@blueprint.route('/new_apiary', methods=['POST', 'GET'])
+@blueprint.route('/apiaries', methods=['POST', 'GET'])
 @login_required
-def new_apiary():
+def apiaries():
     apiaries = ApiaryModel.query.filter_by(user_id=current_user.username).all()
     apiary_form = CreateApiaryForm(request.form)
     if 'new_apiary' in request.form:
@@ -35,16 +35,16 @@ def new_apiary():
             db.session.commit()
         except Exception as e:
             flash("You already have an apiary called: " + id_apiary)
-            return redirect(url_for('home_blueprint.new_apiary'))
+            return redirect(url_for('home_blueprint.apiaries'))
         # Locate user
         # user = User.query.filter_by(username=username).first()
 
         # Something (user or pass) is not ok
-        return redirect(url_for('home_blueprint.new_apiary'))
+        return redirect(url_for('home_blueprint.apiaries'))
 
     if not current_user.is_authenticated:
-        return render_template('new_apiary.html', form=apiary_form, apiaries=apiaries)
-    return render_template('new_apiary.html', form=apiary_form, apiaries=apiaries)
+        return render_template('apiaries.html', form=apiary_form, apiaries=apiaries)
+    return render_template('apiaries.html', form=apiary_form, apiaries=apiaries)
 
 
 @blueprint.route('/removeApiary', methods=['GET'])
@@ -60,7 +60,7 @@ def removeApiary():
             x.hive_id = ''
     db.session.delete(apiary_to_remove)
     db.session.commit()
-    return redirect(url_for('home_blueprint.new_apiary'))
+    return redirect(url_for('home_blueprint.apiaries'))
 
 
 # ----------------- HIVE ----------------- #

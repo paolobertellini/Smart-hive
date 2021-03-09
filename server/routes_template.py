@@ -48,9 +48,9 @@ def route_template(template):
         # Serve the file (if exists) from app/templates/FILE.html
         return render_template(template, segment=segment)
     except TemplateNotFound:
-        return render_template('page-404.html'), 404
+        return render_template('errors/page-404.html'), 404
     except:
-        return render_template('page-500.html'), 500
+        return render_template('errors/page-500.html'), 500
 
 
 # Helper - Extract current page name from request

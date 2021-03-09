@@ -37,10 +37,10 @@
 
             <!-- your apiaries -->
             <li class="nav-item  {% if 'new_apiary' in segment %} active {% endif %}">
-                <a href="{{ url_for('home_blueprint.new_apiary') }}" class="nav-link">
+                <a href="{{ url_for('home_blueprint.apiaries') }}" class="nav-link">
                     <span>
                         <span class="sidebar-icon"><span class="fab fa-forumbee"></span></span>
-                        Your apiaries
+                        Dashboard
                     </span>
                 </a>
             </li>
@@ -50,10 +50,10 @@
                 <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
                       data-toggle="collapse" data-target="#submenu-app">
                 <span>
-                    <span class="sidebar-icon"><span class="fas fa-hotel"></span></span>
-                    Hives
+                    <span class="sidebar-icon"><span class="fas fa-industry"></span></span>
+                    Apiaries
                 </span>
-                <span class="link-arrow"><span class="fas fa-chevron-right"></span></span> 
+                <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
                 </span>
                 <div class="multi-level collapse " role="list" id="submenu-app" aria-expanded="false">
                     <ul class="flex-column nav">
@@ -73,8 +73,8 @@
                 <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
                       data-toggle="collapse" data-target="#submenu-apiaries">
                 <span>
-                    <span class="sidebar-icon"><span class="fas fa-table"></span></span>
-                    Hive data
+                    <span class="sidebar-icon"><span class="fas fa-hotel"></span></span>
+                    Hives
                 </span>
                 <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
                 </span>
@@ -89,7 +89,7 @@
                                   data-toggle="collapse" data-target="#{{ apiary.apiary_id }}">
                             <span>
                                 <span class="sidebar-icon"><span class="fas fa-1x"></span></span>
-                                {{ apiary.apiary_id }}
+                                Apiary: {{ apiary.apiary_id }}
                             </span>
                             <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
                             </span>

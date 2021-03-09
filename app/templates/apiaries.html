@@ -1,0 +1,134 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Apiaries {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+
+    <main class="content">
+
+        {% include 'includes/navigation.html' %}
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+        <br>
+        <div class="card card-body bg-white border-light shadow-sm mb-4">
+            <h2 class="h5 mb-4">Insert new apiary</h2>
+            <form method="post" action="" class="mt-4">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div>
+                            <label>Apiary name</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1"><span
+                                        class="fas fa-industry"></span></span>
+                                {{ form.id_apiary(placeholder="Insert apiary id", class="form-control") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div>
+                            <label>Apiary location</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1"><span
+                                        class="fas fa-map-marker-alt"></span></span>
+                                {{ form.location(placeholder="Apiary location", class="form-control") }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button type="submit" name="new_apiary" class="btn btn-primary">Insert new apiary</button>
+                </div>
+            </form>
+                </div>
+
+        <!-- apiaries list -->
+        <div class="card card-body bg-white border-light shadow-sm mb-4">
+            <h2 class="h5 mb-4">Your apiaries</h2>
+            Here you can see all your apiaries
+            <div><br></div>
+            <div class="card card-body border-light shadow-sm table-wrapper table-responsive pt-0">
+            <br>
+            <table id="apiarytable" class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Id apiary</th>
+                    <th>Id user</th>
+                    <th>Location</th>
+                    <th>Settings</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Item -->
+                {% for el in apiaries %}
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('home_blueprint.hive', apiary=el.apiary_id) }}"
+                               class="font-weight-bold">
+                                {{ el.apiary_id }}
+                            </a>
+                        </td>
+                        <td>
+                            <span class="font-weight-normal">{{ el.user_id }}</span>
+                        </td>
+                        <td>
+                            <span class="font-weight-normal">{{ el.location }}</span>
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="icon icon-sm">
+                                                <span class="fas fa-ellipsis-h icon-dark"></span>
+                                            </span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item"
+                                       href="{{ url_for('home_blueprint.hive', apiary = el.apiary_id) }}"><span
+                                            class="fas fa-eye mr-2"></span>View Hives</a>
+                                    <a class="dropdown-item text-danger"
+                                       href="{{ url_for('home_blueprint.removeApiary', to_remove = el.apiary_id) }}"><span
+                                            class="fas fa-trash-alt mr-2"></span>Remove</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <!-- Item -->
+
+
+                </tbody>
+            </table>
+        </div>
+        </div>
+
+        {% include 'includes/footer.html' %}
+
+    </main>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <script>
+                    swal('Warning', '{{ message }}', "warning")
+                </script>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <script>
+        $(document).ready(function () {
+            $('#apiarytable').DataTable();
+        });
+    </script>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
