@@ -189,10 +189,6 @@ def dashboard():
         db.session.query(HiveModel).filter(HiveModel.hive_id == hive_id).update({'entrance': entrance})
         db.session.commit()
 
-
-
-
-
     try:
         return render_template('dashboard.html', d=dashboard, type="none")
     except:
