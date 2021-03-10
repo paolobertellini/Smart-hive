@@ -30,7 +30,7 @@ class CreateHiveForm(FlaskForm):
     id_hive = TextField('Hive id', id='hive_id_create', validators=[DataRequired()])
     id_apiary = SelectField('Apiary id', id='apiary_id_create', validators=[DataRequired()])  # forse non è necessario
     hive_description = TextField('Hive description', id='hive_description_create', validators=[DataRequired()])
-    n_supers = TextField('Number of supers', id='n_supers_input')
+    n_supers = TextField('Number of supers', id='n_supers_input', validators=[DataRequired()])
     association_code = TextField('Association code', id='association_code_input', validators=[DataRequired()])
 
 
