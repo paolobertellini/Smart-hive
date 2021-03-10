@@ -307,8 +307,8 @@
                                         <div class="progress mb-0">
                                             <div class="progress-bar bg-warning" role="progressbar"
 
-                                                 aria-valuenow="{{ last.weight }}" aria-valuemin="0" aria-valuemax="{{ (d.hive.n_supers*30) + 50  }}"
-                                                 style="width: {{ (last.weight * 100)/((d.hive.n_supers*30) + 50) }}%;"></div>
+                                                 aria-valuenow="{{ last.weight }}" aria-valuemin="0" aria-valuemax="{{ (d.hive.n_supers*30000) + 50000  }}"
+                                                 style="width: {{ (last.weight * 100)/((d.hive.n_supers*30000) + 50000) }}%;"></div>
 
                                         </div>
                                     </div>
@@ -347,7 +347,7 @@
                                         <h2 class="h5">History data</h2>
                                     </div>
                                     <div class="col text-right">
-                                        <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = d.hive_id)}}" class="btn btn-sm btn-secondary">See all</a>
+                                        <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = d.hive.hive_id)}}" class="btn btn-sm btn-secondary">See all</a>
                                     </div>
                                 </div>
                             </div>

@@ -171,8 +171,12 @@ def dashboard():
     entrance = hive.entrance
     alarm = hive.alarm
     w = {"temp": weather(loc)['temperature']['temp'], "status": weather(loc)['status']}
-    honey_prod = (sf[-1].weight * 100) / ((hive.n_supers * 30) + 50)
-    min = (datetime.now() - sf[-1].timestamp).total_seconds() / 60.0
+    try:
+        honey_prod = (sf[-1].weight * 100) / ((hive.n_supers * 30000) + 50000)
+        min = (datetime.now() - sf[-1].timestamp).total_seconds() / 60.0
+    except:
+        flash("There are no data belonging to this specific hive.")
+        return redirect(url_for('home_blueprint.hive', hive_id=hive_id, apiary=apiary))
     if (min > 1):
         time = False
     else:
@@ -189,8 +193,6 @@ def dashboard():
         db.session.query(HiveModel).filter(HiveModel.hive_id == hive_id).update({'entrance': entrance})
         db.session.commit()
 
-    try:
-        return render_template('dashboard.html', d=dashboard, type="none")
-    except:
-        flash("There are no data belonging to this specific hive.")
-        return redirect(url_for('home_blueprint.hive', hive_id=hive_id, apiary=apiary))
+
+    return render_template('dashboard.html', d=dashboard, type="none")
+
