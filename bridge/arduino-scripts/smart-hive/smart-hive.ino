@@ -9,6 +9,7 @@
 const int weight_dataPin = 12; //dati bilancia
 const int weight_sckPin = 13; //clock bilancia
 const int ledPin = 4; //led ??
+const int buttonPin = 3;
 const int servoPin = 9;
 const int tempPin = 2;
 const int buzzerPin = 8;
@@ -47,6 +48,8 @@ int eeAddressCal = 6;
 char saved_id[6] = "none";
 char new_id[6];
 String old_id(saved_id);
+//button
+int buttonState = 0;
 
 void setup() {
   // initialize serial communications
@@ -69,7 +72,7 @@ void setup() {
   //weight
   LoadCell.begin();
   unsigned long stabilizingtime = 2000; // tare preciscion can be improved by adding a few seconds of stabilizing time
-  boolean _tare = true; //set this to false if you don't want tare to be performed in the next step
+  boolean _tare = false; //set this to false if you don't want tare to be performed in the next step
   EEPROM.get(eeAddressCal, calibrationValue);
   LoadCell.setCalFactor(calibrationValue);
   LoadCell.start(stabilizingtime, _tare);
@@ -78,6 +81,9 @@ void setup() {
   myservo.attach(servoPin);
   myservo.write(pos);
   startMillis = millis();
+
+  //button
+  pinMode(buttonPin, INPUT);
 }
 
 void loop() { //0 IDLE 1 WRITE-MES 2 WRITE-DATA 3 READ
@@ -149,7 +155,7 @@ void loop() { //0 IDLE 1 WRITE-MES 2 WRITE-DATA 3 READ
       jdata["hive_id"] = old_id;
       jdata["humidity"] = hum;
       jdata["temperature"] = temp;
-      jdata["weight"] = weight;
+      jdata["weight"] = 20000;
       jdata["association_code"] = 22222;
       iState = 0;
       serializeJson(jdata, Serial);
@@ -163,6 +169,14 @@ void loop() { //0 IDLE 1 WRITE-MES 2 WRITE-DATA 3 READ
     Serial.println();
     iState = 0;
   }
+  
+  buttonState = digitalRead(buttonPin);
+  if(buttonState == HIGH){
+    digitalWrite(ledPin,HIGH);
+  }else{
+    digitalWrite(ledPin,LOW);
+  }
+  
 }
 
 
