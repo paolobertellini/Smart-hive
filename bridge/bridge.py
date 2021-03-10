@@ -5,7 +5,7 @@ import requests
 import serial
 import serial.tools.list_ports
 
-online = 'http://blallo.ddns.net:8080'
+online = 'http://blallo.ddns.net:9090'
 locale = 'http://127.0.0.1:8080'
 davide = 'http://localhost'
 
@@ -19,9 +19,9 @@ class FBridge():
         ports = serial.tools.list_ports.comports()
         self.portname = None
         for port in ports:
-            # print("DEVICE: " + str(port.device))
-            # print("DESCRIPTION: " + str(port.description))
-            if 'usb' in port.description.lower():
+            print("DEVICE: " + str(port.device))
+            print("DESCRIPTION: " + str(port.description))
+            if 'tty' in port.description.lower():
                 self.portname = port.device
 
         print("Trying to connect to: " + self.portname)
@@ -42,8 +42,14 @@ class FBridge():
         self.inbuffer = ""
         self.data = None
         self.hive_id = None
+        # self.ser.flush()
 
         print("Waiting for data..")
+        lastchar = self.ser.read().decode('utf-8')
+        print(lastchar)
+        while (lastchar != '\n'):
+            # print("waiting data")
+            lastchar = self.ser.read().decode('utf-8')
 
         while (True):
             if self.ser is not None and self.ser.in_waiting > 0:
