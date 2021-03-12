@@ -39,9 +39,11 @@ class FBridge():
             print("BRIDGE UNABLE TO CONNECT TO SERIAL PORT")
 
         try:
-            r = requests.get(server + '/test')
-            if r.text == "200":
-                print("BRIDGE SUCCESSFULLY TEST SERVER CONNECTION")
+            r = requests.get(server + '/autentication')
+            print("BRIDGE SUCCESSFULLY CONNECTED TO " + str(server))
+            if r.text != "None":
+                self.hive_id = r.text
+                print("HIVE SUCCESSFULLY AUTENTICATED TO SERVER with id " + str(self.hive_id))
             else:
                 print("BRIDGE UNABLE TO CONNECT TO SERVER")
         except:
@@ -53,7 +55,7 @@ class FBridge():
         updateTime = time.time()
         self.inbuffer = ""
         self.data = None
-        self.hive_id = None
+
         # self.ser.flush()
 
         print("Setting up bridge..")
