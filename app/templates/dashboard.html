@@ -323,17 +323,21 @@
         <br>
         <!-- grafico -->
         <div class="col-12 mb-4">
-            <div class="card bg-yellow-alt shadow-sm">
-                <div class="card-header d-flex flex-row align-items-center flex-0">
-                    <div class="d-block">
-                        <div class="h5 font-weight-normal mb-2">Trend</div>
-
+            <div class="card border-light shadow-sm">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h2 class="h5">Data trend</h2>
+                        </div>
                     </div>
-
                 </div>
+                <br>
+                <center>
                 <div>
-                    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+                    <div id="chartContainer" style="height: 300px; width: 90%;"></div>
                 </div>
+                </center>
+                <br>
             </div>
         </div>
 
@@ -351,6 +355,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <br>
                             <div class="table-responsive">
                                   <table id="mydatatable" class="table align-items-center table-flush">
                                     <thead class="thead-light">
@@ -385,6 +390,7 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <br>
                         </div>
                     </div>
         </div>
@@ -416,7 +422,7 @@ $(document).ready(function() {
 
             var chart = new CanvasJS.Chart("chartContainer", {
                 animationEnabled: true,
-                backgroundColor: "#FCE1C3",
+                backgroundColor: "#FFFFFF",
                 zoomEnabled: true,
                 animationEnabled: true,
                 axisX: {

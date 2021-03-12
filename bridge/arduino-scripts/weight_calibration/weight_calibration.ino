@@ -17,7 +17,7 @@
        LoadCell.refreshDataSet();
        float newCalibrationValue = LoadCell.getNewCalibration(known_mass);
 */
-
+ 
 #include <HX711_ADC.h>
 #if defined(ESP8266)|| defined(ESP32) || defined(AVR)
 #include <EEPROM.h>

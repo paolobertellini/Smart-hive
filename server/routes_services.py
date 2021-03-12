@@ -5,6 +5,11 @@ from database.models import HiveModel, SensorFeed
 from server import db
 
 
+@blueprint.route('/test', methods=['GET'])
+def test():
+    return "200"
+
+
 @blueprint.route('/bridge-channel', methods=['GET', 'POST'])
 def hiveState():
     req = request.get_json(force=True)

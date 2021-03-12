@@ -21,17 +21,17 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <!-- Primary Meta Tags -->
     <title>
-        SmartHive - Presentation | AppSeed
+        SmartHive | Presentation
     </title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="title" content="Volt - Free Bootstrap 5 Admin Dashboard">
-    <meta name="author" content="Themesberg">
+    <meta name="title" content="Smarthive">
+    <meta name="author" content="Vombati">
     <meta name="description"
-          content="Volt is a free and open source Bootstrap 5 Admin Dashboard featuring 11 example pages, 100 components and 3 plugins with Vanilla JS.">
+          content="Smart hive">
     <meta name="keywords"
-          content="bootstrap 5, bootstrap, bootstrap 5 admin dashboard, free bootstrap 5 dashboard, bootstrap 5 dashboard, bootstrap 5 charts, bootstrap 5 calendar, bootstrap 5 datepicker, bootstrap 5 tables, bootstrap 5 datatable, vanilla js datatable, themesberg, themesberg dashboard, themesberg admin dashboard"/>
-    <link rel="canonical" href="https://appseed.us/admin-dashboards/flask-dashboard-volt">
+          content="iot, beehives"/>
+    <link rel="canonical" href="https://github.com/paolobertellini/Smart-hive">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -96,16 +96,88 @@
                     </div>
                 </div>
                 <ul class="navbar-nav navbar-nav-hover align-items-lg-center">
-                    <li class="nav-item mr-2">
-                        <a href="{{ url_for('home_blueprint.dashboard') }}" class="nav-link">Dashboard</a>
+
+                    <li class="nav-item mr-2  {% if 'new_apiary' in segment %} active {% endif %}">
+                        <a href="{{ url_for('home_blueprint.apiaries') }}" class="nav-link">
+                            <span>
+                                <span class="sidebar-icon"><span class="fas fa-industry"></span></span>
+                                My apiaries
+                            </span>
+                        </a>
                     </li>
-                    <li class="nav-item mr-2">
-                        <a href="{{ url_for('home_blueprint.apiaries') }}" class="nav-link">Apiary</a>
+
+                    <!-- hives -->
+                    <li class="nav-item">
+                        <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
+                              data-toggle="collapse" data-target="#submenu-app">
+                        <span>
+                            <span class="sidebar-icon"><span class="fas fa-hotel"></span></span>
+                            My hives &nbsp;
+                        </span>
+                        <span class="link-arrow"><span class="fas fa-chevron-down"></span></span>
+                        </span>
+                        <div class="multi-level collapse " role="list" id="submenu-app" aria-expanded="false">
+                            <ul class="flex-column nav">
+
+                                {% for apiary in apiaries %}
+                                    <li class="nav-item "><a class="nav-link"
+                                                             href="{{ url_for('home_blueprint.hive', apiary=apiary.apiary_id) }}"><span>{{ apiary.apiary_id }}</span></a>
+                                    </li>
+                                {% endfor %}
+
+                            </ul>
+                        </div>
                     </li>
-                    <li class="nav-item mr-2">
-                        <a href="{{ url_for('home_blueprint.hive', apiary="") }}" class="nav-link">Hives</a>
+
+                    <!-- dashboards -->
+                    <li class="nav-item">
+                        <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
+                              data-toggle="collapse" data-target="#submenu-apiaries">
+                        <span>
+                            <span class="sidebar-icon"><span class="fab fa-forumbee"></span></span>
+                            Dashboard and live data&nbsp;
+                        </span>
+                        <span class="link-arrow"><span class="fas fa-chevron-down"></span></span>
+                        </span>
+                        <div class="multi-level collapse " role="list" id="submenu-apiaries" aria-expanded="false">
+                            <ul class="flex-column nav">
+
+                                {% for apiary in apiaries %}
+
+                                    <!-- hives list -->
+                                    <li class="nav-item">
+                                        <a class="nav-link  collapsed  d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#{{ apiary.apiary_id }}">
+                                            <span>
+
+                                                Apiary: {{ apiary.apiary_id }} &nbsp;
+                                            </span>
+                                            <span class="link-arrow">
+                                                <span class="fas fa-chevron-down"></span>
+                                            </span>
+                                        </a>
+                                        <div class="multi-level collapse " role="list" id="{{ apiary.apiary_id }}" aria-expanded="false">
+                                            <ul class="flex-column nav">
+
+                                                {% for hive in find_hives(apiary.apiary_id) %}
+                                                    <li class="nav-item ">
+                                                        <a class="nav-link" href="{{ url_for('home_blueprint.dashboard', apiary=apiary.apiary_id, hive_id = hive.hive_id, type="none") }}">
+                                                            <span>Hive: {{ hive.hive_description }}</span>
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
+
+                                            </ul>
+                                        </div>
+                                    </li>
+
+                                {% endfor %}
+
+                            </ul>
+                        </div>
                     </li>
+
                 </ul>
+
             </div>
             <div class="d-flex align-items-center ml-auto">
                 <a></a>
