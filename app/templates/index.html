@@ -14,10 +14,11 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. Please contact us to request a removal.
 
 -->
+{% extends "layouts/base.html" %}
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+{% block title %} Home {% endblock %}
+{% block content %}
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <!-- Primary Meta Tags -->
     <title>
@@ -71,127 +72,8 @@
 
     <!-- NOTICE: You can use the _analytics.html partial to include production code specific code & trackers -->
 
-</head>
 
-<body>
-
-<header class="header-global">
-
-    <nav id="navbar-main" aria-label="Primary navigation"
-         class="navbar navbar-main navbar-expand-lg navbar-theme-primary pt-4 navbar-dark">
-        <div class="container position-relative">
-            <div class="navbar-collapse collapse mr-auto" id="navbar_global">
-                <div class="navbar-collapse-header">
-                    <div class="row">
-                        <div class="col-6 collapse-brand">
-                            <a href="/">
-                                <img src="static/bee.PNG" alt="Volt logo">
-                            </a>
-                        </div>
-                        <div class="col-6 collapse-close">
-                            <a href="#navbar_global" class="fas fa-times" data-toggle="collapse"
-                               data-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false"
-                               title="close" aria-label="Toggle navigation"></a>
-                        </div>
-                    </div>
-                </div>
-                <ul class="navbar-nav navbar-nav-hover align-items-lg-center">
-
-                    <li class="nav-item mr-2  {% if 'new_apiary' in segment %} active {% endif %}">
-                        <a href="{{ url_for('home_blueprint.apiaries') }}" class="nav-link">
-                            <span>
-                                <span class="sidebar-icon"><span class="fas fa-industry"></span></span>
-                                My apiaries
-                            </span>
-                        </a>
-                    </li>
-
-                    <!-- hives -->
-                    <li class="nav-item">
-                        <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
-                              data-toggle="collapse" data-target="#submenu-app">
-                        <span>
-                            <span class="sidebar-icon"><span class="fas fa-hotel"></span></span>
-                            My hives &nbsp;
-                        </span>
-                        <span class="link-arrow"><span class="fas fa-chevron-down"></span></span>
-                        </span>
-                        <div class="multi-level collapse " role="list" id="submenu-app" aria-expanded="false">
-                            <ul class="flex-column nav">
-
-                                {% for apiary in apiaries %}
-                                    <li class="nav-item "><a class="nav-link"
-                                                             href="{{ url_for('home_blueprint.hive', apiary=apiary.apiary_id) }}"><span>{{ apiary.apiary_id }}</span></a>
-                                    </li>
-                                {% endfor %}
-
-                            </ul>
-                        </div>
-                    </li>
-
-                    <!-- dashboards -->
-                    <li class="nav-item">
-                        <span class="nav-link  collapsed  d-flex justify-content-between align-items-center"
-                              data-toggle="collapse" data-target="#submenu-apiaries">
-                        <span>
-                            <span class="sidebar-icon"><span class="fab fa-forumbee"></span></span>
-                            Dashboard and live data&nbsp;
-                        </span>
-                        <span class="link-arrow"><span class="fas fa-chevron-down"></span></span>
-                        </span>
-                        <div class="multi-level collapse " role="list" id="submenu-apiaries" aria-expanded="false">
-                            <ul class="flex-column nav">
-
-                                {% for apiary in apiaries %}
-
-                                    <!-- hives list -->
-                                    <li class="nav-item">
-                                        <a class="nav-link  collapsed  d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#{{ apiary.apiary_id }}">
-                                            <span>
-
-                                                Apiary: {{ apiary.apiary_id }} &nbsp;
-                                            </span>
-                                            <span class="link-arrow">
-                                                <span class="fas fa-chevron-down"></span>
-                                            </span>
-                                        </a>
-                                        <div class="multi-level collapse " role="list" id="{{ apiary.apiary_id }}" aria-expanded="false">
-                                            <ul class="flex-column nav">
-
-                                                {% for hive in find_hives(apiary.apiary_id) %}
-                                                    <li class="nav-item ">
-                                                        <a class="nav-link" href="{{ url_for('home_blueprint.dashboard', apiary=apiary.apiary_id, hive_id = hive.hive_id, type="none") }}">
-                                                            <span>Hive: {{ hive.hive_description }}</span>
-                                                        </a>
-                                                    </li>
-                                                {% endfor %}
-
-                                            </ul>
-                                        </div>
-                                    </li>
-
-                                {% endfor %}
-
-                            </ul>
-                        </div>
-                    </li>
-
-                </ul>
-
-            </div>
-            <div class="d-flex align-items-center ml-auto">
-                <a></a>
-                <a href="{{ url_for('home_blueprint.register') }}" target="_blank"
-                   class="btn btn-secondary text-dark mr-md-3"> <span class="fas fa-rocket mr-2"></span>Register</a>
-
-
-            </div>
-        </div>
-    </nav>
-
-</header>
-
-<main>
+<main class="content">
 
     <div class="preloader bg-soft flex-column justify-content-center align-items-center">
         <img class="loader-element animate__animated animate__jackInTheBox" src="static/bee.PNG" height="60"
@@ -209,7 +91,8 @@
                         <h2 class="h3 text-muted mr-3">Welcome to the new revolution of beekeeping!</h2>
                     </div>
                     <!-- Button login/logout -->
-                    <div class="d-flex justify-content-center align-items-end flex-wrap mb-6">
+                    <center>
+                    <div class="d-flex justify-content-center align-items-end flex-wrap mb-6 center">
                         {% if current_user.is_authenticated %}
                             <a href="{{ url_for('home_blueprint.logout') }}"
                                class="btn btn-secondary text-dark mr-4 mb-3 mb-lg-0">Logout {{ current_user }} <span
@@ -218,17 +101,24 @@
                             <a href="{{ url_for('home_blueprint.login') }}"
                                class="btn btn-secondary text-dark mr-4 mb-3 mb-lg-0">Login</a>
                         {% endif %}
+                        <a href="{{ url_for('home_blueprint.register') }}" target="_blank"
+                            class="btn btn-secondary text-dark mr-4 mb-3 mb-lg-0"><span class="fas fa-rocket mr-2"></span>Register</a>
                     </div>
+                    </center>
                     <div class="d-flex justify-content-center flex-column mb-6">
-                        <a href="#" target="_blank">
-                            <img src="static/assets/img/v1.png" class="d-block mx-auto mb-3" height="100" width="120"
-                                 alt="Themesberg Logo">
-                            <span class="text-muted font-small">
-                                &copy; Vombati
-                                </span>
+
+                        <a>
+                            <img src="static/assets/img/vombati.svg"  height="100">
                         </a>
-                        <a href="#">Coded by PaDaGI</a>
                     </div>
+                    <center>
+                        <span class="text-muted font-small">&copy; Vombati </span>
+                        <a>Coded by PaDaGI</a>
+                    </center>
+
+
+
+
                 </div>
             </div>
         </div>
@@ -238,10 +128,10 @@
             </svg>
         </figure>
     </section>
-    <div class="section pt-0">
+    <div class="section">
         <div class="container mt-n10 mt-lg-n12 z-2">
             <div class="row justify-content-center">
-                <div class="col-12">
+                <div>
                     <img src="static/beeflower.png" alt="Flower presentation">
                 </div>
             </div>
@@ -455,53 +345,6 @@
     </section>
 </main>
 
-<footer class="footer py-6 bg-primary text-white">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <img class="navbar-brand-dark mb-4" height="35" src="/static/bee.PNG"
-                     alt="Logo light">
-                <p>Smart Hive is a premium solution for beekeeping bringing together beautiful UI/UX design and functional
-                    elements.</p>
-            </div>
-
-            <div class="col-12 col-md-4 mb-5 mb-lg-0">
-                <span class="h5 mb-3 d-block">Subscribe</span>
-                <form action="#">
-                    <div class="form-row mb-2">
-                        <div class="col-12">
-                            <input type="email" class="form-control mb-2" placeholder="example@company.com" name="email"
-                                   aria-label="Subscribe form" required>
-                        </div>
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-secondary text-dark shadow-soft btn-block"
-                                    data-loading-text="Sending">
-                                <span>Subscribe</span>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-                <p class="text-muted font-small m-0">We’ll never share your details. See our <a class="text-white"
-                                                                                                href="#">Privacy
-                    Policy</a></p>
-            </div>
-        </div>
-        <hr class="bg-gray my-5">
-        <div class="row">
-            <div class="col mb-md-0">
-                <a href="#" target="_blank">
-                    <img src="static/assets/img/v1.png" class="d-block mx-auto mb-3" height="100" width="120" alt="Themesberg Logo"></a>
-                <div class="d-flex text-center justify-content-center align-items-center" role="contentinfo">
-                    <p class="font-weight-normal font-small mb-0">
-                        &copy; Vombati 2019-<span class="current-year">2020</span> - coded by <a target="_blank">PaDaGi</a>.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
-
 {% include 'includes/scripts.html' %}
-
-</body>
+{% endblock content %}
 </html>
