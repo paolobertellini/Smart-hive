@@ -8,15 +8,15 @@ from datetime import datetime
 
 #thresholds
 int_ext_t = 3
-
+std_interval = 60
+alert_interval = 10
 
 def alertHives(hive):
 
     hives = HiveModel.query.filter_by(apiary_id=hive.apiary_id, entrance=False).all()
     for hive in hives:
         db.session.query(HiveModel).filter(HiveModel.hive_id == hive.hive_id).update({'entrance': True})
-        db.session.commit()
-        db.session.query(HiveModel).filter(HiveModel.hive_id == hive.hive_id).update({'sound': True})
+        db.session.query(HiveModel).filter(HiveModel.hive_id == hive.hive_id).update({'alarm': True})
         db.session.commit()
 
 def swarmDetection(hive_id):
@@ -30,20 +30,20 @@ def swarmDetection(hive_id):
         #           interna         -2                        esterna    +2
         delta = (now.temperature - before.temperature) - (now.ext_temperature - before.ext_temperature)
         if delta >= 1: # solo la temperatura interna sta aumentando
-            if hive.update_freq == 1200:
+            if hive.update_freq == std_interval:
                 # salvo il timestamp di inizio allerta
                 db.session.query(HiveModel).filter(HiveModel.hive_id == hive_id).update({'alert_period_begin': now.timestamp})
-                db.session.commit()
                 # incremento la frequenza di campionamento
-                db.session.query(HiveModel).filter(HiveModel.hive_id == hive_id).update({'update_freq': 30})
+                db.session.query(HiveModel).filter(HiveModel.hive_id == hive_id).update({'update_freq': alert_interval})
                 db.session.commit()
 
-        if now.temperature < before.temperature: # la temperatura interna sta diminuendo
+        if now.temperature < before.temperature and hive.update_freq != std_interval: # la temperatura interna sta diminuendo
 
-            db.session.query(HiveModel).filter(HiveModel.hive_id == hive_id).update({'update_freq': 120})
+            db.session.query(HiveModel).filter(HiveModel.hive_id == hive_id).update({'update_freq': std_interval})
             db.session.commit()
-            duration = (hive.alert_period_begin - now.timestamp).total_seconds() / 60.0
-            if 7 < duration < 25:
+            duration = (now.timestamp - hive.alert_period_begin).total_seconds() #/ 60.0
+            print(duration)
+            if 25 < duration < 100:
                 print("swarm detected")
                 print(duration)
                 alertHives(hive)

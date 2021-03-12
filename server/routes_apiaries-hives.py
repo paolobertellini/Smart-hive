@@ -89,7 +89,7 @@ def hive():
             flash("Select an Apiary before to insert a new hive")
             return redirect(url_for('home_blueprint.hive', apiary=apiary_selected))
         hive = HiveModel(apiary_id=apiary_selected, user_id=user_id, hive_description=hive_description,
-                         association_code=association_code, n_supers=n_supers, update_freq=12, alert_period_begin=None)
+                         association_code=association_code, n_supers=n_supers, update_freq=60, alert_period_begin=None)
         if (db.session.query(HiveModel.hive_id).filter_by(association_code=hive.association_code).scalar() is not None):
             flash("Control the correctness of the association code or contact the assistence.")
             return redirect(url_for('home_blueprint.hive', apiary=apiary_selected))

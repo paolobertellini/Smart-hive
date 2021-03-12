@@ -88,6 +88,7 @@ class FBridge():
                                     ser_resp = json.loads(r.text)
                                     duration = 500
                                     hiveFeedInterval = ser_resp["update_freq"]
+                                    print(hiveFeedInterval)
                                     json_comando = "{\"type\":\"C\",\"entrance\":\"" + str(
                                         ser_resp["entrance"]) + "\", \"alarm\":\"" + str(
                                         ser_resp["alarm"]) + "\", \"duration\":\"" + str(duration) + "\"}"
