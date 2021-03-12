@@ -23,7 +23,7 @@ class FBridge():
             for port in ports:
                 # print("DEVICE: " + str(port.device))
                 # print("DESCRIPTION: " + str(port.description))
-                if 'usb' in port.description.lower():
+                if 'arduino' in port.description.lower():
                     self.portname = port.device
             # print("Trying to connect to: " + self.portname)
         except:
@@ -75,6 +75,7 @@ class FBridge():
                         try:
                             # print("BRIDGE RICEVE RAW DATA: " + self.inbuffer)
                             self.data = json.loads(self.inbuffer)
+                            self.inbuffer = ""
                         except:
                             print("ATTENTION! bridge unable to interpret json")
 
@@ -94,7 +95,6 @@ class FBridge():
 
                                     self.ser.write(json_comando.encode())
                                     self.ser.write(b'\n')
-                                    self.inbuffer = ""
                                     updateTime = time.time()
 
                             except:
@@ -120,7 +120,6 @@ class FBridge():
                                 else:
                                     print("ATTENTION! Communication error")
 
-                                self.inbuffer = ""
                                 hiveFeedTime = time.time()
 
                             except:
