@@ -9,10 +9,9 @@ online = 'http://smart-hive.ddns.net:8080'
 local = 'http://127.0.0.1:8080'
 davide = 'http://localhost'
 
-server = local
+server = online
 
-updateInterval = 10
-hiveFeedInterval = 120
+
 
 class FBridge():
     def setup(self):
@@ -39,23 +38,22 @@ class FBridge():
             print("BRIDGE UNABLE TO CONNECT TO SERIAL PORT")
 
         try:
-            r = requests.get(server + '/autentication')
-            print("BRIDGE SUCCESSFULLY CONNECTED TO " + str(server))
-            if r.text != "None":
-                self.hive_id = r.text
-                print("HIVE SUCCESSFULLY AUTENTICATED TO SERVER with id " + str(self.hive_id))
+            r = requests.get(server + '/test')
+            if r.text == "200":
+                print("BRIDGE SUCCESSFULLY TEST SERVER CONNECTION")
             else:
                 print("BRIDGE UNABLE TO CONNECT TO SERVER")
         except:
             print("BRIDGE UNABLE TO CONNECT TO SERVER")
 
-    def loop(self):
+    def loop(self, updateInterval=2, hiveFeedInterval = 5):
 
         hiveFeedTime = time.time()
         updateTime = time.time()
+
         self.inbuffer = ""
         self.data = None
-
+        self.hive_id = None
         # self.ser.flush()
 
         print("Setting up bridge..")
@@ -78,7 +76,7 @@ class FBridge():
                             # print("BRIDGE RICEVE RAW DATA: " + self.inbuffer)
                             self.data = json.loads(self.inbuffer)
                         except:
-                            pass
+                            print("ATTENTION! bridge unable to interpret json")
 
                         # update hive status
                         if time.time() > updateTime + updateInterval and self.data is not None:
@@ -88,12 +86,12 @@ class FBridge():
                                     r = requests.get(server + '/bridge-channel', json=id)
                                     ser_resp = json.loads(r.text)
                                     duration = 500
-                                    json_comando = "{\"type\":\"C\"," \
-                                                   "\"entrance\":\"" + str(ser_resp["entrance"]) + "\"," \
-                                                   " \"alarm\":\"" + str(ser_resp["alarm"]) + "\", " \
-                                                   "\"duration\":\"" + str(duration) + "\"}"
-                                    print("B --> A: " + json_comando)
                                     hiveFeedInterval = ser_resp["update_freq"]
+                                    json_comando = "{\"type\":\"C\",\"entrance\":\"" + str(
+                                        ser_resp["entrance"]) + "\", \"alarm\":\"" + str(
+                                        ser_resp["alarm"]) + "\", \"duration\":\"" + str(duration) + "\"}"
+                                    print("B --> A: " + json_comando)
+
                                     self.ser.write(json_comando.encode())
                                     self.ser.write(b'\n')
                                     self.inbuffer = ""
@@ -109,12 +107,16 @@ class FBridge():
                                     print("A --> B [DATA]: " + str(self.data))
                                     r1 = requests.get(server + '/new-sensor-feed', json=self.data)
                                     ser_resp = json.loads(r1.text)
-                                    if ser_resp["resp"] != 200:
-                                        print("ATTENTION! Unable to save sensor feed on database")
+                                    if ser_resp["hive_id"] is not None:
+                                        json_id = "{\"type\":\"A\",\"id\":\"" + str(ser_resp["hive_id"]) + "\"}"
+                                        self.hive_id = str(ser_resp["hive_id"])
+                                        self.ser.write(json_id.encode())
+                                        self.ser.write(b'\n')
+                                        # print("RECEIVED HIVE ID: " + json_id)
                                     else:
                                         print("ATTENTION! Hive not autenticated on the server")
                                 elif (self.data["type"] == "E"):
-                                    print("ARDUINO --> BRIDGE [ERROR]: " + self.data["desc"])
+                                    print("A --> B [ERROR]: " + self.data["desc"])
                                 else:
                                     print("ATTENTION! Communication error")
 
