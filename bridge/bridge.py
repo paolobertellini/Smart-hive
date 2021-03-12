@@ -109,12 +109,8 @@ class FBridge():
                                     print("A --> B [DATA]: " + str(self.data))
                                     r1 = requests.get(server + '/new-sensor-feed', json=self.data)
                                     ser_resp = json.loads(r1.text)
-                                    if ser_resp["hive_id"] is not None:
-                                        json_id = "{\"type\":\"A\",\"id\":\"" + str(ser_resp["hive_id"]) + "\"}"
-                                        self.hive_id = str(ser_resp["hive_id"])
-                                        self.ser.write(json_id.encode())
-                                        self.ser.write(b'\n')
-                                        # print("RECEIVED HIVE ID: " + json_id)
+                                    if ser_resp["resp"] != 200:
+                                        print("ATTENTION! Unable to save sensor feed on database")
                                     else:
                                         print("ATTENTION! Hive not autenticated on the server")
                                 elif (self.data["type"] == "E"):
