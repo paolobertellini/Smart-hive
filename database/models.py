@@ -29,7 +29,7 @@ class HiveModel(db.Model):
     association_code = Column(String(80), nullable=False)
     entrance = Column(Boolean, default=False)
     alarm = Column(Boolean, default=False)
-    update_freq = Column(Integer, default=1200)
+    update_freq = Column(Integer)
     alert_period_begin = db.Column(db.DateTime(timezone=True))
 
 

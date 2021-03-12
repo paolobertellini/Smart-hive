@@ -4,14 +4,12 @@ from app import blueprint
 from database.models import ApiaryModel, HiveModel, SensorFeed
 from server import db
 
-from swarmDetection import swarmDetection
-from utility import weather
+from swarmDetection.swarmDetection import swarmDetection
+from utility.weather import weather
 
-@blueprint.route('/autentication', methods=['GET'])
-def autentication():
-    req = request.get_json(force=True)
-    hive_id = db.session.query(HiveModel.hive_id).filter_by(association_code=req['association_code']).scalar()
-    return {'hive_id':hive_id}
+@blueprint.route('/test', methods=['GET'])
+def test():
+    return '200'
 
 
 @blueprint.route('/bridge-channel', methods=['GET', 'POST'])
@@ -32,7 +30,7 @@ def newSensorFeed():
 
     user_id = HiveModel.query.filter_by(hive_id=hive_id).first().user_id
     apiary_id = HiveModel.query.filter_by(hive_id=hive_id).first().apiary_id
-    loc = ApiaryModel.query.filter_by(apiaty_id=apiary_id).first().location
+    loc = ApiaryModel.query.filter_by(apiary_id=apiary_id).first().location
 
     sensorFeed = SensorFeed(hive_id=req['hive_id'],
                             temperature=req['temperature'],
@@ -45,4 +43,4 @@ def newSensorFeed():
 
     swarmDetection(hive_id)
 
-    return {'resp':200}
+    return {'hive_id': hive_id}
