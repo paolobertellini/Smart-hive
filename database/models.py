@@ -29,6 +29,8 @@ class HiveModel(db.Model):
     association_code = Column(String(80), nullable=False)
     entrance = Column(Boolean, default=False)
     alarm = Column(Boolean, default=False)
+    update_freq = Column(Integer, default=1200)
+    alert_period_begin = db.Column(db.DateTime(timezone=True))
 
 
 class SensorFeed(db.Model):
@@ -38,6 +40,7 @@ class SensorFeed(db.Model):
     humidity = db.Column(db.Integer)
     weight = db.Column(db.Integer)
     timestamp = db.Column(db.DateTime(timezone=True), primary_key=True, default=datetime.now)
+    ext_temperature = db.Column(db.Integer)
 
 
 class User(db.Model, UserMixin):

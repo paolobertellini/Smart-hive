@@ -5,14 +5,14 @@ import requests
 import serial
 import serial.tools.list_ports
 
-online = 'http://smart-hive.ddns.net:9090'
+online = 'http://smart-hive.ddns.net:8080'
 local = 'http://127.0.0.1:8080'
 davide = 'http://localhost'
 
 server = local
 
-updateInterval = 2
-hiveFeedInterval = 5
+updateInterval = 10
+hiveFeedInterval = 120
 
 class FBridge():
     def setup(self):
@@ -86,10 +86,12 @@ class FBridge():
                                     r = requests.get(server + '/bridge-channel', json=id)
                                     ser_resp = json.loads(r.text)
                                     duration = 500
-                                    json_comando = "{\"type\":\"C\",\"entrance\":\"" + str(
-                                        ser_resp["entrance"]) + "\", \"alarm\":\"" + str(
-                                        ser_resp["alarm"]) + "\", \"duration\":\"" + str(duration) + "\"}"
+                                    json_comando = "{\"type\":\"C\"," \
+                                                   "\"entrance\":\"" + str(ser_resp["entrance"]) + "\"," \
+                                                   " \"alarm\":\"" + str(ser_resp["alarm"]) + "\", " \
+                                                   "\"duration\":\"" + str(duration) + "\"}"
                                     print("B --> A: " + json_comando)
+                                    hiveFeedInterval = ser_resp["update_freq"]
                                     self.ser.write(json_comando.encode())
                                     self.ser.write(b'\n')
                                     self.inbuffer = ""

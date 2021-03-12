@@ -169,7 +169,7 @@ void loop() { //0 IDLE 1 WRITE-MES 2 WRITE-DATA 3 READ
 void openServo() {
   currentMillis = millis();
   if (currentMillis - startMillis >= 15) {
-    for (pos = 0; pos <= 180; pos += 1) // goes from 0 degrees to 180 degrees
+    for (pos = 0; pos <= 90; pos += 1) // goes from 0 degrees to 180 degrees
     {
       myservo.write(pos);
     }
@@ -179,7 +179,7 @@ void openServo() {
 void closeServo() {
   currentMillis = millis();
   if (currentMillis - startMillis >= 15) {
-    for (pos = 180; pos >= 1; pos -= 1) // goes from 0 degrees to 180 degrees
+    for (pos = 90; pos >= 1; pos -= 1) // goes from 0 degrees to 180 degrees
     {
       myservo.write(pos);
     }
