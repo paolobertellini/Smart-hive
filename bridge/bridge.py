@@ -40,7 +40,7 @@ class FBridge():
         try:
             r = requests.get(server + '/test')
             if r.text == "200":
-                print("BRIDGE SUCCESSFULLY TEST SERVER CONNECTION")
+                print("BRIDGE SUCCESSFULLY TEST SERVER CONNECTION TO: " + server)
             else:
                 print("BRIDGE UNABLE TO CONNECT TO SERVER")
         except:
