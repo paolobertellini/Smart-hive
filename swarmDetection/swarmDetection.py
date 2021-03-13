@@ -44,21 +44,23 @@ def swarmDetection(hive_id):
 
         # swarming end
         if now.temperature < before.temperature and hive.update_freq != std_interval: # la temperatura interna sta diminuendo
-            swarm_event = db.session.query(SwarmEvent).filter(hive_id=hive_id)
-
-            swarm_event.update({'alert_period_end': now.timestamp})
-            swarm_event.update({'temperature_variation': swarm_event.temperature_variation - now.temperature})
-            swarm_event.update({'weight_variation': now.weight - swarm_event.weight_variation})
-
-            duration = (now.timestamp - swarm_event.alert_period_begin).total_seconds() #/ 60.0
+            swarm_events = SwarmEvent.query.filter_by(hive_id=hive_id).all()
+            swarm_event_id=swarm_events[-1].swarm_id
+            db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event_id).update({'alert_period_end': now.timestamp})
+            old_temperature = swarm_events[-1].temperature_variation
+            db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event_id).update({'temperature_variation': old_temperature - now.temperature})
+            old_weight = swarm_events[-1].weight_variation
+            db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event_id).update({'weight_variation': now.weight - old_weight})
+            alert_period_begin = swarm_events[-1].alert_period_begin
+            duration = (now.timestamp - alert_period_begin).total_seconds() #/ 60.0
 
             print(duration)
-            if 25 < duration < 100 and now.weight - swarm_event.weight_variation < 0:
+            if 25 < duration < 100 and now.weight - old_weight < 0:
                 print("swarm detected")
-                swarm_event.update({'real': True})
-                return True
+                db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event_id).update({'real': True})
+
             else:
-                swarm_event.update({'real': False})
+                db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event_id).update({'real': False})
                 print("false positive")
 
             db.session.query(HiveModel).filter(HiveModel.hive_id == hive_id).update({'update_freq': std_interval})

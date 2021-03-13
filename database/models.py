@@ -35,9 +35,10 @@ class HiveModel(db.Model):
 
 class SwarmEvent(db.Model):
     __tablename__ = 'SwarmEvent'
+    swarm_id = Column(db.Integer, primary_key=True)
     user_id = Column(String(80))
-    hive_id = Column(Integer, primary_key=True)
-    alert_period_begin = db.Column(db.DateTime(timezone=True), primary_key=True)
+    hive_id = Column(Integer)
+    alert_period_begin = db.Column(db.DateTime(timezone=True))
     alert_period_end = db.Column(db.DateTime(timezone=True))
     temperature_variation = Column(Integer)
     weight_variation = Column(Integer)
