@@ -31,12 +31,12 @@
             <table id="apiarytable" class="table table-hover">
                 <thead>
                 <tr>
-                    <th class="border-0">Id Swarm</th>
+                    <th class="border-0">Id</th>
                     <th class="border-0">Id Hive</th>
                     <th class="border-0">Started</th>
                     <th class="border-0">Ended</th>
-                    <th class="border-0">Temperature variation</th>
-                    <th class="border-0">Weight variation</th>
+                    <th class="border-0">T var</th>
+                    <th class="border-0">W var</th>
                     <th class="border-0">Real</th>
                     <th class="border-0">Settings</th>
                 </tr>
@@ -46,10 +46,7 @@
                 {% for swarm in swarmings %}
                     <tr>
                         <td class="border-0">
-                                <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
-                                   class="font-weight-bold">
-                                    {{ swarm.swarm_id }}
-                                </a>
+                            { swarm.swarm_id }}
                         </td>
                         <td class="border-0">
                             <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
@@ -60,13 +57,13 @@
                         <td class="border-0">
                             <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
                                class="font-weight-bold">
-                                {{ swarm.alert_period_begin }}
+                                {{ swarm.alert_period_begin.strftime("%b %d %Y %H:%M:%S") }}
                             </a>
                         </td>
                         <td class="border-0">
                             <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
                                class="font-weight-bold">
-                                {{ swarm.alert_period_end }}
+                                {{ swarm.alert_period_end.strftime("%b %d %Y %H:%M:%S") }}
                             </a>
                         </td>
                         <td class="border-0">
