@@ -1,0 +1,201 @@
+
+
+
+{% extends "layouts/base.html" %}
+
+{% block title %} Swarming events {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+
+    <main class="content">
+
+        {% include 'includes/navigation.html' %}
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+        <br>
+        <!-- swarming list -->
+        <div class="card card-body bg-white border-light shadow-sm mb-4">
+            <h2 class="h5 mb-4">Your swarm events</h2>
+            Here you can see all the swarming events of all your hives
+            <div><br></div>
+            <div class="card card-body border-light shadow-sm table-wrapper table-responsive pt-0">
+            <br>
+            <table id="apiarytable" class="table table-hover">
+                <thead>
+                <tr>
+                    <th class="border-0">Id Hive</th>
+                    <th class="border-0">Started</th>
+                    <th class="border-0">Ended</th>
+                    <th class="border-0">Temperature variation</th>
+                    <th class="border-0">Weight variation</th>
+                    <th class="border-0">Real</th>
+                    <th class="border-0">Settings</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Item -->
+                {% for swarm in swarmings %}
+                    <tr>
+                        <td class="border-0">
+                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = hive.hive_id) }}"
+                               class="font-weight-bold">
+                                {{ swarm.hive_id }}
+                            </a>
+                        </td>
+                        <td class="border-0">
+                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = hive.hive_id) }}"
+                               class="font-weight-bold">
+                                {{ swarm.alert_period_begin }}
+                            </a>
+                        </td>
+                        <td class="border-0">
+                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = hive.hive_id) }}"
+                               class="font-weight-bold">
+                                {{ swarm.alert_period_end }}
+                            </a>
+                        </td>
+                        <td class="border-0">
+                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = hive.hive_id) }}"
+                               class="font-weight-bold">
+                                {{ swarm.temperature_variation }}
+                            </a>
+                        </td>
+                        <td class="border-0">
+                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = hive.hive_id) }}"
+                               class="font-weight-bold">
+                                {{ swarm.weight_variation }}
+                            </a>
+                        </td>
+                        <td class="border-0">
+                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = hive.hive_id) }}"
+                               class="font-weight-bold">
+                                {{ swarm.real }}
+                            </a>
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="icon icon-sm">
+                                        <span class="fas fa-ellipsis-h icon-dark"></span>
+                                    </span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item"
+                                       href="{{ url_for('home_blueprint.dashboard', apiary=hive.apiary_id, hive_id = hive.hive_id, type = "none") }}"><span
+                                            class="fas fa-eye mr-2"></span>View Details</a>
+
+                                    <a class="dropdown-item text-danger"
+                                       href="{{ url_for('home_blueprint.removeHive', to_remove = hive.hive_id, apiary = hive.apiary_id) }}"><span
+                                            class="fas fa-trash-alt mr-2"></span>Remove</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <!-- Item -->
+
+
+                </tbody>
+            </table>
+        </div>
+        </div>
+
+        <div class="card card-body bg-white border-light shadow-sm mb-4">
+            <h2 class="h5 mb-4">Insert new undetected swarm event</h2>
+            <form method="post" action="" class="mt-4">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div>
+                            <label>Hive</label>
+                            {{ form.id_hive(placeholder="Hive id", class="form-control") }}
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div>
+                            <label>Date</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1"><span
+                                        class="fas fa-calendar-alt"></span></span>
+                                {{ form.alert_date(placeholder="Swarming event date", class="form-control") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div>
+                            <label>Beginning</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1"><span
+                                        class="fas fa-clock"></span></span>
+                                {{ form.alert_start_time(placeholder="Swarming event start time", class="form-control") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div>
+                            <label>End</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon2"><span
+                                        class="fas fa-clock"></span></span>
+                                {{ form.alert_end_time(placeholder="Swarming event end time", class="form-control") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div>
+                            <label>Temperature variation</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1"><span
+                                        class="fas fa-temperature-high"></span></span>
+                                {{ form.temperature_variation(placeholder="Temperature variation", class="form-control") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div>
+                            <label>Weight variation</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1"><span
+                                        class="fas fa-balance-scale"></span></span>
+                                {{ form.weight_variation(placeholder="Weight variation", class="form-control") }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button type="submit" name="new_swarming_event" class="btn btn-primary">Insert new swarm event</button>
+                </div>
+            </form>
+        </div>
+
+        {% include 'includes/footer.html' %}
+
+    </main>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <script>
+                    swal('Warning', '{{ message }}', "warning")
+                </script>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <script>
+        $(document).ready(function () {
+            $('#apiarytable').DataTable();
+        });
+    </script>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

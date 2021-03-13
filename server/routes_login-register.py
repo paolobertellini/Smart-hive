@@ -11,6 +11,8 @@ from database.models import User
 from server import db
 from utility.util import verify_pass
 
+from utility.mail import send_email
+
 
 @blueprint.route('/login', methods=['GET', 'POST'])
 def login():
@@ -66,6 +68,7 @@ def register():
         user = User(**request.form)
         db.session.add(user)
         db.session.commit()
+        send_email("Welcome in smart hive", "Test", email)
 
         return render_template('login-register/register.html',
                                msg='User created please <a href="/login">login</a>',

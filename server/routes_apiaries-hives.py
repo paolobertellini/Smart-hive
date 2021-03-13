@@ -10,8 +10,8 @@ from flask_login import (
 )
 
 from app import blueprint
-from app.forms import CreateApiaryForm, CreateHiveForm
-from database.models import ApiaryModel, HiveModel, SensorFeed
+from app.forms import CreateApiaryForm, CreateHiveForm, CreateSwarmEventForm
+from database.models import ApiaryModel, HiveModel, SensorFeed, SwarmEvent
 from server import db
 from utility.weather import weather
 
@@ -196,3 +196,42 @@ def dashboard():
 
     return render_template('dashboard.html', d=dashboard, type="none")
 
+
+# ----------------- SWARMING EVENTS ----------------- #
+
+@blueprint.route('/swarming', methods=['POST', 'GET'])
+@login_required
+def swarming():
+    swarmings = SwarmEvent.query.filter_by(user_id=current_user.username).all()
+    hives = HiveModel.query.filter_by(user_id=current_user.username).all()
+    ids = []
+    for el in hives:
+        ids.append(el.hive_id)
+    swarming_form = CreateSwarmEventForm(request.form)
+    swarming_form.id_hive.choices = ids
+    if 'new_swarming_event' in request.form:
+
+        # read form data
+        hive_id = request.form['id_hive']
+        alert_date = request.form['alert_date']
+        alert_begin = request.form['alert_start_time']
+        alert_end = request.form['alert_end_time']
+        t_var = request.form['temperature_variation']
+        w_var = request.form['weight_variation']
+
+        swarm_event = SwarmEvent(user_id=current_user.user_id, hive_id=hive_id,
+                                 alert_period_begin=alert_begin, alert_period_end=alert_end,
+                                 temperature_variation=t_var, weight_variation=w_var, real=True)
+
+        try:
+            db.session.add(swarm_event)
+            db.session.commit()
+        except Exception as e:
+            flash("Impossible to add swarm event to database")
+            return redirect(url_for('home_blueprint.swarming'))
+
+        return redirect(url_for('home_blueprint.swarming'))
+
+    if not current_user.is_authenticated:
+        return render_template('swarming.html', form=swarming_form, swarmings=swarmings)
+    return render_template('swarming.html', form=swarming_form, swarmings=swarmings)

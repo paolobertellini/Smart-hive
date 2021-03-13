@@ -4,8 +4,8 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from flask_wtf import FlaskForm
-from wtforms import TextField, PasswordField, SelectField
-from wtforms.validators import Email, DataRequired
+from wtforms import TextField, PasswordField, SelectField, DateField
+from wtforms.validators import Email, DataRequired, Required
 
 
 ## login and registration
@@ -28,7 +28,7 @@ class CreateApiaryForm(FlaskForm):
 
 class CreateHiveForm(FlaskForm):
     id_hive = TextField('Hive id', id='hive_id_create', validators=[DataRequired()])
-    id_apiary = SelectField('Apiary id', id='apiary_id_create', validators=[DataRequired()])  # forse non è necessario
+    id_apiary = SelectField('Apiary id', id='apiary_id_create', validators=[DataRequired()])
     hive_description = TextField('Hive description', id='hive_description_create', validators=[DataRequired()])
     n_supers = TextField('Number of supers', id='n_supers_input', validators=[DataRequired()])
     association_code = TextField('Association code', id='association_code_input', validators=[DataRequired()])
@@ -36,3 +36,13 @@ class CreateHiveForm(FlaskForm):
 
 class CreateAlarmForm(FlaskForm):
     duration = TextField('Sound duration', id='alarm_duration')
+
+
+class CreateSwarmEventForm(FlaskForm):
+    __tablename__ = 'SwarmEvent'
+    id_hive = SelectField('Hive id', id='hive_id_create', validators=[DataRequired()])
+    alert_date = DateField('Swarming date', id='alert-date', format='%m/%d/%y', validators=[Required()])
+    alert_start_time = TextField('Start time', id='alert-start-time', validators=[Required()])
+    alert_end_time = TextField('End time', id='alert-end-time', validators=[Required()])
+    temperature_variation = TextField('Temperature variation', id='temp_var_create')
+    weight_variation = TextField('Weight variation', id='temp_var_create')
