@@ -41,8 +41,8 @@ def alertEndHives(hive):
         weight_before = SwarmCommunication.query.filter_by(hive_id=hive.hive_id,
                                                            swarm_id=swarm_id).first().weight_variation
 
-        db.session.query(SwarmCommunication).filter(SwarmCommunication.hive_id == hive.hive_id,
-                                                    SwarmCommunication.swarm_id == swarm_id).update()
+        # db.session.query(SwarmCommunication).filter(SwarmCommunication.hive_id == hive.hive_id,
+        #                                             SwarmCommunication.swarm_id == swarm_id).update()
 
         if weight_now - weight_before < 500:
             db.session.query(HiveModel).filter(HiveModel.hive_id == hive.hive_id).update({'entrance': False})
@@ -98,6 +98,7 @@ def swarmDetection(hive_id):
 
             db.session.query(HiveModel).filter(HiveModel.hive_id == hive_id).update({'update_freq': std_interval})
             db.session.commit()
+            alertEndHives(hive)
             print("Alert period ended")
 
     return False
