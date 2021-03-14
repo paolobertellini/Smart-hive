@@ -46,7 +46,7 @@
                 {% for swarm in swarmings %}
                     <tr>
                         <td class="border-0">
-                            { swarm.swarm_id }}
+                            {{ swarm.swarm_id }}
                         </td>
                         <td class="border-0">
                             <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
@@ -63,7 +63,9 @@
                         <td class="border-0">
                             <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
                                class="font-weight-bold">
+                                {% if swarm.alert_period_end %}
                                 {{ swarm.alert_period_end.strftime("%b %d %Y %H:%M:%S") }}
+                                {% endif %}
                             </a>
                         </td>
                         <td class="border-0">
@@ -128,9 +130,9 @@
                         <div>
                             <label>Date</label>
                             <div class="input-group">
-                                <span class="input-group-text" id="basic-addon1"><span
+                                <span class="input-group-text " id="basic-addon1"><span
                                         class="fas fa-calendar-alt"></span></span>
-                                {{ form.alert_date(placeholder="Swarming event date", class="form-control") }}
+                                {{ form.alert_date(placeholder="Swarming event date", class="form-control", type="date") }}
                             </div>
                         </div>
                     </div>
@@ -140,7 +142,7 @@
                             <div class="input-group">
                                 <span class="input-group-text" id="basic-addon1"><span
                                         class="fas fa-clock"></span></span>
-                                {{ form.alert_start_time(placeholder="Swarming event start time", class="form-control") }}
+                                {{ form.alert_start_time(placeholder="Swarming event start time", class="form-control", type="time") }}
                             </div>
                         </div>
                     </div>
@@ -150,7 +152,7 @@
                             <div class="input-group">
                                 <span class="input-group-text" id="basic-addon2"><span
                                         class="fas fa-clock"></span></span>
-                                {{ form.alert_end_time(placeholder="Swarming event end time", class="form-control") }}
+                                {{ form.alert_end_time(placeholder="Swarming event end time", class="form-control", type="time") }}
                             </div>
                         </div>
                     </div>

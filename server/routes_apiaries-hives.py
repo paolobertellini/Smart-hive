@@ -204,11 +204,7 @@ def dashboard():
 def swarming():
 
     swarmings = db.session.query(SwarmEvent).join(HiveModel).join(ApiaryModel).join(User).filter(User.id == current_user.id).all()
-    print(swarmings)
-
     hives = db.session.query(HiveModel).join(ApiaryModel).join(User).filter(User.id == current_user.id).all()
-    print(hives)
-
     ids = []
     for el in hives:
         ids.append(el.hive_description)
@@ -219,13 +215,12 @@ def swarming():
 
         # read form data
         hive_description = request.form['id_hive']
-        hive_id = db.session.query(HiveModel.hive_id).filter_by(hive_description=hive_description).first()
+        hive_id = HiveModel.query.filter_by(hive_description=hive_description).first().hive_id
         alert_date = request.form['alert_date']
-        alert_begin = request.form['alert_start_time']
-        alert_end = request.form['alert_end_time']
+        alert_begin = datetime.strptime(alert_date + ' ' + request.form['alert_start_time'], "%Y-%m-%d %H:%M")
+        alert_end = datetime.strptime(alert_date + ' ' + request.form['alert_end_time'], "%Y-%m-%d %H:%M")
         t_var = request.form['temperature_variation']
         w_var = request.form['weight_variation']
-
         swarm_event = SwarmEvent(hive_id=hive_id, alert_period_begin=alert_begin, alert_period_end=alert_end,
                                  temperature_variation=t_var, weight_variation=w_var, real=True)
 
@@ -233,7 +228,8 @@ def swarming():
             db.session.add(swarm_event)
             db.session.commit()
         except Exception as e:
-            flash(e)
+            print(e)
+            flash("Impossible to add the swarming event!")
             return redirect(url_for('home_blueprint.swarming'))
 
         return redirect(url_for('home_blueprint.swarming'))

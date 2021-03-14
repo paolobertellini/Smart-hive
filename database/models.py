@@ -76,7 +76,7 @@ class SensorFeed(db.Model):
     timestamp = db.Column(db.DateTime(timezone=True), primary_key=True, default=datetime.now)
 
 
-class HiveCommunication(db.Model):
+class SwarmCommunication(db.Model):
     __tablename__ = 'HiveCommunication'
     hive_id = db.Column(db.String(80), db.ForeignKey(HiveModel.hive_id), primary_key=True)
     swarm_id = Column(db.Integer, db.ForeignKey(SwarmEvent.swarm_id), primary_key=True)
