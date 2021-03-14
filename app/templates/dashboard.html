@@ -424,22 +424,21 @@ $(document).ready(function() {
                 animationEnabled: true,
                 backgroundColor: "#FFFFFF",
                 zoomEnabled: true,
-                animationEnabled: true,
                 axisX: {
                     valueFormatString: "MMM DD YYYY HH:mm:ss ",
                     stripLines:[
-{#                        {% for s in d.swarm %}#}
-{#			            {#}
-{#				            startValue:new Date("{{ s.alert_period_begin.strftime("%b %d %Y %H:%M:%S") }}"),#}
-{#				            endValue:new Date("{{ s.alert_period_end.strftime("%b %d %Y %H:%M:%S") }}"),#}
-{#				            color:"#F8BD7A"#}
-{#			            },#}
-{#                        {% endfor %}#}
-                        {
-				            value:10,
-
+                        {% for s in d.swarm %}
+			            {
+				            startValue:new Date("{{ s.alert_period_begin.strftime("%b %d %Y %H:%M:%S") }}"),
+				            endValue:new Date("{{ s.alert_period_end.strftime("%b %d %Y %H:%M:%S") }}"),
 				            color:"#F8BD7A"
-			            }
+			            },
+                        {% endfor %}
+{#                        {#}
+{#				            startValue:new Date(2021,3,14,19,0,0),#}
+{#                            endValue:new Date(2021,3,14,19,30,0),#}
+{#				            color:"#F8BD7A"#}
+{#			            }#}
                     ]
                 },
                 axisY: {
@@ -461,7 +460,7 @@ $(document).ready(function() {
                     showInLegend: true,
                     dataPoints: [
                         {% for p in d.sf %}
-                            {label: "{{ p.timestamp.strftime("%b %d %Y %H:%M:%S") }}", y: {{p.temperature}}},
+                            { x:new Date("{{ p.timestamp }}") , y: {{p.temperature}}},
                         {% endfor %}
                     ]
                     },
@@ -469,24 +468,11 @@ $(document).ready(function() {
                         name: "Humidity",
                         type: "spline",
                         yValueFormatString: "##,##%",
+                        xValueType: "dateTime",
                         showInLegend: true,
                         dataPoints: [
                             {% for p in d.sf %}
-                                {label: "{{ p.timestamp.strftime("%b %d %Y %H:%M:%S") }}", y: {{p.humidity}}},
-                            {% endfor %}
-                        ]
-                    },
-                    {
-                        name: "Swarm",
-                        type: "stepArea",
-                        showInLegend: true,
-                        dataPoints: [
-                            {% for s in d.swarm %}
-                                {% for p in d.sf %}
-                                    {% if p.timestamp == s.alert_period_begin or p.timestamp == s.alert_period_end%}
-                                        {label: "{{ p.timestamp.strftime("%b %d %Y %H:%M:%S") }}", y: 500},
-                                    {% endif %}
-                                {% endfor %}
+                                {x:new Date("{{ p.timestamp }}"), y: {{p.humidity}}},
                             {% endfor %}
                         ]
                     },
@@ -494,10 +480,11 @@ $(document).ready(function() {
                         name: "Weight",
                         type: "spline",
                         yValueFormatString: "#0.## g",
+                        xValueType: "dateTime",
                         showInLegend: true,
                         dataPoints: [
                             {% for p in d.sf %}
-                                {label: "{{ p.timestamp.strftime("%b %d %Y %H:%M:%S") }}", y: {{p.weight}}},
+                                {x:new Date("{{ p.timestamp }}"), y: {{p.weight}}},
                             {% endfor %}
                         ]
                     }
