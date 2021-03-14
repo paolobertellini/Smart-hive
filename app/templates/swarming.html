@@ -137,21 +137,21 @@
                 {% for com in swarmings_communications %}
                     <tr>
                         <td class="border-0">
-                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
+                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = com.hive_id) }}"
                                class="font-weight-bold">
                                 {{ com.hive_id }}
                             </a>
                         </td>
                         <td class="border-0">
-                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
+                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = com.hive_id) }}"
                                class="font-weight-bold">
                                 {{ com.swarm_id }}
                             </a>
                         </td>
                         <td class="border-0">
-                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
+                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = com.hive_id) }}"
                                class="font-weight-bold">
-                                {{ com.swarm_id }}
+                                {{ com.weight_variation }}
                             </a>
                         </td>
                     </tr>

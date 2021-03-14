@@ -171,6 +171,8 @@ def dashboard():
     entrance = hive.entrance
     alarm = hive.alarm
     w = {"temp": weather(loc)['temperature']['temp'], "status": weather(loc)['status']}
+    swarmings = db.session.query(SwarmEvent).join(HiveModel).join(ApiaryModel).join(User).filter(
+        current_user.id == User.id).all()
     try:
         honey_prod = (sf[-1].weight * 100) / ((hive.n_supers * 30000) + 50000)
         min = (datetime.now() - sf[-1].timestamp).total_seconds() / 60.0
@@ -182,7 +184,7 @@ def dashboard():
     else:
         time = True
 
-    dashboard = {"hive":hive, "apiary":apiary, "sf":sf, "time":time, "sf":sf, "loc":loc, "w":w, "hp":int(honey_prod) }
+    dashboard = {"hive":hive, "apiary":apiary, "time":time, "sf":sf, "loc":loc, "w":w, "hp":int(honey_prod), "swarm":swarmings }
 
     if request.args["type"] == "alarm":
         alarm = not alarm
