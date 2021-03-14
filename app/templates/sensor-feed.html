@@ -69,10 +69,10 @@
                                     {{ el.humidity }}
                                 </td>
                                 <td class="border-0">
-                                    {{ el.weight }}
+                                    {{ '%0.2f'|format(el.weight|float) }}
                                 </td>
                                 <td class="border-0">
-                                    {{ el.timestamp }}
+                                    {{ el.timestamp.strftime("%b %d %Y %H:%M:%S") }}
                                 </td>
                             </tr>
                         {% endfor %}

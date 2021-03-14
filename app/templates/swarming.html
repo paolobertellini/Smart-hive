@@ -31,12 +31,12 @@
             <table id="swarming_table" class="table table-hover">
                 <thead>
                 <tr>
-                    <th class="border-0">Id</th>
-                    <th class="border-0">Id Hive</th>
+                    <th class="border-0">Event Id</th>
+                    <th class="border-0">Hive Id</th>
                     <th class="border-0">Started</th>
                     <th class="border-0">Ended</th>
-                    <th class="border-0">T var</th>
-                    <th class="border-0">W var</th>
+                    <th class="border-0">Temperature<br>variation</th>
+                    <th class="border-0">Weight<br>variation</th>
                     <th class="border-0">Real</th>
                     <th class="border-0">Settings</th>
                 </tr>
@@ -77,7 +77,7 @@
                         <td class="border-0">
                             <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
                                class="font-weight-bold">
-                                {{ swarm.weight_variation }}
+                                {{ '%0.2f'|format(swarm.weight_variation|float) }}
                             </a>
                         </td>
                         <td class="border-0">
@@ -95,15 +95,15 @@
                                     </span>
                                     <span class="sr-only">Toggle Dropdown</span>
                                 </button>
-{#                                <div class="dropdown-menu">#}
-{#                                    <a class="dropdown-item"#}
-{#                                       href="{{ url_for('home_blueprint.dashboard', apiary=hive.apiary_id, hive_id = hive.hive_id, type = "none") }}"><span#}
-{#                                            class="fas fa-eye mr-2"></span>View Details</a>#}
-{##}
-{#                                    <a class="dropdown-item text-danger"#}
-{#                                       href="{{ url_for('home_blueprint.removeHive', to_remove = hive.hive_id, apiary = hive.apiary_id) }}"><span#}
-{#                                            class="fas fa-trash-alt mr-2"></span>Remove</a>#}
-{#                                </div>#}
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item"
+                                       href="{{ url_for('home_blueprint.swarmingUpdate', swarm = swarm.swarm_id) }}"><span
+                                            class="fas fa-exchange-alt mr-2"></span>Change {{ swarm.real }} to {{ not swarm.real }}</a>
+
+                                    <a class="dropdown-item text-danger"
+                                       href="{{ url_for('home_blueprint.swarmingDelete', swarm = swarm.swarm_id) }}"><span
+                                            class="fas fa-trash-alt mr-2"></span>Remove</a>
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -151,7 +151,7 @@
                         <td class="border-0">
                             <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = com.hive_id) }}"
                                class="font-weight-bold">
-                                {{ com.weight_variation }}
+                                {{ '%0.2f'|format(com.weight_variation|float) }}
                             </a>
                         </td>
                     </tr>

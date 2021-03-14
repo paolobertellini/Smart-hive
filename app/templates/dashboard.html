@@ -97,7 +97,7 @@
                                     <div class="col-12 col-xl-7 px-xl-0">
                                         <div class="d-none d-sm-block">
                                             <h2 class="h5">Weight</h2>
-                                            <h3 class="mb-1">{{ last.weight }} g</h3>
+                                            <h3 class="mb-1">{{ '%0.3f'|format(last.weight|float) }} g</h3>
                                         </div>
                                         <span class="icon icon-small"><span
                                                 class="fas fa-clock"></span></span> {{ last.timestamp.strftime("%b %d %Y %H:%M:%S") }}
@@ -380,10 +380,10 @@
                                                 {{ el.humidity }}
                                             </td>
                                             <td class="border-0">
-                                                {{ el.weight }}
+                                                {{ '%0.3f'|format(el.weight|float) }}
                                             </td>
                                             <td class="border-0">
-                                                {{ el.timestamp }}
+                                                {{ el.timestamp.strftime("%b %d %Y %H:%M:%S")}}
                                             </td>
                                         </tr>
                                     {% endfor %}

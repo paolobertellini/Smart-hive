@@ -243,3 +243,23 @@ def swarming():
     if not current_user.is_authenticated:
         return render_template('swarming.html', form=swarming_form, swarmings=swarmings, swarmings_communications=swarmings_communications)
     return render_template('swarming.html', form=swarming_form, swarmings=swarmings, swarmings_communications=swarmings_communications)
+
+@blueprint.route('/swarmingUpdate', methods=['GET'])
+@login_required
+def swarmingUpdate():
+    swarm_id = request.args["swarm"]
+    swarm = SwarmEvent.query.filter_by(swarm_id=swarm_id).first()
+    db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm.swarm_id).update({'real': not swarm.real})
+    db.session.commit()
+
+    return redirect(url_for('home_blueprint.swarming'))
+
+@blueprint.route('/swarmingDelete', methods=['GET'])
+@login_required
+def swarmingDelete():
+    swarm_id = request.args["swarm"]
+    swarm = SwarmEvent.query.filter_by(swarm_id=swarm_id).first()
+    db.session.delete(swarm)
+    db.session.commit()
+
+    return redirect(url_for('home_blueprint.swarming'))
