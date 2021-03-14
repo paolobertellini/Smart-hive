@@ -428,11 +428,21 @@ $(document).ready(function() {
                     valueFormatString: "MMM DD YYYY HH:mm:ss ",
                     stripLines:[
                         {% for s in d.swarm %}
-			            {
-				            startValue:new Date("{{ s.alert_period_begin.strftime("%b %d %Y %H:%M:%S") }}"),
-				            endValue:new Date("{{ s.alert_period_end.strftime("%b %d %Y %H:%M:%S") }}"),
-				            color:"#F8BD7A"
-			            },
+                            {% if s.alert_period_end and s.real == False%}
+                            {
+                                startValue:new Date("{{ s.alert_period_begin.strftime("%b %d %Y %H:%M:%S") }}"),
+                                endValue:new Date("{{ s.alert_period_end.strftime("%b %d %Y %H:%M:%S") }}"),
+                                opacity: .2
+                            },
+                            {% endif %}
+                            {% if s.alert_period_end and s.real == True%}
+                            {
+                                startValue:new Date("{{ s.alert_period_begin.strftime("%b %d %Y %H:%M:%S") }}"),
+                                endValue:new Date("{{ s.alert_period_end.strftime("%b %d %Y %H:%M:%S") }}"),
+                                color:"green",
+                                opacity: .2
+                            },
+                            {% endif %}
                         {% endfor %}
 {#                        {#}
 {#				            startValue:new Date(2021,3,14,19,0,0),#}
