@@ -11,7 +11,7 @@ from flask_login import (
 
 from app import blueprint
 from app.forms import CreateApiaryForm, CreateHiveForm, CreateSwarmEventForm
-from database.models import ApiaryModel, HiveModel, SensorFeed, SwarmEvent
+from database.models import ApiaryModel, HiveModel, SensorFeed, SwarmEvent, User
 from server import db
 from utility.weather import weather
 
@@ -22,13 +22,13 @@ from datetime import datetime
 @blueprint.route('/apiaries', methods=['POST', 'GET'])
 @login_required
 def apiaries():
-    apiaries = ApiaryModel.query.filter_by(user_id=current_user.username).all()
+    apiaries = ApiaryModel.query.filter_by(user_id=current_user.id).all()
     apiary_form = CreateApiaryForm(request.form)
     if 'new_apiary' in request.form:
 
         # read form data
         id_apiary = request.form['id_apiary']
-        id_user = current_user.username
+        id_user = current_user.id
         location = request.form['location']
         apiary = ApiaryModel(apiary_id=id_apiary, user_id=id_user, location=location)
         try:
@@ -38,7 +38,7 @@ def apiaries():
             flash("You already have an apiary called: " + id_apiary)
             return redirect(url_for('home_blueprint.apiaries'))
         # Locate user
-        # user = User.query.filter_by(username=username).first()
+        # user = User.query.filter_by(id=id).first()
 
         # Something (user or pass) is not ok
         return redirect(url_for('home_blueprint.apiaries'))
@@ -52,8 +52,8 @@ def apiaries():
 @login_required
 def removeApiary():
     to_remove = request.args['to_remove']
-    apiary_to_remove = ApiaryModel.query.filter_by(apiary_id=to_remove, user_id=current_user.username).first()
-    hives_to_remove = HiveModel.query.filter_by(apiary_id=to_remove, user_id=current_user.username).all()
+    apiary_to_remove = ApiaryModel.query.filter_by(apiary_id=to_remove, user_id=current_user.id).first()
+    hives_to_remove = HiveModel.query.filter_by(apiary_id=to_remove, user_id=current_user.id).all()
     for el in hives_to_remove:
         db.session.delete(el)
         data_to_modify = SensorFeed.query.filter_by(hive_id=el.hive_id).all()
@@ -70,16 +70,16 @@ def removeApiary():
 @blueprint.route('/hive', methods=['POST', 'GET'])
 @login_required
 def hive():
-    apiaries = db.session.query(ApiaryModel.apiary_id).filter_by(user_id=current_user.username).all()
+    apiaries = db.session.query(ApiaryModel.apiary_id).filter_by(user_id=current_user.id).all()
     ids = []
     for el in apiaries:
         ids.append(el.apiary_id)
     hive_form = CreateHiveForm(request.form)
     hive_form.id_apiary.choices = ids
     apiary_selected = request.args["apiary"]
-    hives = HiveModel.query.filter_by(user_id=current_user.username, apiary_id=apiary_selected).all()
+    hives = HiveModel.query.filter_by(apiary_id=apiary_selected).all()
     if 'new_hive' in request.form:
-        user_id = current_user.username
+
         hive_description = request.form['hive_description']
         association_code = request.form['association_code']
         apiary_selected = hive_form.id_apiary.data
@@ -88,14 +88,14 @@ def hive():
         if (apiary_selected == ""):
             flash("Select an Apiary before to insert a new hive")
             return redirect(url_for('home_blueprint.hive', apiary=apiary_selected))
-        hive = HiveModel(apiary_id=apiary_selected, user_id=user_id, hive_description=hive_description,
-                         association_code=association_code, n_supers=n_supers, update_freq=60, alert_period_begin=None)
+
+        hive = HiveModel(apiary_id=apiary_selected, hive_description=hive_description,
+                         association_code=association_code, n_supers=n_supers, update_freq=60)
+
         if (db.session.query(HiveModel.hive_id).filter_by(association_code=hive.association_code).scalar() is not None):
             flash("Control the correctness of the association code or contact the assistence.")
             return redirect(url_for('home_blueprint.hive', apiary=apiary_selected))
-        if (db.session.query(HiveModel.hive_id).filter_by(apiary_id=hive.apiary_id,
-                                                          hive_description=hive_description,
-                                                          user_id=user_id).scalar() is not None):
+        if db.session.query(HiveModel.hive_id).filter_by(apiary_id=hive.apiary_id, hive_description=hive_description).scalar() is not None:
             flash("Hive description already used in this apiary. Please try again.")
             return redirect(url_for('home_blueprint.hive', apiary=apiary_selected))
         else:
@@ -114,7 +114,7 @@ def hive():
 def removeHive():
     to_remove = request.args['to_remove']
     apiary = request.args['apiary']
-    hives_to_remove = HiveModel.query.filter_by(hive_id=to_remove, user_id=current_user.username).first()
+    hives_to_remove = HiveModel.query.filter_by(hive_id=to_remove).first()
     data_to_modify = SensorFeed.query.filter_by(hive_id=hives_to_remove.hive_id).all()
     db.session.delete(hives_to_remove)
     for x in data_to_modify:
@@ -202,32 +202,38 @@ def dashboard():
 @blueprint.route('/swarming', methods=['POST', 'GET'])
 @login_required
 def swarming():
-    swarmings = SwarmEvent.query.filter_by(user_id=current_user.username).all()
-    hives = HiveModel.query.filter_by(user_id=current_user.username).all()
+
+    swarmings = db.session.query(SwarmEvent).join(HiveModel).join(ApiaryModel).join(User).filter(User.id == current_user.id).all()
+    print(swarmings)
+
+    hives = db.session.query(HiveModel).join(ApiaryModel).join(User).filter(User.id == current_user.id).all()
+    print(hives)
+
     ids = []
     for el in hives:
-        ids.append(el.hive_id)
+        ids.append(el.hive_description)
     swarming_form = CreateSwarmEventForm(request.form)
     swarming_form.id_hive.choices = ids
+
     if 'new_swarming_event' in request.form:
 
         # read form data
-        hive_id = request.form['id_hive']
+        hive_description = request.form['id_hive']
+        hive_id = db.session.query(HiveModel.hive_id).filter_by(hive_description=hive_description).first()
         alert_date = request.form['alert_date']
         alert_begin = request.form['alert_start_time']
         alert_end = request.form['alert_end_time']
         t_var = request.form['temperature_variation']
         w_var = request.form['weight_variation']
 
-        swarm_event = SwarmEvent(user_id=current_user.user_id, hive_id=hive_id,
-                                 alert_period_begin=alert_begin, alert_period_end=alert_end,
+        swarm_event = SwarmEvent(hive_id=hive_id, alert_period_begin=alert_begin, alert_period_end=alert_end,
                                  temperature_variation=t_var, weight_variation=w_var, real=True)
 
         try:
             db.session.add(swarm_event)
             db.session.commit()
         except Exception as e:
-            flash("Impossible to add swarm event to database")
+            flash(e)
             return redirect(url_for('home_blueprint.swarming'))
 
         return redirect(url_for('home_blueprint.swarming'))

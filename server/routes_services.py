@@ -28,7 +28,6 @@ def newSensorFeed():
     req = request.get_json(force=True)
     hive_id = db.session.query(HiveModel.hive_id).filter_by(association_code=req['association_code']).scalar()
 
-    user_id = HiveModel.query.filter_by(hive_id=hive_id).first().user_id
     apiary_id = HiveModel.query.filter_by(hive_id=hive_id).first().apiary_id
     loc = ApiaryModel.query.filter_by(apiary_id=apiary_id).first().location
 
@@ -43,7 +42,7 @@ def newSensorFeed():
 
     swarmDetection(hive_id)
 
-    return ({'hive_id': hive_id, 'user_id': user_id, 'apiary_id': apiary_id})
+    return ({'hive_id': hive_id, 'apiary_id': apiary_id})
 
 # @blueprint.route('/new-sensor-feed', methods=['GET', 'POST'])
 # # @login_required

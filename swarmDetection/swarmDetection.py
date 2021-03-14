@@ -11,12 +11,19 @@ std_interval = 60
 alert_interval = 10
 
 def alertHives(hive):
-
     hives = HiveModel.query.filter_by(apiary_id=hive.apiary_id, entrance=False).all()
     for hive in hives:
         db.session.query(HiveModel).filter(HiveModel.hive_id == hive.hive_id).update({'entrance': True})
         db.session.query(HiveModel).filter(HiveModel.hive_id == hive.hive_id).update({'alarm': True})
         db.session.commit()
+
+def alertEndHives(hive):
+    hives = HiveModel.query.filter_by(apiary_id=hive.apiary_id, entrance=False).all()
+    for hive in hives:
+        db.session.query(HiveModel).filter(HiveModel.hive_id == hive.hive_id).update({'entrance': True})
+        db.session.query(HiveModel).filter(HiveModel.hive_id == hive.hive_id).update({'alarm': True})
+        db.session.commit()
+
 
 def swarmDetection(hive_id):
     hive = HiveModel.query.filter_by(hive_id=hive_id).first()

@@ -17,12 +17,12 @@ from database.models import ApiaryModel, HiveModel
 @blueprint.app_context_processor
 def inject_apiaries():
     if current_user.is_authenticated:
-        apiaries = ApiaryModel.query.filter_by(user_id=current_user.username).all()
+        apiaries = ApiaryModel.query.filter_by(user_id=current_user.id).all()
     else:
         apiaries = ""
 
     def find_hives(apiary):
-        hives = HiveModel.query.filter_by(user_id=current_user.username, apiary_id=apiary).all()
+        hives = HiveModel.query.filter_by(apiary_id=apiary).all()
         return hives
 
     return dict(apiaries=apiaries, find_hives=find_hives, type="none")

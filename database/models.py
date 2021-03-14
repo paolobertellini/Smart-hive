@@ -6,53 +6,10 @@ Copyright (c) 2019 - present AppSeed.us
 from datetime import datetime
 
 from flask_login import UserMixin
-from sqlalchemy import Binary, Column, Integer, String, Boolean
+from sqlalchemy import Binary, Column, Integer, String, Boolean, ForeignKey
 
 from server import db, login_manager
 from utility.util import hash_pass
-
-
-class ApiaryModel(db.Model):
-    __tablename__ = 'Apiary'
-    apiary_id = Column(String(80), primary_key=True)
-    user_id = Column(String(80), primary_key=True)
-    location = Column(String(80))
-
-
-class HiveModel(db.Model):
-    __tablename__ = 'Hive'
-    hive_id = Column(Integer, primary_key=True)
-    apiary_id = Column(String(80), nullable=False)
-    user_id = Column(String(80))
-    hive_description = Column(String(80))
-    n_supers = Column(Integer, default=0)
-    association_code = Column(String(80), nullable=False)
-    entrance = Column(Boolean, default=False)
-    alarm = Column(Boolean, default=False)
-    update_freq = Column(Integer)
-    alert_period_begin = db.Column(db.DateTime(timezone=True))
-
-
-class SwarmEvent(db.Model):
-    __tablename__ = 'SwarmEvent'
-    swarm_id = Column(db.Integer, primary_key=True)
-    user_id = Column(String(80))
-    hive_id = Column(Integer)
-    alert_period_begin = db.Column(db.DateTime(timezone=True))
-    alert_period_end = db.Column(db.DateTime(timezone=True))
-    temperature_variation = Column(Integer)
-    weight_variation = Column(Integer)
-    real = Column(Boolean, default=True)
-
-
-class SensorFeed(db.Model):
-    __tablename__ = 'SensorFeed'
-    hive_id = db.Column(db.String(80), primary_key=True)
-    temperature = db.Column(db.Integer)
-    humidity = db.Column(db.Integer)
-    weight = db.Column(db.Integer)
-    timestamp = db.Column(db.DateTime(timezone=True), primary_key=True, default=datetime.now)
-    ext_temperature = db.Column(db.Integer)
 
 
 class User(db.Model, UserMixin):
@@ -79,6 +36,50 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return str(self.username)
 
+class ApiaryModel(db.Model):
+    __tablename__ = 'Apiary'
+    apiary_id = db.Column(db.String(80), primary_key=True)
+    user_id = Column(String(80), ForeignKey(User.id))
+    location = db.Column(String(80))
+
+
+class HiveModel(db.Model):
+    __tablename__ = 'Hive'
+    hive_id = Column(Integer, primary_key=True)
+    apiary_id = Column(String(80), ForeignKey(ApiaryModel.apiary_id))
+    hive_description = Column(String(80))
+    n_supers = Column(Integer, default=0)
+    association_code = Column(String(80), nullable=False)
+    entrance = Column(Boolean, default=False)
+    alarm = Column(Boolean, default=False)
+    update_freq = Column(Integer)
+
+
+class SwarmEvent(db.Model):
+    __tablename__ = 'SwarmEvent'
+    swarm_id = Column(db.Integer, primary_key=True)
+    hive_id = Column(db.String(80), db.ForeignKey(HiveModel.hive_id))
+    alert_period_begin = db.Column(db.DateTime(timezone=True))
+    alert_period_end = db.Column(db.DateTime(timezone=True))
+    temperature_variation = Column(Integer)
+    weight_variation = Column(Integer)
+    real = Column(Boolean, default=True)
+
+
+class SensorFeed(db.Model):
+    __tablename__ = 'SensorFeed'
+    hive_id = db.Column(db.String(80), db.ForeignKey(HiveModel.hive_id))
+    temperature = db.Column(db.Integer)
+    ext_temperature = db.Column(db.Integer)
+    humidity = db.Column(db.Integer)
+    weight = db.Column(db.Integer)
+    timestamp = db.Column(db.DateTime(timezone=True), primary_key=True, default=datetime.now)
+
+
+class HiveCommunication(db.Model):
+    __tablename__ = 'HiveCommunication'
+    hive_id = db.Column(db.String(80), db.ForeignKey(HiveModel.hive_id), primary_key=True)
+    swarm_id = Column(db.Integer, db.ForeignKey(SwarmEvent.swarm_id), primary_key=True)
 
 @login_manager.user_loader
 def user_loader(id):

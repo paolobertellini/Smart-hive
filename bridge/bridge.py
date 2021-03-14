@@ -9,7 +9,7 @@ online = 'http://smart-hive.ddns.net:9090'
 local = 'http://127.0.0.1:8080'
 davide = 'http://localhost'
 
-server = online
+server = local
 
 
 
@@ -23,7 +23,7 @@ class FBridge():
             for port in ports:
                 # print("DEVICE: " + str(port.device))
                 # print("DESCRIPTION: " + str(port.description))
-                if 'arduino' in port.description.lower():
+                if 'usb' in port.description.lower():
                     self.portname = port.device
             # print("Trying to connect to: " + self.portname)
         except:
@@ -46,7 +46,7 @@ class FBridge():
         except:
             print("BRIDGE UNABLE TO CONNECT TO SERVER")
 
-    def loop(self, updateInterval=2, hiveFeedInterval = 5):
+    def loop(self, updateInterval = 10, hiveFeedInterval = 5):
 
         hiveFeedTime = time.time()
         updateTime = time.time()
