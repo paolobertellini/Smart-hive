@@ -11,7 +11,7 @@ from flask_login import (
 
 from app import blueprint
 from app.forms import CreateApiaryForm, CreateHiveForm, CreateSwarmEventForm
-from database.models import ApiaryModel, HiveModel, SensorFeed, SwarmEvent, User
+from database.models import ApiaryModel, HiveModel, SensorFeed, SwarmEvent, User, SwarmCommunication
 from server import db
 from utility.weather import weather
 
@@ -203,7 +203,11 @@ def dashboard():
 @login_required
 def swarming():
 
-    swarmings = db.session.query(SwarmEvent).join(HiveModel).join(ApiaryModel).join(User).filter(User.id == current_user.id).all()
+    swarmings = db.session.query(SwarmEvent).join(HiveModel).join(ApiaryModel).join(User).filter(
+        current_user.id == User.id).all()
+    swarmings_communications = db.session.query(SwarmCommunication).join(HiveModel).join(ApiaryModel).join(User).filter(
+        User.id == current_user.id).all()
+
     hives = db.session.query(HiveModel).join(ApiaryModel).join(User).filter(User.id == current_user.id).all()
     ids = []
     for el in hives:
@@ -235,5 +239,5 @@ def swarming():
         return redirect(url_for('home_blueprint.swarming'))
 
     if not current_user.is_authenticated:
-        return render_template('swarming.html', form=swarming_form, swarmings=swarmings)
-    return render_template('swarming.html', form=swarming_form, swarmings=swarmings)
+        return render_template('swarming.html', form=swarming_form, swarmings=swarmings, swarmings_communications=swarmings_communications)
+    return render_template('swarming.html', form=swarming_form, swarmings=swarmings, swarmings_communications=swarmings_communications)

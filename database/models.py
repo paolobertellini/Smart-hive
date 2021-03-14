@@ -80,6 +80,7 @@ class SwarmCommunication(db.Model):
     __tablename__ = 'HiveCommunication'
     hive_id = db.Column(db.String(80), db.ForeignKey(HiveModel.hive_id), primary_key=True)
     swarm_id = Column(db.Integer, db.ForeignKey(SwarmEvent.swarm_id), primary_key=True)
+    weight_variation = db.Column(db.Integer)
 
 @login_manager.user_loader
 def user_loader(id):

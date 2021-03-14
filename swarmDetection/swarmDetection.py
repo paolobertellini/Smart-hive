@@ -15,18 +15,38 @@ def alertHives(hive):
     for h in hives:
         db.session.query(HiveModel).filter(HiveModel.hive_id == h.hive_id).update({'entrance': True})
         db.session.query(HiveModel).filter(HiveModel.hive_id == h.hive_id).update({'alarm': True})
+
         swarm_id = SwarmEvent.query.filter_by(hive_id=hive.hive_id).order_by(
             SwarmEvent.swarm_id.desc()).first().swarm_id
-        print(swarm_id)
-        swarm_communication = SwarmCommunication(hive_id=h.hive_id, swarm_id=swarm_id)
+
+        last_sf = SensorFeed.query.filter_by(hive_id=h.hive_id).order_by(SensorFeed.timestamp.desc()).first()
+        swarm_communication = SwarmCommunication(hive_id=h.hive_id, swarm_id=swarm_id, weight_variation=last_sf.weight)
         db.session.add(swarm_communication)
         db.session.commit()
 
+
+
 def alertEndHives(hive):
-    hives = HiveModel.query.filter_by(apiary_id=hive.apiary_id, entrance=False).all()
-    for hive in hives:
-        db.session.query(HiveModel).filter(HiveModel.hive_id == hive.hive_id).update({'entrance': True})
-        db.session.query(HiveModel).filter(HiveModel.hive_id == hive.hive_id).update({'alarm': True})
+
+    swarm_id = SwarmEvent.query.filter_by(hive_id=hive.hive_id).order_by(
+        SwarmEvent.swarm_id.desc()).first().swarm_id
+
+    allarmed_hives = SwarmCommunication.query.filter_by(swarm_id=swarm_id).all()
+
+    for hive in allarmed_hives:
+
+        db.session.query(HiveModel).filter(HiveModel.hive_id == hive.hive_id).update({'alarm': False})
+
+        weight_now = SensorFeed.query.filter_by(hive_id=hive.hive_id).order_by(SensorFeed.timestamp.desc()).first().weight
+        weight_before = SwarmCommunication.query.filter_by(hive_id=hive.hive_id,
+                                                           swarm_id=swarm_id).first().weight_variation
+
+        db.session.query(SwarmCommunication).filter(SwarmCommunication.hive_id == hive.hive_id,
+                                                    SwarmCommunication.swarm_id == swarm_id).update()
+
+        if weight_now - weight_before < 500:
+            db.session.query(HiveModel).filter(HiveModel.hive_id == hive.hive_id).update({'entrance': False})
+
         db.session.commit()
 
 
