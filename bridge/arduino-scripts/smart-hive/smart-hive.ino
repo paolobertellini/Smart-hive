@@ -285,6 +285,7 @@ void loop() { //0 IDLE
       output["id"] = "None";
       serializeJson(output, Serial);
       Serial.println();
+      
     }
     else {
       String arrived_id = input["id"];

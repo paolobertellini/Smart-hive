@@ -44,7 +44,6 @@ def loop(threadName, port, updateInterval = 10):
             print("BRIDGE SUCCESSFULLY CONNECTED TO: " + str(port))
 
     except Exception as e:
-        serial_port = None
         print("ERROR: bridge unable to connect to " + str(port.name))
         print(e)
         raise
@@ -53,15 +52,17 @@ def loop(threadName, port, updateInterval = 10):
         command = "{\"type\":\"A\",\"association_code\":\"None\",\"id\":\"None\"}"
         serial_port.write(command.encode())
         serial_port.write(b'\n')
+        print(serial_port.read().decode('utf-8'))
         print("B-->MC: association code request")
+
+
     except Exception as e:
         print("ERROR: bridge unable to ask association code to the microcontroller")
         print(e)
         raise
 
-
     while (True):
-        if serial_port is not None and serial_port.in_waiting > 0:
+        if serial_port.is_open:
             try:
                 lastchar = serial_port.read().decode('utf-8')
                 if lastchar != '\n':  # EOF
@@ -197,4 +198,5 @@ if __name__ == '__main__':
     # for port in ports:
     #     _thread.start_new_thread(loop, ("Hive-1", port))
     #     print("ERROR: unable to start thread")
+    print('ciao'+ str(ports[0]))
     loop("paolo", ports[0])
