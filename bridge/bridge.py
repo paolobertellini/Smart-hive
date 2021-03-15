@@ -5,11 +5,11 @@ import requests
 import serial
 import serial.tools.list_ports
 
-online = 'http://smart-hive.ddns.net:9090'
+online = 'http://smart-hive.ddns.net:8080'
 local = 'http://127.0.0.1:8080'
 davide = 'http://localhost'
 
-server = local
+server = online
 
 
 
@@ -23,7 +23,7 @@ class FBridge():
             for port in ports:
                 # print("DEVICE: " + str(port.device))
                 # print("DESCRIPTION: " + str(port.description))
-                if 'usb' in port.description.lower():
+                if 'arduino' in port.description.lower():
                     self.portname = port.device
             # print("Trying to connect to: " + self.portname)
         except:
