@@ -1,0 +1,41 @@
+
+
+ARDUINO
+
+	IDLE
+	READ			leggo un byte e lo salvo
+						se == '\n' --> CHECK
+						se != '\n' --> IDLE
+	CHECK			controllo {}
+						se ok --> DO0[type=a]/DO 1[type=d]
+						se ko --> svuoto buffer
+	DO0[autent]		se id == none --> invio cod assoc --> svuoto + IDLE
+					se id != none --> salvo id in eeprom --> svuoto + IDLE
+	DO1[dati]		aggiorno porta e suono
+						se  dati=TRUE --> DO2
+						altrimenti --> IDLE e svuoto buffer
+	DO2[read sens]	raccolgo dati
+						se ok --> invio dati
+								[con err nel campo se ci sono errori]
+								[con id da eeprom]
+								svuoto buffer e torno in IDLE
+
+BRIDGE
+
+for COM:
+
+	FASE AUTENTICAZIONE ARNIA
+	autenticazione arduino (manda comando arduino chiedendo codice assoc)
+			manda	[type=a, assoc=none, id=none]
+			riceve	[type=a, assoc=33333, id=none]
+	testa connesssione server (ottiene id nella risposta)
+	comunica ad arduino id
+			manda 	[type=a, assoc=33333, id=1]
+
+	LOOP
+	ogni tot [bridge] manda comando (type=d, apertura, suono, dati)
+		ogni tot2 [server] nel comando chiede anche dati TRUE
+
+	quando riceviamo risposta:
+		se != err -> mandiamo al server
+		se == err -> comunichiamo errore e mandiamo solo quelli buoni
