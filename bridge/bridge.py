@@ -7,12 +7,15 @@ import serial.tools.list_ports
 
 import _thread
 import sys
+import csv
+import datetime
 
 online = 'http://smart-hive.ddns.net:8080'
 local = 'http://127.0.0.1:8080'
 davide = 'http://localhost'
 
-server = online
+server = local
+save_csv = True
 ports_descriptions = ["arduino", "usb", "tty"]
 
 
@@ -48,7 +51,7 @@ def configuration(serial_port):
     except Exception as e:
         print("ERROR: bridge unable to ask association code to the microcontroller")
         print(e)
-        return False
+        return False, None
 
     while (True):
         if serial_port.in_waiting > 0:
@@ -61,7 +64,7 @@ def configuration(serial_port):
             except Exception as e:
                 print("ERROR: bridge unable to read character from serial")
                 print(e)
-                return False
+                return False, None
     try:
         # print("BRIDGE RICEVE RAW DATA: " + self.inbuffer)
         received = json.loads(buffer)
@@ -71,7 +74,7 @@ def configuration(serial_port):
     except Exception as e:
         print("ERROR: bridge unable to read json")
         print(e)
-        return False
+        return False, None
 
     try:
         association_code = {"association_code":received["a_c"]}
@@ -84,7 +87,7 @@ def configuration(serial_port):
     except Exception as e:
         print("ERROR: bridge unable to connect to " + server)
         print(e)
-        return False
+        return False, None
 
     try:
         command = "{\"type\":\"A\",\"a_c\":\"" + str(received["a_c"]) + "\",\"id\":\"" + str(id) + "\"}"
@@ -94,7 +97,7 @@ def configuration(serial_port):
     except Exception as e:
         print("ERROR: bridge unable to ask association code to the microcontroller")
         print(e)
-        return False
+        return False, None
 
     return True, id
 
@@ -121,14 +124,12 @@ def loop(threadName, port, updateInterval = 10):
     updateTime = time.time()
     hiveFeedTime = time.time()
     buffer = ""
-    data = False
 
     while(True):
         if time.time() > updateTime + updateInterval:
             try:
                 r = requests.get(server + '/bridge-channel', json={"id":id})
                 ser_resp = json.loads(r.text)
-                duration = 500
                 hiveFeedInterval = ser_resp["update_freq"]
                 if time.time() > hiveFeedTime + hiveFeedInterval:
                     data = True
@@ -169,18 +170,29 @@ def loop(threadName, port, updateInterval = 10):
                         print("B  --> C  : " + str(hiveFeed))
                         if r1.text == "200":
                             print("C  --> B  : hive feed saved to database")
+                        if save_csv:
+                            with open(str(threadName) + '_hiveFeed_data.csv', mode='a', newline='') as csv_file:
+                                csv_writer = csv.writer(csv_file)
+                                csv_writer.writerow([datetime.datetime.now(), received['t'], received['h'], received['w']])
+                                print("B  --> CSV  : hive feed succesfully saved to csv file")
                     buffer = ""
             except Exception as e:
-                print("ERROR: bridge unable to read character from serial")
+                print("ERROR: bridge unable to send data to server")
                 print(e)
-                return False
+                continue
 
 
 
 if __name__ == '__main__':
 
     ports = setup()
-    # for port in ports:
-    #     _thread.start_new_thread(loop, ("Hive-1", port))
-    #     print("ERROR: unable to start thread")
-    loop("paolo", ports[0])
+
+    loop("test", ports[0], 10) # testing without threads
+
+    # for i, port in enumerate(ports):
+    #     name = "Hive-" + str(i)
+    #     try:
+    #         _thread.start_new_thread(loop, (name, port))
+    #         print("Started thread " + name + " on port " + str(port)) # insert breakpoint here
+    #     except:
+    #         print("Unable to start thread " + name + " on port " + str(port))
