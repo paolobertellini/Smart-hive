@@ -165,15 +165,14 @@ void loop() { //0 IDLE
       output["type"] = "D";
       output["id"] = id;
       if (dht11.read2(tempPin, &temp, &hum, data)) {
-        output["h"] = "error";
-        output["t"] = "error";
+        output["type"] = "E";
       }
       else {
         output["h"] = hum;
         output["t"] = temp;
       }
       if (!LoadCell.update()) {
-        output["w"] = "error";
+        output["type"] = "E";
       }
       else {
         output["w"] = LoadCell.getData();

@@ -175,6 +175,8 @@ def loop(threadName, port, updateInterval = 10):
                                 csv_writer = csv.writer(csv_file)
                                 csv_writer.writerow([datetime.datetime.now(), received['t'], received['h'], received['w']])
                                 print("B  --> CSV  : hive feed succesfully saved to csv file")
+                    elif received['type'] == "E":
+                        print("MC --> B  : sensor error " + str(buffer))
                     buffer = ""
             except Exception as e:
                 print("ERROR: bridge unable to send data to server")
