@@ -143,61 +143,61 @@ int melody[] = {
   NOTE_AS4, NOTE_AS4, NOTE_AS4, NOTE_AS4,
   NOTE_AS4, NOTE_AS4, NOTE_AS4, NOTE_AS4,
   NOTE_D5, NOTE_D5, NOTE_D5, NOTE_D5,
-  NOTE_C5, NOTE_C5, NOTE_C5, NOTE_C5, 
-  NOTE_F5, NOTE_F5, NOTE_F5, NOTE_F5, 
+  NOTE_C5, NOTE_C5, NOTE_C5, NOTE_C5,
+  NOTE_F5, NOTE_F5, NOTE_F5, NOTE_F5,
   NOTE_G5, NOTE_G5, NOTE_G5, NOTE_G5,
-  NOTE_G5, NOTE_G5, NOTE_G5, NOTE_G5, 
-  NOTE_G5, NOTE_G5, NOTE_G5, NOTE_G5, 
+  NOTE_G5, NOTE_G5, NOTE_G5, NOTE_G5,
+  NOTE_G5, NOTE_G5, NOTE_G5, NOTE_G5,
   NOTE_C5, NOTE_AS4, NOTE_A4, NOTE_F4,
   NOTE_G4, 0, NOTE_G4, NOTE_D5,
   NOTE_C5, 0, NOTE_AS4, 0,
   NOTE_A4, 0, NOTE_A4, NOTE_A4,
-  NOTE_C5, 0, NOTE_AS4, NOTE_A4, 
-  NOTE_G4,0, NOTE_G4, NOTE_AS5,
+  NOTE_C5, 0, NOTE_AS4, NOTE_A4,
+  NOTE_G4, 0, NOTE_G4, NOTE_AS5,
   NOTE_A5, NOTE_AS5, NOTE_A5, NOTE_AS5,
-  NOTE_G4,0, NOTE_G4, NOTE_AS5,
+  NOTE_G4, 0, NOTE_G4, NOTE_AS5,
   NOTE_A5, NOTE_AS5, NOTE_A5, NOTE_AS5,
   NOTE_G4, 0, NOTE_G4, NOTE_D5,
   NOTE_C5, 0, NOTE_AS4, 0,
   NOTE_A4, 0, NOTE_A4, NOTE_A4,
-  NOTE_C5, 0, NOTE_AS4, NOTE_A4, 
-  NOTE_G4,0, NOTE_G4, NOTE_AS5,
+  NOTE_C5, 0, NOTE_AS4, NOTE_A4,
+  NOTE_G4, 0, NOTE_G4, NOTE_AS5,
   NOTE_A5, NOTE_AS5, NOTE_A5, NOTE_AS5,
-  NOTE_G4,0, NOTE_G4, NOTE_AS5,
+  NOTE_G4, 0, NOTE_G4, NOTE_AS5,
   NOTE_A5, NOTE_AS5, NOTE_A5, NOTE_AS5
- };
+};
 
 // note durations: 4 = quarter note, 8 = eighth note, etc.:
 int noteDurations[] = {
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  4,4,4,4,
-  };
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+  4, 4, 4, 4,
+};
 
 void setup() {
   // initialize serial communications
@@ -254,7 +254,7 @@ void loop() { //0 IDLE
   //READ --> CHECK
   if (iState == 2) {
     if (in_buffer.endsWith("}") && in_buffer.startsWith("{")) {
-      
+
       DeserializationError error = deserializeJson(input, in_buffer);
       if (error) {
         in_buffer = "";
@@ -279,19 +279,19 @@ void loop() { //0 IDLE
 
   //CHECK --> AUTHENTICATION
   if (iState == 3) {
-    if (input["id"] == "None") {
-      output["type"] = "A";
-      output["association_code"] = 33333;
-      output["id"] = "None";
-      serializeJson(output, Serial);
-      Serial.println();
-      
-    }
-    else {
-      String arrived_id = input["id"];
-      arrived_id.toCharArray(new_id, 6);
-      EEPROM.put(eeAddressId, new_id);
-    }
+    //if (input["id"] == "None") {
+    output["type"] = "A";
+    output["association_code"] = 33333;
+    output["id"] = input["id"];
+    serializeJson(output, Serial);
+    Serial.println();
+
+    //}
+    //    else {
+    //      String arrived_id = input["id"];
+    //      arrived_id.toCharArray(new_id, 6);
+    //      EEPROM.put(eeAddressId, new_id);
+    //    }
     iState = 0;
     in_buffer = "";
   }
@@ -340,16 +340,7 @@ void loop() { //0 IDLE
   }
 
   if (alarm) {
-    for (int thisNote = 0; thisNote < 112; thisNote++) {
-
-    int noteDuration = 750 / noteDurations[thisNote];
-    tone(8, melody[thisNote], noteDuration);
-
-    int pauseBetweenNotes = noteDuration * 1.30;
-    delay(pauseBetweenNotes);
-    
-    noTone(8);
-  }
+    tone(8, NOTE_C3, 500);
   }
 }
 
