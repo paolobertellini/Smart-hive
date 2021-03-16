@@ -29,8 +29,8 @@
             </nav>
             <div class="d-flex justify-content-between w-100 flex-wrap">
                 <div class="mb-3 mb-lg-0">
-                    <h1 class="h4">Sensor feed of {{ apiary }} apiary</h1>
-                    <p class="mb-0">Here you can see the values captured by th sensors of the apiary {{ apiary }}</p>
+                    <h1 class="h4">Sensor feed of hive: {{ hive }}</h1>
+                    <p class="mb-0">Here you can see the values captured by the sensors of the {{ hive }} hive</p>
                 </div>
             </div>
         </div>
@@ -48,28 +48,40 @@
                         <thead class="thead-light">
                         <tr>
                             <th class="border-0">Id Hive</th>
-                            <th class="border-0">Temperature</th>
-                            <th class="border-0">Humidity</th>
+                            <th class="border-0">Internal<br>Temp</th>
+                            <th class="border-0">External<br>Temp</th>
+                            <th class="border-0">Internal<br>Humidity</th>
+                            <th class="border-0">External<br>Humidity</th>
                             <th class="border-0">Weight</th>
+                            <th class="border-0">Wind</th>
                             <th class="border-0">Time</th>
                         </tr>
                         </thead>
                         <tbody>
 
                         <!-- Item -->
-                        {% for el in lista %}
+                        {% for el in sf %}
                             <tr>
                                 <td class="border-0">
                                     {{ el.hive_id }}
                                 </td>
                                 <td class="border-0">
-                                    {{ el.temperature }}
+                                    {{ el.temperature }} °C
                                 </td>
                                 <td class="border-0">
-                                    {{ el.humidity }}
+                                    {{ el.ext_temperature }} °C
                                 </td>
                                 <td class="border-0">
-                                    {{ '%0.2f'|format(el.weight|float) }}
+                                    {{ el.humidity }} %
+                                </td>
+                                <td class="border-0">
+                                    {{ el.ext_humidity }} %
+                                </td>
+                                <td class="border-0">
+                                    {{ '%0.2f'|format(el.weight|float) }} kg
+                                </td>
+                                <td class="border-0">
+                                    {{ el.wind }} m/s
                                 </td>
                                 <td class="border-0">
                                     {{ el.timestamp.strftime("%b %d %Y %H:%M:%S") }}

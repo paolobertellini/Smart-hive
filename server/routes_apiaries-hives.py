@@ -152,11 +152,12 @@ def removeSupers():
 @blueprint.route('/sensorFeed', methods=['POST', 'GET'])
 @login_required
 def sensorFeed():
-    hive = request.args["hive_id"]
-    apiary_id = HiveModel.query.filter_by(hive_id=hive).first().apiary_id
-    elenco = SensorFeed.query.filter_by(hive_id=hive).all()
+    hive_id = request.args["hive_id"]
+    apiary_id = HiveModel.query.filter_by(hive_id=hive_id).first().apiary_id
+    desc = HiveModel.query.filter_by(hive_id=hive_id).first().hive_description
+    sf = SensorFeed.query.filter_by(hive_id=hive_id).all()
 
-    return render_template('sensor-feed.html', lista=elenco, apiary=apiary_id)
+    return render_template('sensor-feed.html', sf=sf, apiary=apiary_id, hive=desc)
 
 
 @blueprint.route('/dashboard', methods=['POST', 'GET'])
@@ -170,21 +171,24 @@ def dashboard():
     hive = HiveModel.query.filter_by(hive_id=hive_id).first()
     entrance = hive.entrance
     alarm = hive.alarm
-    w = {"temp": weather(loc)['temperature']['temp'], "status": weather(loc)['status']}
-    swarmings = db.session.query(SwarmEvent).join(HiveModel).join(ApiaryModel).join(User).filter(
-        current_user.id == User.id).all()
+    w = weather(loc)
+
+    swarmings = SwarmEvent.query.filter_by(hive_id=hive_id).all()
+    swarmings_communications = SwarmCommunication.query.filter_by(hive_id=hive_id).all()
+
     try:
         honey_prod = (sf[-1].weight * 100) / ((hive.n_supers * 30000) + 50000)
         min = (datetime.now() - sf[-1].timestamp).total_seconds() / 60.0
     except:
         flash("There are no data belonging to this specific hive.")
         return redirect(url_for('home_blueprint.hive', hive_id=hive_id, apiary=apiary))
-    if (min > 1):
+    if min > 2*hive.update_freq:
         time = False
     else:
         time = True
 
-    dashboard = {"hive":hive, "apiary":apiary, "time":time, "sf":sf, "loc":loc, "w":w, "hp":int(honey_prod), "swarm":swarmings }
+    dashboard = {"hive":hive, "apiary":apiary, "time":time, "sf":sf, "loc":loc, "w":w, "hp":int(honey_prod),
+                 "swarm":swarmings, 'swarmings':swarmings, 'swarmings_communications':swarmings_communications}
 
     if request.args["type"] == "alarm":
         alarm = not alarm

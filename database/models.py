@@ -71,6 +71,8 @@ class SensorFeed(db.Model):
     hive_id = db.Column(db.String(80), db.ForeignKey(HiveModel.hive_id))
     temperature = db.Column(db.Integer)
     ext_temperature = db.Column(db.Integer)
+    ext_humidity = db.Column(db.Integer)
+    wind = db.Column(db.Integer)
     humidity = db.Column(db.Integer)
     weight = db.Column(db.Integer)
     timestamp = db.Column(db.DateTime(timezone=True), primary_key=True, default=datetime.now)

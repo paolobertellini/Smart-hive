@@ -151,7 +151,6 @@ def loop(threadName, port, updateInterval = 10):
             except Exception as e:
                 print("ERROR: bridge unable to update hive state")
                 print(e)
-                return False
 
         if serial_port.in_waiting > 0:
             try:
@@ -181,7 +180,6 @@ def loop(threadName, port, updateInterval = 10):
             except Exception as e:
                 print("ERROR: bridge unable to send data to server")
                 print(e)
-                continue
 
 
 

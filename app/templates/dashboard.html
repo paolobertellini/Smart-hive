@@ -112,9 +112,14 @@
 
         <br>
         <div class="row">
+
+        </div>
+
+        <br>
+        <div class="row">
+            <!-- HiveStatus -->
             <div class="col-12 col-xl-8 mb-4">
                 <div class="row">
-                    <!-- HiveStatus -->
                     <div class="col-12 mb-4">
                         <div class="card border-light shadow-sm">
                             <div class="card-header">
@@ -178,7 +183,26 @@
                                             </h6>
                                         </div>
                                         <div>
-                                            <a href="#" class="text-primary font-weight-bold">{{ d.w.temp }} °C</a>
+                                            <a href="#" class="text-primary font-weight-bold">{{ d.w.temperature }} °C</a>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
+                                        <div>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"><span
+                                                    class="fas fa-tint"></span></span>External humidity
+                                            </h6>
+                                        </div>
+                                        <div>
+                                            <a href="#" class="text-primary font-weight-bold">{{ d.w.humidity }} %</a>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
+                                        <div>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"><span
+                                                    class="fas fa-wind"></span></span>Wind</h6>
+                                        </div>
+                                        <div>
+                                            <a href="#" class="text-primary font-weight-bold">{{ d.w.wind }} m/s</a>
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
@@ -232,28 +256,28 @@
                     </div>
                 </div>
             </div>
+            <!-- Control hive -->
             <div class="col-12 col-xl-4 mb-4">
-
-                <!-- Control hive -->
+                <!-- commands -->
                 <div class="col-12 px-0 mb-4">
                     <div class="card border-light shadow-sm">
                         <div class="card-header border-bottom border-light d-flex justify-content-between">
                             <h2 class="h5 mb-0">Control hive</h2>
                         </div>
                         <div class="card-body">
-                            <div class="d-flex align-items-center justify-content-between border-bottom border-light pb-3">
+{#                            <div class="d-flex align-items-center justify-content-between border-bottom border-light pb-3">#}
                                 <a class="nav-link"
                                    href="{{ url_for('home_blueprint.dashboard', apiary=d.apiary, hive_id=d.hive.hive_id, type="none") }}">
-                                    <button class="btn btn-primary" type="button" aria-haspopup="true"
+                                    <button class="btn btn-primary w-100" type="button" aria-haspopup="true"
                                             aria-expanded="false">
                                         <span class="fas fa-sync-alt"></span> Refresh data
                                     </button>
                                 </a>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
+{#                            </div>#}
+{#                            <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">#}
                                 <a class="nav-link"
                                    href="{{ url_for('home_blueprint.dashboard', apiary=d.apiary, hive_id=d.hive.hive_id, type="alarm") }}">
-                                    <button class="btn btn-primary" type="button" aria-haspopup="true"
+                                    <button class="btn btn-primary w-100" type="button" aria-haspopup="true"
                                             aria-expanded="false">
                                         <span class="fas fa-volume-up"></span>
                                         {% if d.hive.alarm %}
@@ -264,11 +288,11 @@
                                         {% endif %}
                                     </button>
                                 </a>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-between pt-3">
+{#                            </div>#}
+{#                            <div class="d-flex align-items-center justify-content-between pt-3">#}
                                 <a class="nav-link"
                                    href="{{ url_for('home_blueprint.dashboard', apiary=d.apiary, hive_id=d.hive.hive_id, type="entrance") }}">
-                                    <button class="btn btn-primary" type="button" aria-haspopup="true"
+                                    <button class="btn btn-primary w-100" type="button" aria-haspopup="true"
                                             aria-expanded="false">
                                         <span class="fas fa-door-open"></span>
                                         {% if d.hive.entrance %}
@@ -279,19 +303,48 @@
                                         {% endif %}
                                     </button>
                                 </a>
-                            </div>
+{#                            </div>#}
                         </div>
                     </div>
                 </div>
 
-                <!-- progress -->
+                <!-- honey production -->
                 <div class="col-12 px-0 mb-4">
                     <div class="card border-light shadow-sm">
                         <div class="card-header border-bottom border-light">
                             <h2 class="h5 mb-0">Honey production</h2>
                         </div>
                         <div class="card-body">
-                            <div class="row align-items-center mb-4">
+                            <div class="d-flex align-items-center justify-content-between border-bottom border-light pb-3">
+                                        <div>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"><span
+                                                    class="fas fa-backward"></span></span>Last week</h6>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>metti qui</h6>
+                                        </div>
+                                    </div>
+                            <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
+                                        <div>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"><span
+                                                    class="fab fa-forumbee"></span></span>This week</h6>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>metti qui</h6>
+                                        </div>
+                                    </div>
+                            <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
+                                        <div>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"><span
+                                                    class="fas fa-forward"></span></span>Next week</h6>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>metti qui</h6>
+                                        </div>
+                                    </div>
+                            <br>
+
+
                                 <div class="col-auto">
                                     <span class="sidebar-icon">
                                         <img src="/static/assets/img/honey.svg" height="40" width="40" alt="Bee Logo">&nbsp;
@@ -319,7 +372,7 @@
 
                 </div>
             </div>
-        </div>
+
         <br>
         <!-- grafico -->
         <div class="col-12 mb-4">
@@ -341,58 +394,186 @@
             </div>
         </div>
 
+        <!-- tabella dati -->
         <div class="row">
-            <!-- tabella dati -->
             <div class="col-12 mb-4">
-                        <div class="card border-light shadow-sm">
-                            <div class="card-header">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h2 class="h5">History data</h2>
-                                    </div>
-                                    <div class="col text-right">
-                                        <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = d.hive.hive_id)}}" class="btn btn-sm btn-secondary">See all</a>
-                                    </div>
-                                </div>
+                <div class="card card-body bg-white border-light shadow-sm mb-4">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h2 class="h5">History data</h2>
                             </div>
-                            <br>
-                            <div class="table-responsive">
-                                  <table id="mydatatable" class="table align-items-center table-flush">
-                                    <thead class="thead-light">
+                            <div class="col text-right">
+                                <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = d.hive.hive_id)}}" class="btn btn-sm btn-secondary">See all</a>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="table-responsive">
+                        <table id="mydatatable" class="table table-centered table-nowrap mb-0 rounded">
+                            <thead class="thead-light">
+                            <tr>
+                                <th class="border-0">Id Hive</th>
+                                <th class="border-0">Internal<br>Temp</th>
+                                <th class="border-0">External<br>Temp</th>
+                                <th class="border-0">Internal<br>Humidity</th>
+                                <th class="border-0">External<br>Humidity</th>
+                                <th class="border-0">Weight</th>
+                                <th class="border-0">Wind</th>
+                                <th class="border-0">Time</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <!-- Item -->
+                            {% for el in d.sf %}
+                                <tr>
+                                    <td class="border-0">
+                                        {{ el.hive_id }}
+                                    </td>
+                                    <td class="border-0">
+                                        {{ el.temperature }} °C
+                                    </td>
+                                    <td class="border-0">
+                                        {{ el.ext_temperature }} °C
+                                    </td>
+                                    <td class="border-0">
+                                        {{ el.humidity }} %
+                                    </td>
+                                    <td class="border-0">
+                                        {{ el.ext_humidity }} %
+                                    </td>
+                                    <td class="border-0">
+                                        {{ '%0.2f'|format(el.weight|float) }} kg
+                                    </td>
+                                    <td class="border-0">
+                                        {{ el.wind }} m/s
+                                    </td>
+                                    <td class="border-0">
+                                        {{ el.timestamp.strftime("%b %d %Y %H:%M:%S") }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <!-- swarmings -->
+        <div class="row justify-content-md-center">
+            <div class="card border-light shadow-sm">
+
+                <div class="card-header border-bottom border-light">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h2 class="h5">Swarming events</h2>
+                            </div>
+                            <div class="col text-right">
+                                <a href="{{ url_for('home_blueprint.swarming', hive_id = d.hive.hive_id)}}" class="btn btn-sm btn-secondary">See all</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row justify-content-md-center">
+
+                    <div class="col">
+                        <div class="card-header border-bottom border-light">
+                            <h2 class="h5 mb-0">Events communicated to the hive</h2>
+                        </div>
+                        <div class="card border-light shadow-sm">
+                            <div class="card-body">
+                                <table id="swarming_com" class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th class="border-0">Id Hive</th>
+                                    <th class="border-0">Id swarm</th>
+                                    <th class="border-0">Weight<br>variation</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!-- Item -->
+                                {% for com in d.swarmings_communications %}
                                     <tr>
-                                        <th class="border-0">Id Hive</th>
-                                        <th class="border-0">Temperature</th>
-                                        <th class="border-0">Humidity</th>
-                                        <th class="border-0">Weight</th>
-                                        <th class="border-0">Time</th>
+                                        <td class="border-0">
+                                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = com.hive_id) }}"
+                                               class="font-weight-bold">
+                                                {{ com.hive_id }}
+                                            </a>
+                                        </td>
+                                        <td class="border-0">
+                                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = com.hive_id) }}"
+                                               class="font-weight-bold">
+                                                {{ com.swarm_id }}
+                                            </a>
+                                        </td>
+                                        <td class="border-0">
+                                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = com.hive_id) }}"
+                                               class="font-weight-bold">
+                                                {{ '%0.2f'|format(com.weight_variation|float) }}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                <!-- Item -->
+
+
+                                </tbody>
+                            </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card-header border-bottom border-light">
+                            <h2 class="h5 mb-0">Events happened in the hive</h2>
+                        </div>
+                        <div class="card border-light shadow-sm">
+                            <div class="card-body">
+                                <table id="swarming_table" class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th class="border-0">Event<br>Id</th>
+                                        <th class="border-0">Started</th>
+                                        <th class="border-0">Real</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for el in d.sf %}
+                                    <!-- Item -->
+                                    {% for swarm in d.swarmings %}
                                         <tr>
                                             <td class="border-0">
-                                                {{ el.hive_id }}
+                                                {{ swarm.swarm_id }}
                                             </td>
                                             <td class="border-0">
-                                                {{ el.temperature }}
+                                                <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
+                                                   class="font-weight-bold">
+                                                    {{ swarm.alert_period_begin.strftime("%b %d %Y %H:%M:%S") }}
+                                                </a>
                                             </td>
                                             <td class="border-0">
-                                                {{ el.humidity }}
-                                            </td>
-                                            <td class="border-0">
-                                                {{ '%0.3f'|format(el.weight|float) }}
-                                            </td>
-                                            <td class="border-0">
-                                                {{ el.timestamp.strftime("%b %d %Y %H:%M:%S")}}
+                                                <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
+                                                   class="font-weight-bold">
+                                                    {{ swarm.real }}
+                                                </a>
                                             </td>
                                         </tr>
                                     {% endfor %}
+                                    <!-- Item -->
                                     </tbody>
                                 </table>
                             </div>
-                            <br>
                         </div>
                     </div>
+                </div>
+                <br>
+            </div>
         </div>
 
         {% include 'includes/footer.html' %}
@@ -402,6 +583,12 @@
 $(document).ready(function() {
     $('#mydatatable').DataTable();
 } );
+$(document).ready(function () {
+    $('#swarming_table').DataTable();
+});
+$(document).ready(function () {
+    $('#swarming_com').DataTable();
+});
 </script>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -475,6 +662,18 @@ $(document).ready(function() {
                     ]
                     },
                     {
+                    name: "Ext temperature",
+                    type: "spline",
+                    yValueFormatString: "#0.## °C",
+                    xValueType: "dateTime",
+                    showInLegend: true,
+                    dataPoints: [
+                        {% for p in d.sf %}
+                            { x:new Date("{{ p.timestamp }}") , y: {{p.ext_temperature}}},
+                        {% endfor %}
+                    ]
+                    },
+                    {
                         name: "Humidity",
                         type: "spline",
                         yValueFormatString: "##,##%",
@@ -483,6 +682,18 @@ $(document).ready(function() {
                         dataPoints: [
                             {% for p in d.sf %}
                                 {x:new Date("{{ p.timestamp }}"), y: {{p.humidity}}},
+                            {% endfor %}
+                        ]
+                    },
+                    {
+                        name: "Ext humidity",
+                        type: "spline",
+                        yValueFormatString: "##,##%",
+                        xValueType: "dateTime",
+                        showInLegend: true,
+                        dataPoints: [
+                            {% for p in d.sf %}
+                                {x:new Date("{{ p.timestamp }}"), y: {{p.ext_humidity}}},
                             {% endfor %}
                         ]
                     },

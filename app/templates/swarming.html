@@ -27,93 +27,94 @@
             Here you can see all the swarming events of all your hives
             <div><br></div>
             <div class="card card-body border-light shadow-sm table-wrapper table-responsive pt-0">
-            <br>
-            <table id="swarming_table" class="table table-hover">
-                <thead>
-                <tr>
-                    <th class="border-0">Event Id</th>
-                    <th class="border-0">Hive Id</th>
-                    <th class="border-0">Started</th>
-                    <th class="border-0">Ended</th>
-                    <th class="border-0">Temperature<br>variation</th>
-                    <th class="border-0">Weight<br>variation</th>
-                    <th class="border-0">Real</th>
-                    <th class="border-0">Settings</th>
-                </tr>
-                </thead>
-                <tbody>
-                <!-- Item -->
-                {% for swarm in swarmings %}
+                <br>
+                <table id="swarming_table" class="table table-hover">
+                    <thead>
                     <tr>
-                        <td class="border-0">
-                            {{ swarm.swarm_id }}
-                        </td>
-                        <td class="border-0">
-                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
-                               class="font-weight-bold">
-                                {{ swarm.hive_id }}
-                            </a>
-                        </td>
-                        <td class="border-0">
-                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
-                               class="font-weight-bold">
-                                {{ swarm.alert_period_begin.strftime("%b %d %Y %H:%M:%S") }}
-                            </a>
-                        </td>
-                        <td class="border-0">
-                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
-                               class="font-weight-bold">
-                                {% if swarm.alert_period_end %}
-                                {{ swarm.alert_period_end.strftime("%b %d %Y %H:%M:%S") }}
-                                {% endif %}
-                            </a>
-                        </td>
-                        <td class="border-0">
-                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
-                               class="font-weight-bold">
-                                {{ swarm.temperature_variation }}
-                            </a>
-                        </td>
-                        <td class="border-0">
-                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
-                               class="font-weight-bold">
-                                {{ '%0.2f'|format(swarm.weight_variation|float) }}
-                            </a>
-                        </td>
-                        <td class="border-0">
-                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
-                               class="font-weight-bold">
-                                {{ swarm.real }}
-                            </a>
-                        </td>
-                        <td>
-                            <div class="btn-group">
-                                <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <th class="border-0">Event Id</th>
+                        <th class="border-0">Hive Id</th>
+                        <th class="border-0">Started</th>
+                        <th class="border-0">Ended</th>
+                        <th class="border-0">Temperature<br>variation</th>
+                        <th class="border-0">Weight<br>variation</th>
+                        <th class="border-0">Real</th>
+                        <th class="border-0">Settings</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Item -->
+                    {% for swarm in swarmings %}
+                        <tr>
+                            <td class="border-0">
+                                {{ swarm.swarm_id }}
+                            </td>
+                            <td class="border-0">
+                                <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
+                                   class="font-weight-bold">
+                                    {{ swarm.hive_id }}
+                                </a>
+                            </td>
+                            <td class="border-0">
+                                <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
+                                   class="font-weight-bold">
+                                    {{ swarm.alert_period_begin.strftime("%b %d %Y %H:%M:%S") }}
+                                </a>
+                            </td>
+                            <td class="border-0">
+                                <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
+                                   class="font-weight-bold">
+                                    {% if swarm.alert_period_end %}
+                                        {{ swarm.alert_period_end.strftime("%b %d %Y %H:%M:%S") }}
+                                    {% endif %}
+                                </a>
+                            </td>
+                            <td class="border-0">
+                                <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
+                                   class="font-weight-bold">
+                                    {{ swarm.temperature_variation }}
+                                </a>
+                            </td>
+                            <td class="border-0">
+                                <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
+                                   class="font-weight-bold">
+                                    {{ '%0.2f'|format(swarm.weight_variation|float) }}
+                                </a>
+                            </td>
+                            <td class="border-0">
+                                <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = swarm.hive_id) }}"
+                                   class="font-weight-bold">
+                                    {{ swarm.real }}
+                                </a>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="icon icon-sm">
                                         <span class="fas fa-ellipsis-h icon-dark"></span>
                                     </span>
-                                    <span class="sr-only">Toggle Dropdown</span>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item"
-                                       href="{{ url_for('home_blueprint.swarmingUpdate', swarm = swarm.swarm_id) }}"><span
-                                            class="fas fa-exchange-alt mr-2"></span>Change {{ swarm.real }} to {{ not swarm.real }}</a>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item"
+                                           href="{{ url_for('home_blueprint.swarmingUpdate', swarm = swarm.swarm_id) }}"><span
+                                                class="fas fa-exchange-alt mr-2"></span>Change {{ swarm.real }}
+                                            to {{ not swarm.real }}</a>
 
-                                    <a class="dropdown-item text-danger"
-                                       href="{{ url_for('home_blueprint.swarmingDelete', swarm = swarm.swarm_id) }}"><span
-                                            class="fas fa-trash-alt mr-2"></span>Remove</a>
+                                        <a class="dropdown-item text-danger"
+                                           href="{{ url_for('home_blueprint.swarmingDelete', swarm = swarm.swarm_id) }}"><span
+                                                class="fas fa-trash-alt mr-2"></span>Remove</a>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                {% endfor %}
-                <!-- Item -->
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <!-- Item -->
 
 
-                </tbody>
-            </table>
-        </div>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <br>
@@ -123,45 +124,45 @@
             Here you can see all the swarming events communicated to your hives
             <div><br></div>
             <div class="card card-body border-light shadow-sm table-wrapper table-responsive pt-0">
-            <br>
-            <table id="swarming_com" class="table table-hover">
-                <thead>
-                <tr>
-                    <th class="border-0">Id Hive</th>
-                    <th class="border-0">Id swarm</th>
-                    <th class="border-0">Weight variation</th>
-                </tr>
-                </thead>
-                <tbody>
-                <!-- Item -->
-                {% for com in swarmings_communications %}
+                <br>
+                <table id="swarming_com" class="table table-hover">
+                    <thead>
                     <tr>
-                        <td class="border-0">
-                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = com.hive_id) }}"
-                               class="font-weight-bold">
-                                {{ com.hive_id }}
-                            </a>
-                        </td>
-                        <td class="border-0">
-                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = com.hive_id) }}"
-                               class="font-weight-bold">
-                                {{ com.swarm_id }}
-                            </a>
-                        </td>
-                        <td class="border-0">
-                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = com.hive_id) }}"
-                               class="font-weight-bold">
-                                {{ '%0.2f'|format(com.weight_variation|float) }}
-                            </a>
-                        </td>
+                        <th class="border-0">Id Hive</th>
+                        <th class="border-0">Id swarm</th>
+                        <th class="border-0">Weight variation</th>
                     </tr>
-                {% endfor %}
-                <!-- Item -->
+                    </thead>
+                    <tbody>
+                    <!-- Item -->
+                    {% for com in swarmings_communications %}
+                        <tr>
+                            <td class="border-0">
+                                <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = com.hive_id) }}"
+                                   class="font-weight-bold">
+                                    {{ com.hive_id }}
+                                </a>
+                            </td>
+                            <td class="border-0">
+                                <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = com.hive_id) }}"
+                                   class="font-weight-bold">
+                                    {{ com.swarm_id }}
+                                </a>
+                            </td>
+                            <td class="border-0">
+                                <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = com.hive_id) }}"
+                                   class="font-weight-bold">
+                                    {{ '%0.2f'|format(com.weight_variation|float) }}
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <!-- Item -->
 
 
-                </tbody>
-            </table>
-        </div>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div class="card card-body bg-white border-light shadow-sm mb-4">
@@ -226,7 +227,8 @@
                     </div>
                 </div>
                 <div class="mt-3">
-                    <button type="submit" name="new_swarming_event" class="btn btn-primary">Insert new swarm event</button>
+                    <button type="submit" name="new_swarming_event" class="btn btn-primary">Insert new swarm event
+                    </button>
                 </div>
             </form>
         </div>
