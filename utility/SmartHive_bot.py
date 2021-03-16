@@ -20,7 +20,9 @@ logger.setLevel(logging.DEBUG)
 # context. Error handlers also receive the raised TelegramError object in error.
 def start(update, context):
     """Send a message when the command /start is issued."""
-    update.message.reply_text('Hi!')
+    bot1: bot.Bot = context.bot
+    bot1.send_message(chat_id=update.effective_chat.id,
+                     text="You have just entered start command")
 
 
 def help_command(update, context):
@@ -73,9 +75,17 @@ class perpetualTimer():
         self.thread.cancel()
 
 
-def sendBotRandomVal(updater):
+def sendBotRandomVal():
     val = int(uniform(0, 255))
     updater.bot.send_message(chat_id=chatID, text='New value detected: ' + str(val))
+
+def swarmDetection_bot(hive,hives):
+    msg = "The hive with id "+ str(hive.hive_id) +" is swarming!"
+    telegram_bot_sendtext(updater,msg)
+
+def telegram_bot_sendtext(updater,msg):
+
+    updater.bot.send_message(chat_id=chatID, text=msg)
 
 
 
