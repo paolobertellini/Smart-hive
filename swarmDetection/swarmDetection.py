@@ -1,6 +1,6 @@
 
 from database.models import HiveModel, SensorFeed, SwarmEvent, SwarmCommunication
-
+from utility.SmartHive_bot import swarmDetection_bot
 from server import db
 
 from datetime import datetime
@@ -23,6 +23,7 @@ def alertHives(hive):
         swarm_communication = SwarmCommunication(hive_id=h.hive_id, swarm_id=swarm_id, weight_variation=last_sf.weight)
         db.session.add(swarm_communication)
         db.session.commit()
+    swarmDetection_bot(hive,hives)
 
 
 

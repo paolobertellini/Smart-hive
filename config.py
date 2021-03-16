@@ -21,6 +21,8 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
+
+
 class ProductionConfig(Config):
     DEBUG = False
 
@@ -49,3 +51,7 @@ config_dict = {
     'Production': ProductionConfig,
     'Debug': DebugConfig
 }
+
+# bot telegram config
+BOTKEY = '1577527800:AAFTFvbYJD0iecj5ZjxGRH-7U2IQbZM8kog'
+chatID = 149248437
