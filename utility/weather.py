@@ -8,6 +8,7 @@ def weather(location):
     w = observation.weather
     temp = w.temperature('celsius')
     status = w.detailed_status
-    return ({'temperature': temp, 'status': status})
+    wind = w.wind()
+    return ({'temperature': temp,'wind':wind, 'status': status})
 # c984a283dfd9a79d06e234a7c62f2e2a
 # 3164794
