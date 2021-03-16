@@ -39,7 +39,7 @@ def configuration(serial_port):
     buffer=""
 
     try:
-        command = "{\"type\":\"A\",\"association_code\":\"None\",\"id\":\"None\"}"
+        command = "{\"type\":\"A\",\"a_c\":\"None\",\"id\":\"None\"}"
         serial_port.write(command.encode())
         serial_port.write(b'\n')
         print("B  --> MC : association code request")
@@ -74,7 +74,7 @@ def configuration(serial_port):
         return False
 
     try:
-        association_code = {"association_code":received["association_code"]}
+        association_code = {"association_code":received["a_c"]}
         r = requests.get(server + '/authentication', json=association_code)
         if r.text != "None":
             id = r.text
@@ -87,7 +87,7 @@ def configuration(serial_port):
         return False
 
     try:
-        command = "{\"type\":\"A\",\"association_code\":\"" + str(received["association_code"]) + "\",\"id\":\"" + str(id) + "\"}"
+        command = "{\"type\":\"A\",\"a_c\":\"" + str(received["a_c"]) + "\",\"id\":\"" + str(id) + "\"}"
         serial_port.write(command.encode())
         serial_port.write(b'\n')
         print("B  --> MC : authentication id " + id)
@@ -137,10 +137,9 @@ def loop(threadName, port, updateInterval = 10):
                     data = False
                 print("Next hive feed in " + str(int(hiveFeedInterval - (time.time() - hiveFeedTime))) + " sec")
                 json_comando = "{\"type\":\"D\"," \
-                               "\"entrance\":\"" + str(ser_resp["entrance"]) + "\"," \
-                               "\"alarm\":\"" + str(ser_resp["alarm"]) + "\"," \
-                               "\"duration\":\"" + str(duration) + "\"," \
-                               "\"data\":\"" + str(data) + "\"}"
+                               "\"e\":\"" + str(ser_resp["entrance"]) + "\"," \
+                               "\"a\":\"" + str(ser_resp["alarm"]) + "\"," \
+                               "\"d\":\"" + str(data) + "\"}"
 
                 print("B  --> MC : " + json_comando)
 
@@ -163,9 +162,9 @@ def loop(threadName, port, updateInterval = 10):
                     if received['type'] == "D":
                         print("MC --> B  : " + str(buffer))
                         hiveFeed = {'hive_id':received['id'],
-                                    'temperature':received['temperature'],
-                                    'humidity':received['humidity'],
-                                    'weight':received['weight']}
+                                    'temperature':received['t'],
+                                    'humidity':received['h'],
+                                    'weight':received['w']}
                         r1 = requests.get(server + '/new-sensor-feed', json=hiveFeed)
                         print("B  --> C  : " + str(hiveFeed))
                         if r1.text == "200":
