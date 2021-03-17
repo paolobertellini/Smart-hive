@@ -10,6 +10,6 @@ def weather(location):
     status = w.detailed_status
     wind = w.wind()['speed']
     humidity = w.humidity
-    return ({'temperature': temp, 'humidity':humidity, 'wind':wind, 'status': status})
+    return ({'temperature': temp, 'humidity': humidity, 'wind': wind, 'status': status})
 # c984a283dfd9a79d06e234a7c62f2e2a
 # 3164794

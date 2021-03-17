@@ -8,7 +8,7 @@
 
 
 {% block content %}
-     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
 
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
@@ -16,7 +16,7 @@
     <main class="content">
 
         {% include 'includes/navigation.html' %}
-            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
         {% if d.sf %}
@@ -137,7 +137,8 @@
                                                     class="fas fa-passport"></span></span>Hive id</h6>
                                         </div>
                                         <div>
-                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>{{ d.hive.hive_id }}</h6>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>{{ d.hive.hive_id }}
+                                            </h6>
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
@@ -162,8 +163,14 @@
                                                     class="fas fa-layer-group"></span></span>Number of supers</h6>
                                         </div>
                                         <div>
-                                            <a href="#" class="text-primary font-weight-bold"><a style="width:25px" class="btn btn-outline-primary btn-sm " href="{{ url_for('home_blueprint.removeSupers',  hive_id = d.hive.hive_id, apiary = d.hive.apiary_id) }}" role="button"> - </a>
-                                                  {{ d.hive.n_supers }}   <a style="width:25px" class="btn btn-outline-primary btn-sm " href="{{ url_for('home_blueprint.addSupers',  hive_id = d.hive.hive_id, apiary = d.hive.apiary_id) }}" role="button">+</a> </a>
+                                            <a href="#" class="text-primary font-weight-bold"><a style="width:25px"
+                                                                                                 class="btn btn-outline-primary btn-sm "
+                                                                                                 href="{{ url_for('home_blueprint.removeSupers',  hive_id = d.hive.hive_id, apiary = d.hive.apiary_id) }}"
+                                                                                                 role="button"> - </a>
+                                                {{ d.hive.n_supers }} <a style="width:25px"
+                                                                         class="btn btn-outline-primary btn-sm "
+                                                                         href="{{ url_for('home_blueprint.addSupers',  hive_id = d.hive.hive_id, apiary = d.hive.apiary_id) }}"
+                                                                         role="button">+</a> </a>
 
                                         </div>
                                     </div>
@@ -183,7 +190,8 @@
                                             </h6>
                                         </div>
                                         <div>
-                                            <a href="#" class="text-primary font-weight-bold">{{ d.w.temperature }} °C</a>
+                                            <a href="#" class="text-primary font-weight-bold">{{ d.w.temperature }}
+                                                °C</a>
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
@@ -265,45 +273,45 @@
                             <h2 class="h5 mb-0">Control hive</h2>
                         </div>
                         <div class="card-body">
-{#                            <div class="d-flex align-items-center justify-content-between border-bottom border-light pb-3">#}
-                                <a class="nav-link"
-                                   href="{{ url_for('home_blueprint.dashboard', apiary=d.apiary, hive_id=d.hive.hive_id, type="none") }}">
-                                    <button class="btn btn-primary w-100" type="button" aria-haspopup="true"
-                                            aria-expanded="false">
-                                        <span class="fas fa-sync-alt"></span> Refresh data
-                                    </button>
-                                </a>
-{#                            </div>#}
-{#                            <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">#}
-                                <a class="nav-link"
-                                   href="{{ url_for('home_blueprint.dashboard', apiary=d.apiary, hive_id=d.hive.hive_id, type="alarm") }}">
-                                    <button class="btn btn-primary w-100" type="button" aria-haspopup="true"
-                                            aria-expanded="false">
-                                        <span class="fas fa-volume-up"></span>
-                                        {% if d.hive.alarm %}
-                                            Turn alarm off
-                                        {% endif %}
-                                        {% if not d.hive.alarm %}
-                                            Turn alarm on
-                                        {% endif %}
-                                    </button>
-                                </a>
-{#                            </div>#}
-{#                            <div class="d-flex align-items-center justify-content-between pt-3">#}
-                                <a class="nav-link"
-                                   href="{{ url_for('home_blueprint.dashboard', apiary=d.apiary, hive_id=d.hive.hive_id, type="entrance") }}">
-                                    <button class="btn btn-primary w-100" type="button" aria-haspopup="true"
-                                            aria-expanded="false">
-                                        <span class="fas fa-door-open"></span>
-                                        {% if d.hive.entrance %}
-                                            Close hive entrance
-                                        {% endif %}
-                                        {% if not d.hive.entrance %}
-                                            Open hive entrance
-                                        {% endif %}
-                                    </button>
-                                </a>
-{#                            </div>#}
+                            {#                            <div class="d-flex align-items-center justify-content-between border-bottom border-light pb-3">#}
+                            <a class="nav-link"
+                               href="{{ url_for('home_blueprint.dashboard', apiary=d.apiary, hive_id=d.hive.hive_id, type="none") }}">
+                                <button class="btn btn-primary w-100" type="button" aria-haspopup="true"
+                                        aria-expanded="false">
+                                    <span class="fas fa-sync-alt"></span> Refresh data
+                                </button>
+                            </a>
+                            {#                            </div>#}
+                            {#                            <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">#}
+                            <a class="nav-link"
+                               href="{{ url_for('home_blueprint.dashboard', apiary=d.apiary, hive_id=d.hive.hive_id, type="alarm") }}">
+                                <button class="btn btn-primary w-100" type="button" aria-haspopup="true"
+                                        aria-expanded="false">
+                                    <span class="fas fa-volume-up"></span>
+                                    {% if d.hive.alarm %}
+                                        Turn alarm off
+                                    {% endif %}
+                                    {% if not d.hive.alarm %}
+                                        Turn alarm on
+                                    {% endif %}
+                                </button>
+                            </a>
+                            {#                            </div>#}
+                            {#                            <div class="d-flex align-items-center justify-content-between pt-3">#}
+                            <a class="nav-link"
+                               href="{{ url_for('home_blueprint.dashboard', apiary=d.apiary, hive_id=d.hive.hive_id, type="entrance") }}">
+                                <button class="btn btn-primary w-100" type="button" aria-haspopup="true"
+                                        aria-expanded="false">
+                                    <span class="fas fa-door-open"></span>
+                                    {% if d.hive.entrance %}
+                                        Close hive entrance
+                                    {% endif %}
+                                    {% if not d.hive.entrance %}
+                                        Open hive entrance
+                                    {% endif %}
+                                </button>
+                            </a>
+                            {#                            </div>#}
                         </div>
                     </div>
                 </div>
@@ -316,62 +324,69 @@
                         </div>
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between border-bottom border-light pb-3">
-                                        <div>
-                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"><span
-                                                    class="fas fa-backward"></span></span>Last week</h6>
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>{{ '%0.2f'|format(d.last_week|float) }} g</h6>
-                                        </div>
-                                    </div>
+                                <div>
+                                    <h6 class="mb-0"><span class="icon icon-xs mr-3"><span
+                                            class="fas fa-backward"></span></span>Last week</h6>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0"><span
+                                            class="icon icon-xs mr-3"></span>{{ '%0.2f'|format(d.last_week|float) }} g
+                                    </h6>
+                                </div>
+                            </div>
                             <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
-                                        <div>
-                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"><span
-                                                    class="fab fa-forumbee"></span></span>This week</h6>
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>{{'%0.2f'|format(d.this_week|float)}} g</h6>
-                                        </div>
-                                    </div>
+                                <div>
+                                    <h6 class="mb-0"><span class="icon icon-xs mr-3"><span
+                                            class="fab fa-forumbee"></span></span>This week</h6>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0"><span
+                                            class="icon icon-xs mr-3"></span>{{ '%0.2f'|format(d.this_week|float) }} g
+                                    </h6>
+                                </div>
+                            </div>
                             <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
-                                        <div>
-                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"><span
-                                                    class="fas fa-forward"></span></span>Next week</h6>
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>Ask to DCI</h6>
-                                        </div>
-                                    </div>
+                                <div>
+                                    <h6 class="mb-0"><span class="icon icon-xs mr-3"><span
+                                            class="fas fa-forward"></span></span>Next week</h6>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0"><span
+                                            class="icon icon-xs mr-3"></span>{{ '%0.2f'|format(d.next_week|float) }} g
+                                    </h6>
+                                </div>
+                            </div>
                             <br>
 
 
-                                <div class="col-auto">
+                            <div class="col-auto">
                                     <span class="sidebar-icon">
                                         <img src="/static/assets/img/honey.svg" height="40" width="40" alt="Bee Logo">&nbsp;
                                     </span>
-                                </div>
-                                <div class="col">
-                                    <div class="progress-wrapper">
-                                        <div class="progress-info">
-                                            <div class="h6 mb-0">Honey quantity</div>
+                            </div>
+                            <div class="col">
+                                <div class="progress-wrapper">
+                                    <div class="progress-info">
+                                        <div class="h6 mb-0">Honey quantity</div>
 
-                                            <div class="small font-weight-bold text-dark"><span>{{ d.hp }} %</span></div>
-                                        </div>
-                                        <div class="progress mb-0">
-                                            <div class="progress-bar bg-warning" role="progressbar"
+                                        <div class="small font-weight-bold text-dark"><span>{{ d.hp }} %</span></div>
+                                    </div>
+                                    <div class="progress mb-0">
+                                        <div class="progress-bar bg-warning" role="progressbar"
 
-                                                 aria-valuenow="{{ last.weight }}" aria-valuemin="0" aria-valuemax="{{ (d.hive.n_supers*30000) + 50000  }}"
-                                                 style="width: {{ (last.weight * 100)/((d.hive.n_supers*30000) + 50000) }}%;"></div>
+                                             aria-valuenow="{{ last.weight }}" aria-valuemin="0"
+                                             aria-valuemax="{{ (d.hive.n_supers*30000) + 50000 }}"
+                                             style="width: {{ (last.weight * 100)/((d.hive.n_supers*30000) + 50000) }}%;"></div>
 
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
+
             </div>
+        </div>
 
         <br>
         <!-- grafico -->
@@ -386,9 +401,9 @@
                 </div>
                 <br>
                 <center>
-                <div>
-                    <div id="chartContainer" style="height: 300px; width: 90%;"></div>
-                </div>
+                    <div>
+                        <div id="chartContainer" style="height: 300px; width: 90%;"></div>
+                    </div>
                 </center>
                 <br>
             </div>
@@ -404,7 +419,8 @@
                                 <h2 class="h5">History data</h2>
                             </div>
                             <div class="col text-right">
-                                <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = d.hive.hive_id)}}" class="btn btn-sm btn-secondary">See all</a>
+                                <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = d.hive.hive_id) }}"
+                                   class="btn btn-sm btn-secondary">See all</a>
                             </div>
                         </div>
                     </div>
@@ -476,7 +492,8 @@
                                 <h2 class="h5">Swarming events</h2>
                             </div>
                             <div class="col text-right">
-                                <a href="{{ url_for('home_blueprint.swarming', hive_id = d.hive.hive_id)}}" class="btn btn-sm btn-secondary">See all</a>
+                                <a href="{{ url_for('home_blueprint.swarming', hive_id = d.hive.hive_id) }}"
+                                   class="btn btn-sm btn-secondary">See all</a>
                             </div>
                         </div>
                     </div>
@@ -491,42 +508,42 @@
                         <div class="card border-light shadow-sm">
                             <div class="card-body">
                                 <table id="swarming_com" class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th class="border-0">Id Hive</th>
-                                    <th class="border-0">Id swarm</th>
-                                    <th class="border-0">Weight<br>variation</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <!-- Item -->
-                                {% for com in d.swarmings_communications %}
+                                    <thead>
                                     <tr>
-                                        <td class="border-0">
-                                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = com.hive_id) }}"
-                                               class="font-weight-bold">
-                                                {{ com.hive_id }}
-                                            </a>
-                                        </td>
-                                        <td class="border-0">
-                                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = com.hive_id) }}"
-                                               class="font-weight-bold">
-                                                {{ com.swarm_id }}
-                                            </a>
-                                        </td>
-                                        <td class="border-0">
-                                            <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = com.hive_id) }}"
-                                               class="font-weight-bold">
-                                                {{ '%0.2f'|format(com.weight_variation|float) }}
-                                            </a>
-                                        </td>
+                                        <th class="border-0">Id Hive</th>
+                                        <th class="border-0">Id swarm</th>
+                                        <th class="border-0">Weight<br>variation</th>
                                     </tr>
-                                {% endfor %}
-                                <!-- Item -->
+                                    </thead>
+                                    <tbody>
+                                    <!-- Item -->
+                                    {% for com in d.swarmings_communications %}
+                                        <tr>
+                                            <td class="border-0">
+                                                <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = com.hive_id) }}"
+                                                   class="font-weight-bold">
+                                                    {{ com.hive_id }}
+                                                </a>
+                                            </td>
+                                            <td class="border-0">
+                                                <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = com.hive_id) }}"
+                                                   class="font-weight-bold">
+                                                    {{ com.swarm_id }}
+                                                </a>
+                                            </td>
+                                            <td class="border-0">
+                                                <a href="{{ url_for('home_blueprint.sensorFeed', hive_id = com.hive_id) }}"
+                                                   class="font-weight-bold">
+                                                    {{ '%0.2f'|format(com.weight_variation|float) }}
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    <!-- Item -->
 
 
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -580,17 +597,17 @@
 
     </main>
     <script>
-$(document).ready(function() {
-    $('#mydatatable').DataTable();
-} );
-$(document).ready(function () {
-    $('#swarming_table').DataTable();
-});
-$(document).ready(function () {
-    $('#swarming_com').DataTable();
-});
-</script>
-        {% with messages = get_flashed_messages() %}
+        $(document).ready(function () {
+            $('#mydatatable').DataTable();
+        });
+        $(document).ready(function () {
+            $('#swarming_table').DataTable();
+        });
+        $(document).ready(function () {
+            $('#swarming_com').DataTable();
+        });
+    </script>
+    {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for message in messages %}
                 <script>
@@ -613,29 +630,29 @@ $(document).ready(function () {
                 zoomEnabled: true,
                 axisX: {
                     valueFormatString: "MMM DD YYYY HH:mm:ss ",
-                    stripLines:[
+                    stripLines: [
                         {% for s in d.swarm %}
                             {% if s.alert_period_end and s.real == False%}
-                            {
-                                startValue:new Date("{{ s.alert_period_begin.strftime("%b %d %Y %H:%M:%S") }}"),
-                                endValue:new Date("{{ s.alert_period_end.strftime("%b %d %Y %H:%M:%S") }}"),
-                                opacity: .2
-                            },
+                                {
+                                    startValue: new Date("{{ s.alert_period_begin.strftime("%b %d %Y %H:%M:%S") }}"),
+                                    endValue: new Date("{{ s.alert_period_end.strftime("%b %d %Y %H:%M:%S") }}"),
+                                    opacity: .2
+                                },
                             {% endif %}
                             {% if s.alert_period_end and s.real == True%}
-                            {
-                                startValue:new Date("{{ s.alert_period_begin.strftime("%b %d %Y %H:%M:%S") }}"),
-                                endValue:new Date("{{ s.alert_period_end.strftime("%b %d %Y %H:%M:%S") }}"),
-                                color:"green",
-                                opacity: .2
-                            },
+                                {
+                                    startValue: new Date("{{ s.alert_period_begin.strftime("%b %d %Y %H:%M:%S") }}"),
+                                    endValue: new Date("{{ s.alert_period_end.strftime("%b %d %Y %H:%M:%S") }}"),
+                                    color: "green",
+                                    opacity: .2
+                                },
                             {% endif %}
                         {% endfor %}
-{#                        {#}
-{#				            startValue:new Date(2021,3,14,19,0,0),#}
-{#                            endValue:new Date(2021,3,14,19,30,0),#}
-{#				            color:"#F8BD7A"#}
-{#			            }#}
+                        {#                        {#}
+                        {#				            startValue:new Date(2021,3,14,19,0,0),#}
+                        {#                            endValue:new Date(2021,3,14,19,30,0),#}
+                        {#				            color:"#F8BD7A"#}
+                        {#			            }#}
                     ]
                 },
                 axisY: {
@@ -658,21 +675,21 @@ $(document).ready(function () {
                     showInLegend: true,
                     dataPoints: [
                         {% for p in d.sf %}
-                            { x:new Date("{{ p.timestamp }}") , y: {{p.temperature}}},
+                            {x: new Date("{{ p.timestamp }}"), y: {{p.temperature}}},
                         {% endfor %}
                     ]
-                    },
+                },
                     {
-                    name: "Ext temperature",
-                    type: "spline",
-                    yValueFormatString: "#0.## °C",
-                    xValueType: "dateTime",
-                    showInLegend: true,
-                    dataPoints: [
-                        {% for p in d.sf %}
-                            { x:new Date("{{ p.timestamp }}") , y: {{p.ext_temperature}}},
-                        {% endfor %}
-                    ]
+                        name: "Ext temperature",
+                        type: "spline",
+                        yValueFormatString: "#0.## °C",
+                        xValueType: "dateTime",
+                        showInLegend: true,
+                        dataPoints: [
+                            {% for p in d.sf %}
+                                {x: new Date("{{ p.timestamp }}"), y: {{p.ext_temperature}}},
+                            {% endfor %}
+                        ]
                     },
                     {
                         name: "Humidity",
@@ -682,7 +699,7 @@ $(document).ready(function () {
                         showInLegend: true,
                         dataPoints: [
                             {% for p in d.sf %}
-                                {x:new Date("{{ p.timestamp }}"), y: {{p.humidity}}},
+                                {x: new Date("{{ p.timestamp }}"), y: {{p.humidity}}},
                             {% endfor %}
                         ]
                     },
@@ -694,7 +711,7 @@ $(document).ready(function () {
                         showInLegend: true,
                         dataPoints: [
                             {% for p in d.sf %}
-                                {x:new Date("{{ p.timestamp }}"), y: {{p.ext_humidity}}},
+                                {x: new Date("{{ p.timestamp }}"), y: {{p.ext_humidity}}},
                             {% endfor %}
                         ]
                     },
@@ -706,11 +723,11 @@ $(document).ready(function () {
                         showInLegend: true,
                         dataPoints: [
                             {% for p in d.sf %}
-                                {x:new Date("{{ p.timestamp }}"), y: {{p.weight}}},
+                                {x: new Date("{{ p.timestamp }}"), y: {{p.weight}}},
                             {% endfor %}
                         ]
                     }
-                    ]
+                ]
             });
 
             chart.render();

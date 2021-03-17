@@ -73,278 +73,287 @@
     <!-- NOTICE: You can use the _analytics.html partial to include production code specific code & trackers -->
 
 
-<main class="content">
+    <main class="content">
 
-    <div class="preloader bg-soft flex-column justify-content-center align-items-center">
-        <img class="loader-element animate__animated animate__jackInTheBox" src="static/bee.PNG" height="60"
-             alt="Bee logo">
-    </div>
+        <div class="preloader bg-soft flex-column justify-content-center align-items-center">
+            <img class="loader-element animate__animated animate__jackInTheBox" src="static/bee.PNG" height="60"
+                 alt="Bee logo">
+        </div>
 
-    <!-- Hero -->
-    <section class="section-header pb-9 pb-lg-12 bg-primary text-white">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <img class="navbar-brand-dark mb-4" src="static/bee.PNG" height="120" alt="Bee light">
-                    <h1 class="display-1">Smart Hive</h1>
-                    <div class="mb-5">
-                        <h2 class="h3 text-muted mr-3">Welcome to the new revolution of beekeeping!</h2>
+        <!-- Hero -->
+        <section class="section-header pb-9 pb-lg-12 bg-primary text-white">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <img class="navbar-brand-dark mb-4" src="static/bee.PNG" height="120" alt="Bee light">
+                        <h1 class="display-1">Smart Hive</h1>
+                        <div class="mb-5">
+                            <h2 class="h3 text-muted mr-3">Welcome to the new revolution of beekeeping!</h2>
+                        </div>
+                        <!-- Button login/logout -->
+                        <center>
+                            <div class="d-flex justify-content-center align-items-end flex-wrap mb-6 center">
+                                {% if current_user.is_authenticated %}
+                                    <a href="{{ url_for('home_blueprint.logout') }}"
+                                       class="btn btn-secondary text-dark mr-4 mb-3 mb-lg-0">Logout {{ current_user }}
+                                        <span
+                                                class="fas fa-sign-out-alt mr-2"></span></a>
+                                {% else %}
+                                    <a href="{{ url_for('home_blueprint.login') }}"
+                                       class="btn btn-secondary text-dark mr-4 mb-3 mb-lg-0">Login</a>
+                                {% endif %}
+                                <a href="{{ url_for('home_blueprint.register') }}" target="_blank"
+                                   class="btn btn-secondary text-dark mr-4 mb-3 mb-lg-0"><span
+                                        class="fas fa-rocket mr-2"></span>Register</a>
+                            </div>
+                        </center>
+                        <div class="d-flex justify-content-center flex-column mb-6">
+
+                            <a>
+                                <img src="static/assets/img/vombati.svg" height="100">
+                            </a>
+                        </div>
+                        <center>
+                            <span class="text-muted font-small">&copy; Vombati </span>
+                            <a>Coded by PaDaGI</a>
+                        </center>
+
+
                     </div>
-                    <!-- Button login/logout -->
-                    <center>
-                    <div class="d-flex justify-content-center align-items-end flex-wrap mb-6 center">
-                        {% if current_user.is_authenticated %}
-                            <a href="{{ url_for('home_blueprint.logout') }}"
-                               class="btn btn-secondary text-dark mr-4 mb-3 mb-lg-0">Logout {{ current_user }} <span
-                                    class="fas fa-sign-out-alt mr-2"></span></a>
-                        {% else %}
-                            <a href="{{ url_for('home_blueprint.login') }}"
-                               class="btn btn-secondary text-dark mr-4 mb-3 mb-lg-0">Login</a>
-                        {% endif %}
-                        <a href="{{ url_for('home_blueprint.register') }}" target="_blank"
-                            class="btn btn-secondary text-dark mr-4 mb-3 mb-lg-0"><span class="fas fa-rocket mr-2"></span>Register</a>
+                </div>
+            </div>
+            <figure class="position-absolute bottom-0 left-0 w-100 d-none d-md-block mb-n2">
+                <svg class="fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 185.4">
+                    <path d="M3000,0v185.4H0V0c496.4,115.6,996.4,173.4,1500,173.4S2503.6,115.6,3000,0z"></path>
+                </svg>
+            </figure>
+        </section>
+        <div class="section">
+            <div class="container mt-n10 mt-lg-n12 z-2">
+                <div class="row justify-content-center">
+                    <div>
+                        <img src="static/beeflower.png" alt="Flower presentation">
                     </div>
-                    </center>
-                    <div class="d-flex justify-content-center flex-column mb-6">
-
-                        <a>
-                            <img src="static/assets/img/vombati.svg"  height="100">
+                </div>
+            </div>
+        </div>
+        <section class="section section-sm pt-0">
+            <div class="container">
+                <div class="row justify-content-center mb-5 mb-lg-6">
+                    <div class="col-12 text-center">
+                        <h2 class="h1 px-lg-5">Smart Hive facilitate the beekeeping world.</h2>
+                        <p class="lead px-lg-10">You can control your hives from the palm of your hand.</p>
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-6 mb-5">
+                        <a href="{{ url_for('home_blueprint.dashboard') }}"
+                           class="page-preview page-preview-lg scale-up-hover-2">
+                            <img class="shadow-lg rounded scale" src="static/assets/img/pages/overview.jpg"
+                                 alt="Dashboard page preview">
+                            <div class="text-center show-on-hover">
+                                <h6 class="m-0 text-center text-white">Overview <i
+                                        class="fas fa-external-link-alt ml-2"></i></h6>
+                            </div>
                         </a>
                     </div>
-                    <center>
-                        <span class="text-muted font-small">&copy; Vombati </span>
-                        <a>Coded by PaDaGI</a>
-                    </center>
-
-
-
-
-                </div>
-            </div>
-        </div>
-        <figure class="position-absolute bottom-0 left-0 w-100 d-none d-md-block mb-n2">
-            <svg class="fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 185.4">
-                <path d="M3000,0v185.4H0V0c496.4,115.6,996.4,173.4,1500,173.4S2503.6,115.6,3000,0z"></path>
-            </svg>
-        </figure>
-    </section>
-    <div class="section">
-        <div class="container mt-n10 mt-lg-n12 z-2">
-            <div class="row justify-content-center">
-                <div>
-                    <img src="static/beeflower.png" alt="Flower presentation">
-                </div>
-            </div>
-        </div>
-    </div>
-    <section class="section section-sm pt-0">
-        <div class="container">
-            <div class="row justify-content-center mb-5 mb-lg-6">
-                <div class="col-12 text-center">
-                    <h2 class="h1 px-lg-5">Smart Hive facilitate the beekeeping world.</h2>
-                    <p class="lead px-lg-10">You can control your hives from the palm of your hand.</p>
-                </div>
-            </div>
-            <div class="row mb-5">
-                <div class="col-6 mb-5">
-                    <a href="{{ url_for('home_blueprint.dashboard') }}" class="page-preview page-preview-lg scale-up-hover-2">
-                        <img class="shadow-lg rounded scale" src="static/assets/img/pages/overview.jpg"
-                             alt="Dashboard page preview">
-                        <div class="text-center show-on-hover">
-                            <h6 class="m-0 text-center text-white">Overview <i
-                                    class="fas fa-external-link-alt ml-2"></i></h6>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-6 mb-5">
-                    <a href="{{ url_for('home_blueprint.hive', apiary="") }}" class="page-preview page-preview-lg scale-up-hover-2">
-                        <img class="shadow-lg rounded scale" src="static/assets/img/pages/transactions.jpg"
-                             alt="Transactions page preview">
-                        <div class="text-center show-on-hover">
-                            <h6 class="m-0 text-center text-white">Hives <i
-                                    class="fas fa-external-link-alt ml-2"></i></h6>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-6 mb-5">
-                    <a href="{{ url_for('home_blueprint.apiaries') }}" class="page-preview page-preview-lg scale-up-hover-2">
-                        <img class="shadow-lg rounded scale" src="static/assets/img/pages/settings.jpg"
-                             alt="Settings page preview">
-                        <div class="text-center show-on-hover">
-                            <h6 class="m-0 text-center text-white">Apiary <i
-                                    class="fas fa-external-link-alt ml-2"></i></h6>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-6 mb-5">
-                    <a href="{{ url_for('home_blueprint.login') }}" class="page-preview page-preview-lg scale-up-hover-2">
-                        <img class="shadow-lg rounded scale" src="static/assets/img/pages/sign-in.jpg"
-                             alt="Sign In page preview">
-                        <div class="text-center show-on-hover">
-                            <h6 class="m-0 text-center text-white">Sign In <i class="fas fa-external-link-alt ml-2"></i>
-                            </h6>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-6 mb-5">
-                    <a href="{{ url_for('home_blueprint.logout') }}" class="page-preview page-preview-lg scale-up-hover-2">
-                        <img class="shadow-lg rounded scale" src="static/assets/img/pages/sign-up.jpg"
-                             alt="Sign Up page preview">
-                        <div class="text-center show-on-hover">
-                            <h6 class="m-0 text-center text-white">Sign Up <i class="fas fa-external-link-alt ml-2"></i>
-                            </h6>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-6 mb-5">
-                    <a href="{{ url_for('home_blueprint.route_template', template='vombatiforever') }}" class="page-preview page-preview-lg scale-up-hover-2">
-                        <img class="shadow-lg rounded scale" src="static/assets/img/pages/404.jpg"
-                             alt="404 error preview">
-                        <div class="text-center show-on-hover">
-                            <h6 class="m-0 text-center text-white">404 <i class="fas fa-external-link-alt ml-2"></i>
-                            </h6>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-6 mb-5">
-                    <a href="{{ url_for('home_blueprint.route_template', template='none') }}" class="page-preview page-preview-lg scale-up-hover-2">
-                        <img class="shadow-lg rounded scale" src="static/assets/img/pages/500.jpg"
-                             alt="500 error preview">
-                        <div class="text-center show-on-hover">
-                            <h6 class="m-0 text-center text-white">500 <i class="fas fa-external-link-alt ml-2"></i>
-                            </h6>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-6 col-md-3 text-center mb-4">
-                    <div class="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle icon-secondary mb-4">
-                        <span class="fas fa-pager"></span>
+                    <div class="col-6 mb-5">
+                        <a href="{{ url_for('home_blueprint.hive', apiary="") }}"
+                           class="page-preview page-preview-lg scale-up-hover-2">
+                            <img class="shadow-lg rounded scale" src="static/assets/img/pages/transactions.jpg"
+                                 alt="Transactions page preview">
+                            <div class="text-center show-on-hover">
+                                <h6 class="m-0 text-center text-white">Hives <i
+                                        class="fas fa-external-link-alt ml-2"></i></h6>
+                            </div>
+                        </a>
                     </div>
-                    <h3 class="font-weight-bolder">Dashboard</h3>
-                    <p class="text-gray">Page</p>
-                </div>
-                <div class="col-6 col-md-3 text-center mb-4">
-                    <div class="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle icon-secondary mb-4">
-                        <span class="fas fa-puzzle-piece"></span>
+                    <div class="col-6 mb-5">
+                        <a href="{{ url_for('home_blueprint.apiaries') }}"
+                           class="page-preview page-preview-lg scale-up-hover-2">
+                            <img class="shadow-lg rounded scale" src="static/assets/img/pages/settings.jpg"
+                                 alt="Settings page preview">
+                            <div class="text-center show-on-hover">
+                                <h6 class="m-0 text-center text-white">Apiary <i
+                                        class="fas fa-external-link-alt ml-2"></i></h6>
+                            </div>
+                        </a>
                     </div>
-                    <h3 class="font-weight-bolder">A lot of</h3>
-                    <p class="text-gray">features</p>
-                </div>
-                <div class="col-6 col-md-3 text-center">
-                    <div class="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle icon-secondary mb-4">
-                        <span class="fas fa-charging-station"></span>
+                    <div class="col-6 mb-5">
+                        <a href="{{ url_for('home_blueprint.login') }}"
+                           class="page-preview page-preview-lg scale-up-hover-2">
+                            <img class="shadow-lg rounded scale" src="static/assets/img/pages/sign-in.jpg"
+                                 alt="Sign In page preview">
+                            <div class="text-center show-on-hover">
+                                <h6 class="m-0 text-center text-white">Sign In <i
+                                        class="fas fa-external-link-alt ml-2"></i>
+                                </h6>
+                            </div>
+                        </a>
                     </div>
-                    <h3 class="font-weight-bolder">Comfortable</h3>
-                    <p class="text-gray">Managing</p>
-                </div>
-                <div class="col-6 col-md-3 text-center">
-                    <div class="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle icon-secondary mb-4">
-                        <span class="fab fa-forumbee"></span>
+                    <div class="col-6 mb-5">
+                        <a href="{{ url_for('home_blueprint.logout') }}"
+                           class="page-preview page-preview-lg scale-up-hover-2">
+                            <img class="shadow-lg rounded scale" src="static/assets/img/pages/sign-up.jpg"
+                                 alt="Sign Up page preview">
+                            <div class="text-center show-on-hover">
+                                <h6 class="m-0 text-center text-white">Sign Up <i
+                                        class="fas fa-external-link-alt ml-2"></i>
+                                </h6>
+                            </div>
+                        </a>
                     </div>
-                    <h3 class="font-weight-bolder">Healty</h3>
-                    <p class="text-gray">bees</p>
+
+                    <div class="col-6 mb-5">
+                        <a href="{{ url_for('home_blueprint.route_template', template='vombatiforever') }}"
+                           class="page-preview page-preview-lg scale-up-hover-2">
+                            <img class="shadow-lg rounded scale" src="static/assets/img/pages/404.jpg"
+                                 alt="404 error preview">
+                            <div class="text-center show-on-hover">
+                                <h6 class="m-0 text-center text-white">404 <i class="fas fa-external-link-alt ml-2"></i>
+                                </h6>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-6 mb-5">
+                        <a href="{{ url_for('home_blueprint.route_template', template='none') }}"
+                           class="page-preview page-preview-lg scale-up-hover-2">
+                            <img class="shadow-lg rounded scale" src="static/assets/img/pages/500.jpg"
+                                 alt="500 error preview">
+                            <div class="text-center show-on-hover">
+                                <h6 class="m-0 text-center text-white">500 <i class="fas fa-external-link-alt ml-2"></i>
+                                </h6>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-6 col-md-3 text-center mb-4">
+                        <div class="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle icon-secondary mb-4">
+                            <span class="fas fa-pager"></span>
+                        </div>
+                        <h3 class="font-weight-bolder">Dashboard</h3>
+                        <p class="text-gray">Page</p>
+                    </div>
+                    <div class="col-6 col-md-3 text-center mb-4">
+                        <div class="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle icon-secondary mb-4">
+                            <span class="fas fa-puzzle-piece"></span>
+                        </div>
+                        <h3 class="font-weight-bolder">A lot of</h3>
+                        <p class="text-gray">features</p>
+                    </div>
+                    <div class="col-6 col-md-3 text-center">
+                        <div class="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle icon-secondary mb-4">
+                            <span class="fas fa-charging-station"></span>
+                        </div>
+                        <h3 class="font-weight-bolder">Comfortable</h3>
+                        <p class="text-gray">Managing</p>
+                    </div>
+                    <div class="col-6 col-md-3 text-center">
+                        <div class="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle icon-secondary mb-4">
+                            <span class="fab fa-forumbee"></span>
+                        </div>
+                        <h3 class="font-weight-bolder">Healty</h3>
+                        <p class="text-gray">bees</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <section class="section section-lg bg-primary text-white">
-        <div class="container">
-            <div class="row justify-content-center mb-5 mb-lg-6">
-                <div class="col-12 text-center">
-                    <h2 class="h1 px-lg-5">Awesome Features</h2>
-                    <p class="lead px-lg-8">You get a lot of components fully customized. Besides, you receive
-                        numerous plugins out of the box and ready to use.</p>
+        </section>
+        <section class="section section-lg bg-primary text-white">
+            <div class="container">
+                <div class="row justify-content-center mb-5 mb-lg-6">
+                    <div class="col-12 text-center">
+                        <h2 class="h1 px-lg-5">Awesome Features</h2>
+                        <p class="lead px-lg-8">You get a lot of components fully customized. Besides, you receive
+                            numerous plugins out of the box and ready to use.</p>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="card bg-white shadow-soft text-primary rounded mb-4">
-                        <div class="px-3 px-lg-4 py-5 text-center">
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="card bg-white shadow-soft text-primary rounded mb-4">
+                            <div class="px-3 px-lg-4 py-5 text-center">
                             <span>
                                 <img src="/static/assets/img/arduino.svg" height="75" width="75" alt="Bee Logo">&nbsp;
                             </span>
-                            <h5 class="font-weight-bold text-primary">Arduino Uno</h5>
-                            <p>To have the best performances!</p>
+                                <h5 class="font-weight-bold text-primary">Arduino Uno</h5>
+                                <p>To have the best performances!</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="card bg-white shadow-soft text-primary rounded mb-4">
-                        <div class="px-3 px-lg-4 py-5 text-center">
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="card bg-white shadow-soft text-primary rounded mb-4">
+                            <div class="px-3 px-lg-4 py-5 text-center">
                             <span>
                                 <img src="/static/assets/img/buzzer.png" height="75" width="75">&nbsp;
                             </span>
-                            <h5 class="font-weight-bold text-primary">Buzzer</h5>
-                            <p>To simulate the sound to call back the swarms!</p>
+                                <h5 class="font-weight-bold text-primary">Buzzer</h5>
+                                <p>To simulate the sound to call back the swarms!</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="card bg-white shadow-soft text-primary rounded mb-4">
-                        <div class="px-3 px-lg-4 py-5 text-center">
-                            <span class="icon icon-lg mb-4"><span class="fas fa-mobile-alt"></span></span>
-                            <h5 class="font-weight-bold text-primary">Responsive</h5>
-                            <p>All pages and components are 100% responsive</p>
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="card bg-white shadow-soft text-primary rounded mb-4">
+                            <div class="px-3 px-lg-4 py-5 text-center">
+                                <span class="icon icon-lg mb-4"><span class="fas fa-mobile-alt"></span></span>
+                                <h5 class="font-weight-bold text-primary">Responsive</h5>
+                                <p>All pages and components are 100% responsive</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="card bg-white shadow-soft text-primary rounded mb-4">
-                        <div class="px-3 px-lg-4 py-5 text-center">
-                            <span class="icon icon-lg mb-4"><span class="fas fa-weight"></span></span>
-                            <h5 class="font-weight-bold text-primary">Weight sensor</h5>
-                            <p>4 x 50 Kg load cell and HX711</p>
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="card bg-white shadow-soft text-primary rounded mb-4">
+                            <div class="px-3 px-lg-4 py-5 text-center">
+                                <span class="icon icon-lg mb-4"><span class="fas fa-weight"></span></span>
+                                <h5 class="font-weight-bold text-primary">Weight sensor</h5>
+                                <p>4 x 50 Kg load cell and HX711</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="card bg-white shadow-soft text-primary rounded mb-4">
-                        <div class="px-3 px-lg-4 py-5 text-center">
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="card bg-white shadow-soft text-primary rounded mb-4">
+                            <div class="px-3 px-lg-4 py-5 text-center">
                             <span>
                                 <img src="/static/assets/img/servo.png" height="75" width="75">&nbsp;
                             </span>
-                            <h5 class="font-weight-bold text-primary">Servo motor</h5>
-                            <p>The servo is used to open and close the hive's entrance</p>
+                                <h5 class="font-weight-bold text-primary">Servo motor</h5>
+                                <p>The servo is used to open and close the hive's entrance</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="card bg-white shadow-soft text-primary rounded mb-4">
-                        <div class="px-3 px-lg-4 py-5 text-center">
-                            <span class="icon icon-lg mb-4"><span class="far fa-file-alt"></span></span>
-                            <h5 class="font-weight-bold text-primary">Documentation</h5>
-                            <p>Everything with Smart Hive is well documented</p>
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="card bg-white shadow-soft text-primary rounded mb-4">
+                            <div class="px-3 px-lg-4 py-5 text-center">
+                                <span class="icon icon-lg mb-4"><span class="far fa-file-alt"></span></span>
+                                <h5 class="font-weight-bold text-primary">Documentation</h5>
+                                <p>Everything with Smart Hive is well documented</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="card bg-white shadow-soft text-primary rounded mb-4">
-                        <div class="px-3 px-lg-4 py-5 text-center">
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="card bg-white shadow-soft text-primary rounded mb-4">
+                            <div class="px-3 px-lg-4 py-5 text-center">
                             <span>
                                 <img src="/static/assets/img/dht11.svg" height="75" width="75">&nbsp;
                             </span>
-                            <h5 class="font-weight-bold text-primary">DHT11</h5>
-                            <p>Temperature and Humidity Module</p>
+                                <h5 class="font-weight-bold text-primary">DHT11</h5>
+                                <p>Temperature and Humidity Module</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="card bg-white shadow-soft text-primary rounded mb-4">
-                        <div class="px-3 px-lg-4 py-5 text-center">
-                            <span class="icon icon-lg mb-4"><span class="fas fa-pen-fancy"></span></span>
-                            <h5 class="font-weight-bold text-primary">Design</h5>
-                            <p>Crafted by professional UI/UX designers</p>
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="card bg-white shadow-soft text-primary rounded mb-4">
+                            <div class="px-3 px-lg-4 py-5 text-center">
+                                <span class="icon icon-lg mb-4"><span class="fas fa-pen-fancy"></span></span>
+                                <h5 class="font-weight-bold text-primary">Design</h5>
+                                <p>Crafted by professional UI/UX designers</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-</main>
+        </section>
+    </main>
 
-{% include 'includes/scripts.html' %}
+    {% include 'includes/scripts.html' %}
 {% endblock content %}
 </html>

@@ -1,3 +1,5 @@
+import csv
+import datetime
 import json
 import time
 
@@ -5,22 +7,16 @@ import requests
 import serial
 import serial.tools.list_ports
 
-import _thread
-import sys
-import csv
-import datetime
-
 online = 'http://smart-hive.ddns.net:8080'
 local = 'http://127.0.0.1:8080'
 davide = 'http://localhost'
 
-server = local
+server = online
 save_csv = True
 ports_descriptions = ["arduino", "usb", "tty"]
 
 
 def setup():
-
     try:
         print("Setting up bridge..")
         ports = []
@@ -38,8 +34,7 @@ def setup():
 
 
 def configuration(serial_port):
-
-    buffer=""
+    buffer = ""
 
     try:
         command = "{\"type\":\"A\",\"a_c\":\"None\",\"id\":\"None\"}"
@@ -77,7 +72,7 @@ def configuration(serial_port):
         return False, None
 
     try:
-        association_code = {"association_code":received["a_c"]}
+        association_code = {"association_code": received["a_c"]}
         r = requests.get(server + '/authentication', json=association_code)
         if r.text != "None":
             id = r.text
@@ -102,8 +97,7 @@ def configuration(serial_port):
     return True, id
 
 
-def loop(threadName, port, updateInterval = 10):
-
+def loop(threadName, port, updateInterval=10):
     try:
         if port.device is not None:
             serial_port = serial.Serial(port.device, 9600, timeout=0)
@@ -113,7 +107,6 @@ def loop(threadName, port, updateInterval = 10):
         print("ERROR: bridge unable to connect to " + str(port.name))
         print(e)
         return False
-
 
     result, id = configuration(serial_port)
     if result:
@@ -125,10 +118,10 @@ def loop(threadName, port, updateInterval = 10):
     hiveFeedTime = time.time()
     buffer = ""
 
-    while(True):
+    while (True):
         if time.time() > updateTime + updateInterval:
             try:
-                r = requests.get(server + '/bridge-channel', json={"id":id})
+                r = requests.get(server + '/bridge-channel', json={"id": id})
                 ser_resp = json.loads(r.text)
                 hiveFeedInterval = ser_resp["update_freq"]
                 if time.time() > hiveFeedTime + hiveFeedInterval:
@@ -139,8 +132,9 @@ def loop(threadName, port, updateInterval = 10):
                 print("Next hive feed in " + str(int(hiveFeedInterval - (time.time() - hiveFeedTime))) + " sec")
                 json_comando = "{\"type\":\"D\"," \
                                "\"e\":\"" + str(ser_resp["entrance"]) + "\"," \
-                               "\"a\":\"" + str(ser_resp["alarm"]) + "\"," \
-                               "\"d\":\"" + str(data) + "\"}"
+                                                                        "\"a\":\"" + str(ser_resp["alarm"]) + "\"," \
+                                                                                                              "\"d\":\"" + str(
+                    data) + "\"}"
 
                 print("B  --> MC : " + json_comando)
 
@@ -161,10 +155,10 @@ def loop(threadName, port, updateInterval = 10):
                     received = json.loads(buffer)
                     if received['type'] == "D":
                         print("MC --> B  : " + str(buffer))
-                        hiveFeed = {'hive_id':received['id'],
-                                    'temperature':received['t'],
-                                    'humidity':received['h'],
-                                    'weight':received['w']}
+                        hiveFeed = {'hive_id': received['id'],
+                                    'temperature': received['t'],
+                                    'humidity': received['h'],
+                                    'weight': received['w']}
                         r1 = requests.get(server + '/new-sensor-feed', json=hiveFeed)
                         print("B  --> C  : " + str(hiveFeed))
                         if r1.text == "200":
@@ -172,7 +166,8 @@ def loop(threadName, port, updateInterval = 10):
                         if save_csv:
                             with open(str(threadName) + '_hiveFeed_data.csv', mode='a', newline='') as csv_file:
                                 csv_writer = csv.writer(csv_file)
-                                csv_writer.writerow([datetime.datetime.now(), received['t'], received['h'], received['w']])
+                                csv_writer.writerow(
+                                    [datetime.datetime.now(), received['t'], received['h'], received['w']])
                                 print("B  --> CSV  : hive feed succesfully saved to csv file")
                     elif received['type'] == "E":
                         print("MC --> B  : sensor error " + str(buffer))
@@ -182,12 +177,10 @@ def loop(threadName, port, updateInterval = 10):
                 print(e)
 
 
-
 if __name__ == '__main__':
-
     ports = setup()
 
-    loop("test", ports[0], 10) # testing without threads
+    loop("test", ports[0], 10)  # testing without threads
 
     # for i, port in enumerate(ports):
     #     name = "Hive-" + str(i)

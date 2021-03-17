@@ -1,11 +1,13 @@
-from flask import request
 from datetime import datetime
+
+from flask import request
+
 from app import blueprint
 from database.models import ApiaryModel, HiveModel, SensorFeed
 from server import db
-
 from swarmDetection.swarmDetection import swarmDetection
 from utility.weather import weather
+
 
 @blueprint.route('/authentication', methods=['GET'])
 def authentication():
@@ -21,7 +23,7 @@ def hiveState():
     entrance = HiveModel.query.filter_by(hive_id=hive_id).first().entrance
     alarm = HiveModel.query.filter_by(hive_id=hive_id).first().alarm
     update_freq = HiveModel.query.filter_by(hive_id=hive_id).first().update_freq
-    return ({'entrance': entrance, 'alarm': alarm, 'update_freq':update_freq})
+    return ({'entrance': entrance, 'alarm': alarm, 'update_freq': update_freq})
 
 
 @blueprint.route('/new-sensor-feed', methods=['GET', 'POST'])
@@ -41,7 +43,7 @@ def newSensorFeed():
                             ext_temperature=w['temperature'],
                             ext_humidity=w['humidity'],
                             wind=w['wind'],
-                            timestamp = datetime.now())
+                            timestamp=datetime.now())
 
     db.session.add(sensorFeed)
     db.session.commit()

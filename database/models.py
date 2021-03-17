@@ -3,8 +3,6 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
-
-
 from flask_login import UserMixin
 from sqlalchemy import Binary, Column, Integer, String, Boolean, ForeignKey
 
@@ -35,6 +33,7 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return str(self.username)
+
 
 class ApiaryModel(db.Model):
     __tablename__ = 'Apiary'
@@ -83,6 +82,7 @@ class SwarmCommunication(db.Model):
     hive_id = db.Column(db.String(80), db.ForeignKey(HiveModel.hive_id), primary_key=True)
     swarm_id = Column(db.Integer, db.ForeignKey(SwarmEvent.swarm_id), primary_key=True)
     weight_variation = db.Column(db.Integer)
+
 
 @login_manager.user_loader
 def user_loader(id):

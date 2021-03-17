@@ -1,7 +1,6 @@
 import logging
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-from telegram import Chat, bot
 from config import BOTKEY
 
 logging.basicConfig(level=logging.DEBUG,
@@ -28,9 +27,6 @@ def help_command(update, context):
 def echo(update, context):
     """Echo the user message."""
     update.message.reply_text(update.message.text)
-
-
-
 
 
 def main():

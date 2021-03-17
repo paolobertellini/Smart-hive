@@ -6,6 +6,7 @@ Copyright (c) 2019 - present AppSeed.us
 import os
 
 from decouple import config
+from sklearn import linear_model
 
 
 class Config(object):
@@ -19,8 +20,6 @@ class Config(object):
     # This will create a file in <app> FOLDER
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'database', 'db.sqlite3')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-
-
 
 
 class ProductionConfig(Config):
@@ -55,3 +54,4 @@ config_dict = {
 # bot telegram config
 BOTKEY = '1577527800:AAFTFvbYJD0iecj5ZjxGRH-7U2IQbZM8kog'
 chatID = 149248437
+model = linear_model.LinearRegression()

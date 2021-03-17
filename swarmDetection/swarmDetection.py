@@ -1,10 +1,10 @@
-
 from database.models import HiveModel, SensorFeed, SwarmEvent, SwarmCommunication
-#from utility.botTelegram.SmartHive_bot import swarmDetection_bot
+# from utility.botTelegram.SmartHive_bot import swarmDetection_bot
 from server import db
 
 std_interval = 60
 alert_interval = 10
+
 
 def alertHives(hive):
     hives = HiveModel.query.filter_by(apiary_id=hive.apiary_id, entrance=False).all()
@@ -19,12 +19,10 @@ def alertHives(hive):
         swarm_communication = SwarmCommunication(hive_id=h.hive_id, swarm_id=swarm_id, weight_variation=last_sf.weight)
         db.session.add(swarm_communication)
         db.session.commit()
-    #swarmDetection_bot(hive,hives)
-
+    # swarmDetection_bot(hive,hives)
 
 
 def alertEndHives(hive):
-
     swarm_id = SwarmEvent.query.filter_by(hive_id=hive.hive_id).order_by(
         SwarmEvent.swarm_id.desc()).first().swarm_id
 
@@ -34,7 +32,8 @@ def alertEndHives(hive):
 
         db.session.query(HiveModel).filter(HiveModel.hive_id == hive.hive_id).update({'alarm': False})
 
-        weight_now = SensorFeed.query.filter_by(hive_id=hive.hive_id).order_by(SensorFeed.timestamp.desc()).first().weight
+        weight_now = SensorFeed.query.filter_by(hive_id=hive.hive_id).order_by(
+            SensorFeed.timestamp.desc()).first().weight
         weight_before = SwarmCommunication.query.filter_by(hive_id=hive.hive_id,
                                                            swarm_id=swarm_id).first().weight_variation
 
@@ -73,16 +72,19 @@ def swarmDetection(hive_id):
                 print("Alert period started")
 
         # swarming end
-        if now.temperature < before.temperature and hive.update_freq != std_interval: # la temperatura interna sta diminuendo
+        if now.temperature < before.temperature and hive.update_freq != std_interval:  # la temperatura interna sta diminuendo
             swarm_event = SwarmEvent.query.filter_by(hive_id=hive_id).order_by(SwarmEvent.swarm_id.desc()).first()
 
-            db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event.swarm_id).update({'alert_period_end': now.timestamp})
+            db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event.swarm_id).update(
+                {'alert_period_end': now.timestamp})
             old_temperature = swarm_event.temperature_variation
-            db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event.swarm_id).update({'temperature_variation': old_temperature - now.temperature})
+            db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event.swarm_id).update(
+                {'temperature_variation': old_temperature - now.temperature})
             old_weight = swarm_event.weight_variation
-            db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event.swarm_id).update({'weight_variation': now.weight - old_weight})
+            db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event.swarm_id).update(
+                {'weight_variation': now.weight - old_weight})
             alert_period_begin = swarm_event.alert_period_begin
-            duration = (now.timestamp - alert_period_begin).total_seconds() #/ 60.0
+            duration = (now.timestamp - alert_period_begin).total_seconds()  # / 60.0
 
             print(duration)
             if 25 < duration < 100 and now.weight - old_weight < 0:
@@ -99,5 +101,3 @@ def swarmDetection(hive_id):
             print("Alert period ended")
 
     return False
-
-

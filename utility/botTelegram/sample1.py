@@ -1,7 +1,6 @@
 import logging
 
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-from telegram import Chat, bot
+from telegram.ext import Updater, CommandHandler
 from config import BOTKEY
 
 logging.basicConfig(level=logging.DEBUG,

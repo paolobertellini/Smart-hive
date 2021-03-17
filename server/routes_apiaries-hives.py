@@ -3,19 +3,21 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
+from datetime import datetime, timedelta
+
 from flask import render_template, redirect, request, url_for, flash
 from flask_login import (
     current_user,
     login_required
 )
 
+from AI.dataPrediction import honeyProductionPrediction
 from app import blueprint
 from app.forms import CreateApiaryForm, CreateHiveForm, CreateSwarmEventForm
 from database.models import ApiaryModel, HiveModel, SensorFeed, SwarmEvent, User, SwarmCommunication
 from server import db
 from utility.weather import weather
 
-from datetime import datetime, timedelta
 
 # ----------------- APIARY ----------------- #
 
@@ -95,7 +97,8 @@ def hive():
         if (db.session.query(HiveModel.hive_id).filter_by(association_code=hive.association_code).scalar() is not None):
             flash("Control the correctness of the association code or contact the assistence.")
             return redirect(url_for('home_blueprint.hive', apiary=apiary_selected))
-        if db.session.query(HiveModel.hive_id).filter_by(apiary_id=hive.apiary_id, hive_description=hive_description).scalar() is not None:
+        if db.session.query(HiveModel.hive_id).filter_by(apiary_id=hive.apiary_id,
+                                                         hive_description=hive_description).scalar() is not None:
             flash("Hive description already used in this apiary. Please try again.")
             return redirect(url_for('home_blueprint.hive', apiary=apiary_selected))
         else:
@@ -122,15 +125,17 @@ def removeHive():
     db.session.commit()
     return redirect(url_for('home_blueprint.hive', apiary=apiary))
 
+
 @blueprint.route('/addSupers', methods=['GET'])
 @login_required
 def addSupers():
     hive_id = request.args['hive_id']
     apiary = request.args['apiary']
     data_to_modify = HiveModel.query.filter_by(hive_id=hive_id).first()
-    data_to_modify.n_supers = data_to_modify.n_supers+1
+    data_to_modify.n_supers = data_to_modify.n_supers + 1
     db.session.commit()
     return redirect(url_for('home_blueprint.dashboard', apiary=apiary, hive_id=hive_id, type="none"))
+
 
 @blueprint.route('/removeSupers', methods=['GET'])
 @login_required
@@ -138,7 +143,7 @@ def removeSupers():
     hive_id = request.args['hive_id']
     apiary = request.args['apiary']
     data_to_modify = HiveModel.query.filter_by(hive_id=hive_id).first()
-    data_to_modify.n_supers = data_to_modify.n_supers-1
+    data_to_modify.n_supers = data_to_modify.n_supers - 1
     if (data_to_modify.n_supers < 0):
         flash("There are no supers to remove.")
         return redirect(url_for('home_blueprint.dashboard', apiary=apiary, hive_id=hive_id, type="none"))
@@ -176,13 +181,14 @@ def dashboard():
     swarmings = SwarmEvent.query.filter_by(hive_id=hive_id).all()
     swarmings_communications = SwarmCommunication.query.filter_by(hive_id=hive_id).all()
 
-
     one_week_ago = datetime.now() - timedelta(days=7)
     two_weeks_ago = datetime.now() - timedelta(days=14)
-    today = SensorFeed.query.filter(SensorFeed.timestamp.startswith(datetime.now().strftime("%Y-%m-%d")), SensorFeed.hive_id==hive_id).order_by(SensorFeed.timestamp.desc()).first()
-    this_week = SensorFeed.query.filter(SensorFeed.timestamp.between(one_week_ago, datetime.now()), SensorFeed.hive_id==hive_id).first()
-    last_week = SensorFeed.query.filter(SensorFeed.timestamp.between(two_weeks_ago, one_week_ago), SensorFeed.hive_id==hive_id).first()
-
+    today = SensorFeed.query.filter(SensorFeed.timestamp.startswith(datetime.now().strftime("%Y-%m-%d")),
+                                    SensorFeed.hive_id == hive_id).order_by(SensorFeed.timestamp.desc()).first()
+    this_week = SensorFeed.query.filter(SensorFeed.timestamp.between(one_week_ago, datetime.now()),
+                                        SensorFeed.hive_id == hive_id).first()
+    last_week = SensorFeed.query.filter(SensorFeed.timestamp.between(two_weeks_ago, one_week_ago),
+                                        SensorFeed.hive_id == hive_id).first()
 
     if this_week is not None and today is not None:
         this_week_variation = today.weight - this_week.weight
@@ -193,20 +199,22 @@ def dashboard():
     else:
         last_week_variation = "tbd"
 
+    next_week = honeyProductionPrediction(hive_id)
+
     try:
         honey_prod = (sf[-1].weight * 100) / ((hive.n_supers * 30000) + 50000)
         min = (datetime.now() - sf[-1].timestamp).total_seconds() / 60.0
     except:
         flash("There are no data belonging to this specific hive.")
         return redirect(url_for('home_blueprint.hive', hive_id=hive_id, apiary=apiary))
-    if min > 2*hive.update_freq:
+    if min > 2 * hive.update_freq:
         time = False
     else:
         time = True
 
-    dashboard = {"hive":hive, "apiary":apiary, "time":time, "sf":sf, "loc":loc, "w":w, "hp":int(honey_prod),
-                 "swarm":swarmings, 'swarmings':swarmings, 'swarmings_communications':swarmings_communications,
-                 "this_week":this_week_variation, "last_week":last_week_variation}
+    dashboard = {"hive": hive, "apiary": apiary, "time": time, "sf": sf, "loc": loc, "w": w, "hp": int(honey_prod),
+                 "swarm": swarmings, 'swarmings': swarmings, 'swarmings_communications': swarmings_communications,
+                 "this_week": this_week_variation, "last_week": last_week_variation, "next_week": next_week}
 
     if request.args["type"] == "alarm":
         alarm = not alarm
@@ -217,7 +225,6 @@ def dashboard():
         db.session.query(HiveModel).filter(HiveModel.hive_id == hive_id).update({'entrance': entrance})
         db.session.commit()
 
-
     return render_template('dashboard.html', d=dashboard, type="none")
 
 
@@ -226,7 +233,6 @@ def dashboard():
 @blueprint.route('/swarming', methods=['POST', 'GET'])
 @login_required
 def swarming():
-
     swarmings = db.session.query(SwarmEvent).join(HiveModel).join(ApiaryModel).join(User).filter(
         current_user.id == User.id).all()
     swarmings_communications = db.session.query(SwarmCommunication).join(HiveModel).join(ApiaryModel).join(User).filter(
@@ -263,8 +269,11 @@ def swarming():
         return redirect(url_for('home_blueprint.swarming'))
 
     if not current_user.is_authenticated:
-        return render_template('swarming.html', form=swarming_form, swarmings=swarmings, swarmings_communications=swarmings_communications)
-    return render_template('swarming.html', form=swarming_form, swarmings=swarmings, swarmings_communications=swarmings_communications)
+        return render_template('swarming.html', form=swarming_form, swarmings=swarmings,
+                               swarmings_communications=swarmings_communications)
+    return render_template('swarming.html', form=swarming_form, swarmings=swarmings,
+                           swarmings_communications=swarmings_communications)
+
 
 @blueprint.route('/swarmingUpdate', methods=['GET'])
 @login_required
@@ -275,6 +284,7 @@ def swarmingUpdate():
     db.session.commit()
 
     return redirect(url_for('home_blueprint.swarming'))
+
 
 @blueprint.route('/swarmingDelete', methods=['GET'])
 @login_required

@@ -1,7 +1,6 @@
 import logging
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-from telegram import Chat, bot
 from config import BOTKEY
 
 logging.basicConfig(level=logging.DEBUG,
@@ -31,13 +30,9 @@ def echo(update, context):
     chatid = update.effective_chat.id
     receivedmessage = update.message.text
     sendmessage = ' I received: ' + receivedmessage
-    updater.bot.send_message (chat_id=chatid, text=sendmessage)
-    print (chatid)
+    updater.bot.send_message(chat_id=chatid, text=sendmessage)
+    print(chatid)
     # sample2: update.message.reply_text(update.message.text)
-
-
-
-
 
 
 def main():

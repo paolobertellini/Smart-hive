@@ -9,9 +9,8 @@ from app import blueprint
 from app.forms import LoginForm, CreateAccountForm
 from database.models import User
 from server import db
-from utility.util import verify_pass
-
 from utility.mail import send_email
+from utility.util import verify_pass
 
 
 @blueprint.route('/login', methods=['GET', 'POST'])

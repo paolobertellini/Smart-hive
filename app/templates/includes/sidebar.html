@@ -70,7 +70,7 @@
                 </div>
             </li>
 
-             <!-- separator -->
+            <!-- separator -->
             <li role="separator" class="dropdown-divider mt-4 mb-3 border-black"></li>
 
             <div>Live situation</div>
@@ -93,7 +93,8 @@
 
                             <!-- hives list -->
                             <li class="nav-item">
-                                <a class="nav-link  collapsed  d-flex justify-content-between align-items-center" data-toggle="collapse" data-target="#{{ apiary.apiary_id }}">
+                                <a class="nav-link  collapsed  d-flex justify-content-between align-items-center"
+                                   data-toggle="collapse" data-target="#{{ apiary.apiary_id }}">
                                     <span>
 
                                         Apiary: {{ apiary.apiary_id }}
@@ -102,12 +103,14 @@
                                         <span class="fas fa-chevron-right"></span>
                                     </span>
                                 </a>
-                                <div class="multi-level collapse " role="list" id="{{ apiary.apiary_id }}" aria-expanded="false">
+                                <div class="multi-level collapse " role="list" id="{{ apiary.apiary_id }}"
+                                     aria-expanded="false">
                                     <ul class="flex-column nav">
 
                                         {% for hive in find_hives(apiary.apiary_id) %}
                                             <li class="nav-item ">
-                                                <a class="nav-link" href="{{ url_for('home_blueprint.dashboard', apiary=apiary.apiary_id, hive_id = hive.hive_id, type="none") }}">
+                                                <a class="nav-link"
+                                                   href="{{ url_for('home_blueprint.dashboard', apiary=apiary.apiary_id, hive_id = hive.hive_id, type="none") }}">
                                                     <span>Hive: {{ hive.hive_description }}</span>
                                                 </a>
                                             </li>
