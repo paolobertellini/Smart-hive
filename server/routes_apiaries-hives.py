@@ -166,7 +166,7 @@ def dashboard():
     hive_id = request.args["hive_id"]
     apiary = request.args["apiary"]
 
-    sf = SensorFeed.query.filter_by(hive_id=hive_id).all()
+    sf = SensorFeed.query.filter_by(hive_id=hive_id)[-2000:]
     loc = ApiaryModel.query.filter_by(apiary_id=apiary).first().location
     hive = HiveModel.query.filter_by(hive_id=hive_id).first()
     entrance = hive.entrance
@@ -179,9 +179,9 @@ def dashboard():
 
     one_week_ago = datetime.now() - timedelta(days=7)
     two_weeks_ago = datetime.now() - timedelta(days=14)
-    today = SensorFeed.query.filter(SensorFeed.timestamp.startswith(datetime.now().strftime("%Y-%m-%d"))).order_by(SensorFeed.timestamp.desc()).first()
-    this_week = SensorFeed.query.filter(SensorFeed.timestamp.between(one_week_ago, datetime.now())).first()
-    last_week = SensorFeed.query.filter(SensorFeed.timestamp.between(two_weeks_ago, one_week_ago)).first()
+    today = SensorFeed.query.filter(SensorFeed.timestamp.startswith(datetime.now().strftime("%Y-%m-%d")), SensorFeed.hive_id==hive_id).order_by(SensorFeed.timestamp.desc()).first()
+    this_week = SensorFeed.query.filter(SensorFeed.timestamp.between(one_week_ago, datetime.now()), SensorFeed.hive_id==hive_id).first()
+    last_week = SensorFeed.query.filter(SensorFeed.timestamp.between(two_weeks_ago, one_week_ago), SensorFeed.hive_id==hive_id).first()
 
 
     if this_week is not None and today is not None:

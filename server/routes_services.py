@@ -1,5 +1,5 @@
 from flask import request
-
+from datetime import datetime
 from app import blueprint
 from database.models import ApiaryModel, HiveModel, SensorFeed
 from server import db
@@ -40,7 +40,8 @@ def newSensorFeed():
                             weight=req['weight'],
                             ext_temperature=w['temperature'],
                             ext_humidity=w['humidity'],
-                            wind=w['wind'])
+                            wind=w['wind'],
+                            timestamp = datetime.now())
 
     db.session.add(sensorFeed)
     db.session.commit()

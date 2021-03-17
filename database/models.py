@@ -3,7 +3,7 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
-from datetime import datetime
+
 
 from flask_login import UserMixin
 from sqlalchemy import Binary, Column, Integer, String, Boolean, ForeignKey
@@ -75,7 +75,7 @@ class SensorFeed(db.Model):
     wind = db.Column(db.Integer)
     humidity = db.Column(db.Integer)
     weight = db.Column(db.Integer)
-    timestamp = db.Column(db.DateTime(timezone=True), primary_key=True, default=datetime.now)
+    timestamp = db.Column(db.DateTime(timezone=True), primary_key=True)
 
 
 class SwarmCommunication(db.Model):
