@@ -13,6 +13,7 @@ from flask_migrate import Migrate
 from AI.dataPrediction import honeyProductionFit
 from config import config_dict
 from server import create_app, db
+from datetime import datetime
 
 # WARNING: Don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
@@ -31,7 +32,7 @@ app = create_app(app_config)
 Migrate(app, db)
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=honeyProductionFit, trigger="interval", seconds=20)  # hours=1
+scheduler.add_job(func=honeyProductionFit, trigger="interval", hours=1, max_instances=1, next_run_time=datetime.now())
 scheduler.start()
 
 # Shut down the scheduler when exiting the app

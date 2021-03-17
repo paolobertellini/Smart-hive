@@ -46,6 +46,7 @@ def register():
 
         username = request.form['username']
         email = request.form['email']
+        password = request.form['password']
 
         # Check usename exists
         user = User.query.filter_by(username=username).first()
@@ -64,7 +65,7 @@ def register():
                                    form=create_account_form)
 
         # else we can create the user
-        user = User(**request.form)
+        user = User(username= username, email=email, password= password, idTelegram=None)
         db.session.add(user)
         db.session.commit()
         send_email("Welcome in smart hive", "Test", email)

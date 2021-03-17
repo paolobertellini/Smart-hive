@@ -10,13 +10,14 @@ from flask_login import (
     current_user,
     login_required
 )
-
+import requests
 from AI.dataPrediction import honeyProductionPrediction
 from app import blueprint
 from app.forms import CreateApiaryForm, CreateHiveForm, CreateSwarmEventForm
 from database.models import ApiaryModel, HiveModel, SensorFeed, SwarmEvent, User, SwarmCommunication
 from server import db
 from utility.weather import weather
+from utility.botTelegram.SmartHive_bot import sendMessage
 
 
 # ----------------- APIARY ----------------- #
@@ -134,6 +135,8 @@ def addSupers():
     data_to_modify = HiveModel.query.filter_by(hive_id=hive_id).first()
     data_to_modify.n_supers = data_to_modify.n_supers + 1
     db.session.commit()
+    idTelegram = User.query.filter_by(username=current_user.username).first().idTelegram
+    sendMessage(msg="Peppino l'artista malavitoso", chatID=idTelegram)
     return redirect(url_for('home_blueprint.dashboard', apiary=apiary, hive_id=hive_id, type="none"))
 
 

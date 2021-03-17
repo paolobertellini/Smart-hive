@@ -42,6 +42,7 @@ def honeyProductionFit():
     # Y_test = Y[-train_lenght:]
 
     model.fit(X, Y)
+    print("Fitting d mammt")
 
 
 def honeyProductionPrediction(hive_id):
