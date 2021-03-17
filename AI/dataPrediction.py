@@ -28,9 +28,9 @@ def honeyProductionFit():
             df['weight_deviation'] = 0
         else:
             if df['timestamp'][index].year != df['timestamp'][index - 1].year:
-                df['weight_deviation'][index] = 0
+                df.loc[index,'weight_deviation']=0
             else:
-                df.loc[df['weight_deviation'][index]] = df['weight'][index] - df['weight'][index - 1]
+                df.loc[index,'weight_deviation'] = df.loc[index,'weight'] - df.loc[index-1,'weight']
 
     X = df[['ext_humidity', 'ext_temperature', 'wind', 'month', 'day', 'hour', 'minute']]
     Y = df['weight_deviation']
