@@ -321,7 +321,7 @@
                                                     class="fas fa-backward"></span></span>Last week</h6>
                                         </div>
                                         <div>
-                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>{{ d.last_week }} kg</h6>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>{{ '%0.2f'|format(d.last_week|float) }} g</h6>
                                         </div>
                                     </div>
                             <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">
@@ -330,7 +330,7 @@
                                                     class="fab fa-forumbee"></span></span>This week</h6>
                                         </div>
                                         <div>
-                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>{{d.this_week}} kg</h6>
+                                            <h6 class="mb-0"><span class="icon icon-xs mr-3"></span>{{'%0.2f'|format(d.this_week|float)}} g</h6>
                                         </div>
                                     </div>
                             <div class="d-flex align-items-center justify-content-between border-bottom border-light py-3">

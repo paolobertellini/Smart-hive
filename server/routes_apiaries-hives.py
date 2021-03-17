@@ -179,14 +179,10 @@ def dashboard():
 
     one_week_ago = datetime.now() - timedelta(days=7)
     two_weeks_ago = datetime.now() - timedelta(days=14)
-
-    today = SensorFeed.query.filter(SensorFeed.timestamp.startswith(datetime.now().strftime("%Y-%m-%d"))).first()
+    today = SensorFeed.query.filter(SensorFeed.timestamp.startswith(datetime.now().strftime("%Y-%m-%d"))).order_by(SensorFeed.timestamp.desc()).first()
     this_week = SensorFeed.query.filter(SensorFeed.timestamp.between(one_week_ago, datetime.now())).first()
     last_week = SensorFeed.query.filter(SensorFeed.timestamp.between(two_weeks_ago, one_week_ago)).first()
 
-    print(today)
-    print(this_week)
-    print(last_week)
 
     if this_week is not None and today is not None:
         this_week_variation = today.weight - this_week.weight
