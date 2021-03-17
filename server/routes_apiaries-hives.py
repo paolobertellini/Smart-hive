@@ -15,7 +15,7 @@ from database.models import ApiaryModel, HiveModel, SensorFeed, SwarmEvent, User
 from server import db
 from utility.weather import weather
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # ----------------- APIARY ----------------- #
 
@@ -176,6 +176,27 @@ def dashboard():
     swarmings = SwarmEvent.query.filter_by(hive_id=hive_id).all()
     swarmings_communications = SwarmCommunication.query.filter_by(hive_id=hive_id).all()
 
+
+    one_week_ago = datetime.now() - timedelta(days=7)
+    two_weeks_ago = datetime.now() - timedelta(days=14)
+
+    today = SensorFeed.query.filter(SensorFeed.timestamp.startswith(datetime.now().strftime("%Y-%m-%d"))).first()
+    this_week = SensorFeed.query.filter(SensorFeed.timestamp.between(one_week_ago, datetime.now())).first()
+    last_week = SensorFeed.query.filter(SensorFeed.timestamp.between(two_weeks_ago, one_week_ago)).first()
+
+    print(today)
+    print(this_week)
+    print(last_week)
+
+    if this_week is not None and today is not None:
+        this_week_variation = today.weight - this_week.weight
+    else:
+        this_week_variation = "tbd"
+    if this_week is not None and last_week is not None:
+        last_week_variation = this_week.weight - last_week.weight
+    else:
+        last_week_variation = "tbd"
+
     try:
         honey_prod = (sf[-1].weight * 100) / ((hive.n_supers * 30000) + 50000)
         min = (datetime.now() - sf[-1].timestamp).total_seconds() / 60.0
@@ -188,7 +209,8 @@ def dashboard():
         time = True
 
     dashboard = {"hive":hive, "apiary":apiary, "time":time, "sf":sf, "loc":loc, "w":w, "hp":int(honey_prod),
-                 "swarm":swarmings, 'swarmings':swarmings, 'swarmings_communications':swarmings_communications}
+                 "swarm":swarmings, 'swarmings':swarmings, 'swarmings_communications':swarmings_communications,
+                 "this_week":this_week_variation, "last_week":last_week_variation}
 
     if request.args["type"] == "alarm":
         alarm = not alarm
