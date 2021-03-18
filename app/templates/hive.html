@@ -112,7 +112,7 @@
         <div class="card card-body bg-white border-light shadow-sm mb-4">
             <h2 class="h5 mb-4">Insert new hive</h2>
             Here you can choose an apiary and add a new hive to it
-            <form method="post" action="" class="mt-4">
+            <form method="post" action="" enctype=multipart/form-data class="mt-4">
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <div>
@@ -147,6 +147,16 @@
                                 <span class="input-group-text" id="basic-addon1"><span
                                         class="fas fa-code"></span></span>
                                 {{ form.association_code(placeholder="Association Code", class="form-control") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div>
+                            <label>File</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1"><span
+                                        class="fas fa-file"></span></span>
+                                {{ form.file(placeholder="File", class="form-control") }}
                             </div>
                         </div>
                     </div>

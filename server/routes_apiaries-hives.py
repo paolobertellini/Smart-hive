@@ -3,21 +3,32 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
+import os
 from datetime import datetime, timedelta
 
-from flask import render_template, redirect, request, url_for, flash
+from flask import flash, request, redirect, url_for
+from flask import render_template
 from flask_login import (
     current_user,
     login_required
 )
-import requests
+from werkzeug.utils import secure_filename
+
 from AI.dataPrediction import honeyProductionPrediction
 from app import blueprint
 from app.forms import CreateApiaryForm, CreateHiveForm, CreateSwarmEventForm
-from database.models import ApiaryModel, HiveModel, SensorFeed, SwarmEvent, User, SwarmCommunication
+from config import ALLOWED_EXTENSIONS, UPLOAD_FOLDER
+from database.models import ApiaryModel, HiveModel
+from database.models import SensorFeed, SwarmEvent, User, SwarmCommunication
 from server import db
-from utility.weather import weather
 from utility.botTelegram.SmartHive_bot import sendMessage
+from utility.loadFromCSV import loadDataFromCSV
+from utility.weather import weather
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 # ----------------- APIARY ----------------- #
@@ -95,7 +106,18 @@ def hive():
         hive = HiveModel(apiary_id=apiary_selected, hive_description=hive_description,
                          association_code=association_code, n_supers=n_supers, update_freq=60)
 
-        if (db.session.query(HiveModel.hive_id).filter_by(association_code=hive.association_code).scalar() is not None):
+        print(request.files)
+        print(hive_form.file.data)
+        file = request.files['file']
+        if file != None:
+            if file.filename == '':
+                flash('No selected file')
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(filename)
+                loadDataFromCSV(filename)
+
+        if db.session.query(HiveModel.hive_id).filter_by(association_code=hive.association_code).scalar() is not None:
             flash("Control the correctness of the association code or contact the assistence.")
             return redirect(url_for('home_blueprint.hive', apiary=apiary_selected))
         if db.session.query(HiveModel.hive_id).filter_by(apiary_id=hive.apiary_id,

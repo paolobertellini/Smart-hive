@@ -3,15 +3,18 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
-from flask import render_template, redirect, request, url_for
+from flask import render_template, redirect, request, url_for, flash
 from flask_login import (
     current_user,
     login_required
 )
 from jinja2 import TemplateNotFound
-
+import os
+from flask import Flask, flash, request, redirect, url_for
+from werkzeug.utils import secure_filename
 from app import blueprint
 from database.models import ApiaryModel, HiveModel
+from config import ALLOWED_EXTENSIONS, UPLOAD_FOLDER
 
 
 @blueprint.app_context_processor
@@ -26,6 +29,8 @@ def inject_apiaries():
         return hives
 
     return dict(apiaries=apiaries, find_hives=find_hives, type="none")
+
+
 
 
 @blueprint.route('/')

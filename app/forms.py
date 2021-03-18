@@ -4,7 +4,7 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from flask_wtf import FlaskForm
-from wtforms import TextField, PasswordField, SelectField, DateField
+from wtforms import TextField, PasswordField, SelectField, DateField, FileField
 from wtforms.validators import Email, DataRequired, Required
 
 
@@ -32,7 +32,7 @@ class CreateHiveForm(FlaskForm):
     hive_description = TextField('Hive description', id='hive_description_create', validators=[DataRequired()])
     n_supers = TextField('Number of supers', id='n_supers_input', validators=[DataRequired()])
     association_code = TextField('Association code', id='association_code_input', validators=[DataRequired()])
-
+    file = FileField('file')
 
 class CreateAlarmForm(FlaskForm):
     duration = TextField('Sound duration', id='alarm_duration')

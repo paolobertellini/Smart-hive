@@ -53,5 +53,7 @@ config_dict = {
 
 # bot telegram config
 BOTKEY = '1577527800:AAFTFvbYJD0iecj5ZjxGRH-7U2IQbZM8kog'
+UPLOAD_FOLDER = '../../uploaded_csv/'
+ALLOWED_EXTENSIONS = {'csv'}
 chatID = 149248437
 model = linear_model.LinearRegression()
