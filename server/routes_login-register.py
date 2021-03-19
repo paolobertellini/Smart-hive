@@ -65,7 +65,7 @@ def register():
                                    form=create_account_form)
 
         # else we can create the user
-        user = User(username= username, email=email, password= password, idTelegram=None)
+        user = User(username=username, email=email, password=password, idTelegram=None)
         db.session.add(user)
         db.session.commit()
         send_email("Welcome in smart hive", "Test", email)

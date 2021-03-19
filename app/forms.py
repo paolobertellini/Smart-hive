@@ -34,6 +34,7 @@ class CreateHiveForm(FlaskForm):
     association_code = TextField('Association code', id='association_code_input', validators=[DataRequired()])
     file = FileField('file')
 
+
 class CreateAlarmForm(FlaskForm):
     duration = TextField('Sound duration', id='alarm_duration')
 

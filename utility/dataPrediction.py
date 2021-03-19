@@ -28,9 +28,9 @@ def honeyProductionFit():
             df['weight_deviation'] = 0
         else:
             if df['timestamp'][index].year != df['timestamp'][index - 1].year:
-                df.loc[index,'weight_deviation']=0
+                df.loc[index, 'weight_deviation'] = 0
             else:
-                df.loc[index,'weight_deviation'] = df.loc[index,'weight'] - df.loc[index-1,'weight']
+                df.loc[index, 'weight_deviation'] = df.loc[index, 'weight'] - df.loc[index - 1, 'weight']
 
     X = df[['ext_humidity', 'ext_temperature', 'wind', 'month', 'day', 'hour', 'minute']]
     Y = df['weight_deviation']
@@ -42,7 +42,7 @@ def honeyProductionFit():
     # Y_test = Y[-train_lenght:]
 
     model.fit(X, Y)
-    print("Fitting d mammt")
+    print("Fitting completed")
 
 
 def honeyProductionPrediction(hive_id):
@@ -73,5 +73,5 @@ def honeyProductionPrediction(hive_id):
              'hour': hour1[:2], 'minute': hour1[3:5]}, ignore_index=True)
 
     Y_pred = model.predict(forecast)
-    print(Y_pred)
+    # print(Y_pred)
     return Y_pred.sum()

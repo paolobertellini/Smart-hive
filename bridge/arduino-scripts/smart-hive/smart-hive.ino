@@ -73,7 +73,7 @@ void setup() {
 
   //servo
   myservo.attach(servoPin);
-  myservo.write(pos);
+  closeServo();
   startMillis = millis();
 }
 
@@ -128,7 +128,7 @@ void loop() { //0 IDLE
   if (iState == 3) {
     if (input["id"] == "None") {
       output["type"] = "A";
-      output["a_c"] = 33333;
+      output["a_c"] = 22222;
       output["id"] = input["id"];
       serializeJson(output, Serial);
       Serial.println();

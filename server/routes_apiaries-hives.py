@@ -3,7 +3,6 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
-import os
 from datetime import datetime, timedelta
 
 from flask import flash, request, redirect, url_for
@@ -14,14 +13,13 @@ from flask_login import (
 )
 from werkzeug.utils import secure_filename
 
-from AI.dataPrediction import honeyProductionPrediction
 from app import blueprint
 from app.forms import CreateApiaryForm, CreateHiveForm, CreateSwarmEventForm
-from config import ALLOWED_EXTENSIONS, UPLOAD_FOLDER
+from config import ALLOWED_EXTENSIONS
 from database.models import ApiaryModel, HiveModel
 from database.models import SensorFeed, SwarmEvent, User, SwarmCommunication
 from server import db
-from utility.botTelegram.SmartHive_bot import sendMessage
+from utility.dataPrediction import honeyProductionPrediction
 from utility.loadFromCSV import loadDataFromCSV
 from utility.weather import weather
 
@@ -106,12 +104,10 @@ def hive():
         hive = HiveModel(apiary_id=apiary_selected, hive_description=hive_description,
                          association_code=association_code, n_supers=n_supers, update_freq=60)
 
-        print(request.files)
-        print(hive_form.file.data)
         file = request.files['file']
-        if file != None:
-            if file.filename == '':
-                flash('No selected file')
+        if file != '':
+            # if file.filename == '':
+            #     flash('No selected file')
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 file.save(filename)
@@ -138,13 +134,11 @@ def hive():
 @blueprint.route('/removeHive', methods=['GET'])
 @login_required
 def removeHive():
-    to_remove = request.args['to_remove']
+    id_hive_to_remove = request.args['to_remove']
     apiary = request.args['apiary']
-    hives_to_remove = HiveModel.query.filter_by(hive_id=to_remove).first()
-    data_to_modify = SensorFeed.query.filter_by(hive_id=hives_to_remove.hive_id).all()
-    db.session.delete(hives_to_remove)
-    for x in data_to_modify:
-        x.hive_id = ''
+    hive_to_remove = HiveModel.query.filter_by(hive_id=id_hive_to_remove).first()
+    db.session.delete(hive_to_remove)
+    db.session.query(SensorFeed).filter(SensorFeed.hive_id == id_hive_to_remove).update({'hive_id': ''})
     db.session.commit()
     return redirect(url_for('home_blueprint.hive', apiary=apiary))
 
@@ -157,8 +151,7 @@ def addSupers():
     data_to_modify = HiveModel.query.filter_by(hive_id=hive_id).first()
     data_to_modify.n_supers = data_to_modify.n_supers + 1
     db.session.commit()
-    idTelegram = User.query.filter_by(username=current_user.username).first().idTelegram
-    sendMessage(msg="Peppino l'artista malavitoso", chatID=idTelegram)
+
     return redirect(url_for('home_blueprint.dashboard', apiary=apiary, hive_id=hive_id, type="none"))
 
 
@@ -224,7 +217,10 @@ def dashboard():
     else:
         last_week_variation = "tbd"
 
-    next_week = honeyProductionPrediction(hive_id)
+    try:
+        next_week = honeyProductionPrediction(hive_id)
+    except:
+        next_week = "tdb"
 
     try:
         honey_prod = (sf[-1].weight * 100) / ((hive.n_supers * 30000) + 50000)

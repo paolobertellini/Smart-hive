@@ -5,7 +5,7 @@ from flask import request
 from app import blueprint
 from database.models import ApiaryModel, HiveModel, SensorFeed
 from server import db
-from swarmDetection.swarmDetection import swarmDetection
+from utility.swarmDetection import swarmDetection
 from utility.weather import weather
 
 

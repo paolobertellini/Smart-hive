@@ -1,6 +1,7 @@
-from database.models import HiveModel, SensorFeed, SwarmEvent, SwarmCommunication
-# from utility.botTelegram.SmartHive_bot import swarmDetection_bot
+from database.models import HiveModel, SensorFeed, SwarmEvent, SwarmCommunication, User, ApiaryModel
 from server import db
+
+from utility.SmartHive_bot import sendMessage
 
 std_interval = 60
 alert_interval = 10
@@ -17,9 +18,14 @@ def alertHives(hive):
 
         last_sf = SensorFeed.query.filter_by(hive_id=h.hive_id).order_by(SensorFeed.timestamp.desc()).first()
         swarm_communication = SwarmCommunication(hive_id=h.hive_id, swarm_id=swarm_id, weight_variation=last_sf.weight)
+
         db.session.add(swarm_communication)
         db.session.commit()
-    # swarmDetection_bot(hive,hives)
+
+    user_id = ApiaryModel.query.filter_by(apiary_id=hive.apiary_id).first().user_id
+    idTelegram = User.query.filter_by(id=user_id).first().idTelegram
+    msg = "Attention! The hive with id " + str(hive.hive_id) + " is swarming just now!"
+    sendMessage(msg=msg, chatID=idTelegram)
 
 
 def alertEndHives(hive):
@@ -93,6 +99,12 @@ def swarmDetection(hive_id):
 
             else:
                 db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event.swarm_id).update({'real': False})
+
+                user_id = ApiaryModel.query.filter_by(apiary_id=hive.apiary_id).first().user_id
+                idTelegram = User.query.filter_by(id=user_id).first().idTelegram
+                msg = "False alarm! The hive with id" + str(hive.hive_id) + " is not swarming!"
+                sendMessage(msg=msg, chatID=idTelegram)
+
                 print("false positive")
 
             db.session.query(HiveModel).filter(HiveModel.hive_id == hive_id).update({'update_freq': std_interval})
