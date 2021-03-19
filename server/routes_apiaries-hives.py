@@ -15,7 +15,7 @@ from werkzeug.utils import secure_filename
 
 from app import blueprint
 from app.forms import CreateApiaryForm, CreateHiveForm, CreateSwarmEventForm
-from config import ALLOWED_EXTENSIONS
+from config import ALLOWED_EXTENSIONS, sensorFeed_std_freq
 from database.models import ApiaryModel, HiveModel
 from database.models import SensorFeed, SwarmEvent, User, SwarmCommunication
 from server import db
@@ -102,7 +102,7 @@ def hive():
             return redirect(url_for('home_blueprint.hive', apiary=apiary_selected))
 
         hive = HiveModel(apiary_id=apiary_selected, hive_description=hive_description,
-                         association_code=association_code, n_supers=n_supers, update_freq=60)
+                         association_code=association_code, n_supers=n_supers, update_freq=sensorFeed_std_freq)
 
         file = request.files['file']
         if file != '':

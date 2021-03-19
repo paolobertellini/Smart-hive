@@ -1,10 +1,10 @@
 from database.models import HiveModel, SensorFeed, SwarmEvent, SwarmCommunication, User, ApiaryModel
 from server import db
-
+from config import sensorFeed_std_freq, sensorFeed_alert_freq
 from utility.SmartHive_bot import sendMessage
 
-std_interval = 60
-alert_interval = 10
+std_interval = sensorFeed_std_freq
+alert_interval = sensorFeed_alert_freq
 
 
 def alertHives(hive):
@@ -90,10 +90,10 @@ def swarmDetection(hive_id):
             db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event.swarm_id).update(
                 {'weight_variation': now.weight - old_weight})
             alert_period_begin = swarm_event.alert_period_begin
-            duration = (now.timestamp - alert_period_begin).total_seconds()  # / 60.0
+            duration = (now.timestamp - alert_period_begin).total_seconds() / 60.0
 
             print(duration)
-            if 25 < duration < 100 and now.weight - old_weight < 0:
+            if 8 < duration < 20 and now.weight - old_weight < 0:
                 print("swarm detected")
                 db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event.swarm_id).update({'real': True})
 

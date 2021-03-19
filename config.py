@@ -55,3 +55,6 @@ config_dict = {
 BOTKEY = '1577527800:AAFTFvbYJD0iecj5ZjxGRH-7U2IQbZM8kog'
 ALLOWED_EXTENSIONS = {'csv'}
 model = linear_model.LinearRegression()
+
+sensorFeed_std_freq = 600
+sensorFeed_alert_freq = 120
