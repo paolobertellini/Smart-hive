@@ -149,10 +149,18 @@ def loop(threadName, port, updateInterval=10):
         if serial_port.in_waiting > 0:
             try:
                 lastchar = serial_port.read().decode('utf-8')
-                if lastchar != '\n':  # EOF
-                    buffer += lastchar
-                else:
+            except Exception as e:
+                print("ERROR: bridge unable read on serial")
+                print(e)
+            if lastchar != '\n':  # EOF
+                buffer += lastchar
+            else:
+                try:
                     received = json.loads(buffer)
+                except Exception as e:
+                    print("ERROR: bridge unable interpret json")
+                    print(e)
+                try:
                     if received['type'] == "D":
                         print("MC --> B  : " + str(buffer))
                         hiveFeed = {'hive_id': received['id'],
@@ -163,18 +171,26 @@ def loop(threadName, port, updateInterval=10):
                         print("B  --> C  : " + str(hiveFeed))
                         if r1.text == "200":
                             print("C  --> B  : hive feed saved to database")
-                        if save_csv:
-                            with open(str(threadName) + '_hiveFeed_data.csv', mode='a', newline='') as csv_file:
-                                csv_writer = csv.writer(csv_file)
-                                csv_writer.writerow(
-                                    [datetime.datetime.now(), received['t'], received['h'], received['w']])
-                                print("B  --> CSV  : hive feed succesfully saved to csv file")
-                    elif received['type'] == "E":
-                        print("MC --> B  : sensor error " + str(buffer))
-                    buffer = ""
-            except Exception as e:
-                print("ERROR: bridge unable to send data to server")
-                print(e)
+
+                except Exception as e:
+                    print("ERROR: bridge unable to send data to server")
+                    print(e)
+                try:
+                    if save_csv:
+                        with open(str(threadName) + '_hiveFeed_data.csv', mode='a', newline='') as csv_file:
+                            csv_writer = csv.writer(csv_file)
+                            csv_writer.writerow(
+                                [datetime.datetime.now(), received['t'], received['h'], received['w']])
+                            print("B  --> CSV  : hive feed succesfully saved to csv file")
+                except Exception as e:
+                    print("ERROR: bridge unable to save data to csv")
+                    print(e)
+                if received['type'] == "E":
+                    print("MC --> B  : sensor error " + str(buffer))
+
+                buffer = ""
+
+
 
 
 if __name__ == '__main__':

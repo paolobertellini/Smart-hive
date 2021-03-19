@@ -13,7 +13,7 @@ def checkStatus():
     for hive in hives:
         last_sf = cur.execute('''SELECT timestamp FROM SensorFeed WHERE hive_id = (?)''', ((hive[0]),)).fetchall()[-1][0]
         min = (datetime.now() - datetime.strptime(last_sf, "%Y-%m-%d %H:%M:%S.%f")).total_seconds() / 60.0
-        if int(min) > 60:
+        if int(min) > 30:
             user_id = cur.execute('''SELECT user_id FROM Apiary WHERE apiary_id = (?)''', ((hive[1]),)).fetchone()[0]
             idTelegram = cur.execute('''SELECT idTelegram FROM User WHERE id = (?)''', ((user_id),)).fetchone()[0]
             msg = "Attention! The hive with id " + str(hive[0]) + " is offline. \n" \
