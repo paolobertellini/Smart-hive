@@ -1,5 +1,5 @@
-serial~=0.0.97
-flask~=1.1.2
+serial
+flask
 flask_login
 flask_migrate
 flask_wtf
@@ -7,15 +7,15 @@ flask_sqlalchemy==2.*
 email_validator
 python-decouple
 gunicorn
-pyowm~=3.2.0
+pyowm
 
-WTForms~=2.3.3
-requests~=2.25.1
-pyserial~=3.5
-APScheduler~=3.6.3
-Jinja2~=2.11.2
-Werkzeug~=1.0.1
-telegram~=0.0.1
-pandas~=1.2.3
-SQLAlchemy~=1.3.20
-scikit-learn~=0.24.1
+WTForms
+requests
+pyserial
+APScheduler
+Jinja2
+Werkzeug
+telegram
+pandas
+SQLAlchemy
+scikit-learn
