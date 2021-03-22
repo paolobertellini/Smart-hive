@@ -75,3 +75,5 @@ def honeyProductionPrediction(hive_id):
     Y_pred = model.predict(forecast)
     # print(Y_pred)
     return Y_pred.sum()
+
+honeyProductionFit()
