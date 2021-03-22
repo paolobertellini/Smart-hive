@@ -16,6 +16,8 @@ APScheduler
 Jinja2
 Werkzeug
 telegram
+python-telegram-bot
 pandas
+sqlalchemy
 SQLAlchemy
 scikit-learn
