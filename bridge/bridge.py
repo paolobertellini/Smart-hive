@@ -7,9 +7,11 @@ import requests
 import serial
 import serial.tools.list_ports
 
-online = 'http://smart-hive.ddns.net:8080'
+peppe = 'http://smart-hive.ddns.net:8080'
 local = 'http://127.0.0.1:8080'
 davide = 'http://localhost'
+
+online = "https://smarthive.pythonanywhere.com"
 
 server = online
 save_csv = True
