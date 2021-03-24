@@ -96,6 +96,10 @@ def swarmDetection(hive_id):
                 if 8 < duration < 20 and now.weight - old_weight < 0:
                     print("swarm detected")
                     db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event.swarm_id).update({'real': True})
+                    user_id = ApiaryModel.query.filter_by(apiary_id=hive.apiary_id).first().user_id
+                    idTelegram = User.query.filter_by(id=user_id).first().idTelegram
+                    msg = "Attention! Please check the hive with id " + str(hive.hive_id) + " because there is a swarm!"
+                    sendMessage(msg=msg, chatID=idTelegram)
 
                 else:
                     db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event.swarm_id).update({'real': False})
