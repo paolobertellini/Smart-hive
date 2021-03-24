@@ -78,37 +78,38 @@ def swarmDetection(hive_id):
                 print("Alert period started")
 
         # swarming end
-        swarm_event = SwarmEvent.query.filter_by(hive_id=hive_id).order_by(SwarmEvent.swarm_id.desc()).first()
-        alert_period_begin = swarm_event.alert_period_begin
-        duration = (now.timestamp - alert_period_begin).total_seconds() / 60.0
-        if (now.temperature < before.temperature and hive.update_freq != std_interval) or duration > 30:  # la temperatura interna sta diminuendo
-            db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event.swarm_id).update(
-                {'alert_period_end': now.timestamp})
-            old_temperature = swarm_event.temperature_variation
-            db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event.swarm_id).update(
-                {'temperature_variation': old_temperature - now.temperature})
-            old_weight = swarm_event.weight_variation
-            db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event.swarm_id).update(
-                {'weight_variation': now.weight - old_weight})
+        swarm_event = SwarmEvent.query.filter_by(hive_id=hive_id, alert_period_end=None).order_by(SwarmEvent.swarm_id.desc()).first()
+        if swarm_event:
+            alert_period_begin = swarm_event.alert_period_begin
+            duration = (now.timestamp - alert_period_begin).total_seconds() / 60.0
+            if (now.temperature < before.temperature and hive.update_freq != std_interval) or duration > 30:  # la temperatura interna sta diminuendo
+                db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event.swarm_id).update(
+                    {'alert_period_end': now.timestamp})
+                old_temperature = swarm_event.temperature_variation
+                db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event.swarm_id).update(
+                    {'temperature_variation': old_temperature - now.temperature})
+                old_weight = swarm_event.weight_variation
+                db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event.swarm_id).update(
+                    {'weight_variation': now.weight - old_weight})
 
-            print(duration)
-            if 8 < duration < 20 and now.weight - old_weight < 0:
-                print("swarm detected")
-                db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event.swarm_id).update({'real': True})
+                print(duration)
+                if 8 < duration < 20 and now.weight - old_weight < 0:
+                    print("swarm detected")
+                    db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event.swarm_id).update({'real': True})
 
-            else:
-                db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event.swarm_id).update({'real': False})
+                else:
+                    db.session.query(SwarmEvent).filter(SwarmEvent.swarm_id == swarm_event.swarm_id).update({'real': False})
 
-                user_id = ApiaryModel.query.filter_by(apiary_id=hive.apiary_id).first().user_id
-                idTelegram = User.query.filter_by(id=user_id).first().idTelegram
-                msg = "False alarm! The hive with id" + str(hive.hive_id) + " is not swarming!"
-                sendMessage(msg=msg, chatID=idTelegram)
+                    user_id = ApiaryModel.query.filter_by(apiary_id=hive.apiary_id).first().user_id
+                    idTelegram = User.query.filter_by(id=user_id).first().idTelegram
+                    msg = "False alarm! The hive with id" + str(hive.hive_id) + " is not swarming!"
+                    sendMessage(msg=msg, chatID=idTelegram)
 
-                print("false positive")
+                    print("false positive")
 
-            db.session.query(HiveModel).filter(HiveModel.hive_id == hive_id).update({'update_freq': std_interval})
-            db.session.commit()
-            alertEndHives(hive)
-            print("Alert period ended")
+                db.session.query(HiveModel).filter(HiveModel.hive_id == hive_id).update({'update_freq': std_interval})
+                db.session.commit()
+                alertEndHives(hive)
+                print("Alert period ended")
 
     return False
