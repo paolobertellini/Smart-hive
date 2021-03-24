@@ -33,24 +33,24 @@ except KeyError:
 app = create_app(app_config)
 Migrate(app, db)
 
-# schedulerCheckStatus = BackgroundScheduler()
-# schedulerCheckStatus.add_job(func=checkStatus, trigger="interval", max_instances=1, minutes=30,
-#                              next_run_time=datetime.now())
-# schedulerCheckStatus.start()
-# schedulerPrediction = BackgroundScheduler()
-# schedulerPrediction.add_job(func=honeyProductionFit, trigger="interval", hours=12, max_instances=1,
-#                             next_run_time=datetime.now())
-# schedulerPrediction.start()
-# schedulerBotTelegram = BackgroundScheduler()
-# schedulerBotTelegram.add_job(func=botStart)
-# schedulerBotTelegram.start()
-# # botStart()
-#
-#
-# # Shut down the scheduler when exiting the app
-# atexit.register(lambda: schedulerPrediction.shutdown())
-# atexit.register(lambda: schedulerCheckStatus.shutdown())
-# atexit.register(lambda: schedulerBotTelegram.shutdown())
+schedulerCheckStatus = BackgroundScheduler()
+schedulerCheckStatus.add_job(func=checkStatus, trigger="interval", max_instances=1, minutes=30,
+                             next_run_time=datetime.now())
+schedulerCheckStatus.start()
+schedulerPrediction = BackgroundScheduler()
+schedulerPrediction.add_job(func=honeyProductionFit, trigger="interval", hours=12, max_instances=1,
+                            next_run_time=datetime.now())
+schedulerPrediction.start()
+schedulerBotTelegram = BackgroundScheduler()
+schedulerBotTelegram.add_job(func=botStart)
+schedulerBotTelegram.start()
+
+
+
+# Shut down the scheduler when exiting the app
+atexit.register(lambda: schedulerPrediction.shutdown())
+atexit.register(lambda: schedulerCheckStatus.shutdown())
+atexit.register(lambda: schedulerBotTelegram.shutdown())
 
 if DEBUG:
     app.logger.info('DEBUG       = ' + str(DEBUG))
@@ -58,4 +58,4 @@ if DEBUG:
     app.logger.info('DBMS        = ' + app_config.SQLALCHEMY_DATABASE_URI)
 
 if __name__ == "__main__":
-    app.run() #host=app.config.get('FLASK_RUN_HOST'), port=app.config.get('FLASK_RUN_PORT')
+    app.run(host=app.config.get('FLASK_RUN_HOST'), port=app.config.get('FLASK_RUN_PORT'))

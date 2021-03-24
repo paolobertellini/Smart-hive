@@ -13,7 +13,7 @@ davide = 'http://localhost'
 
 online = "https://smarthive.pythonanywhere.com"
 
-server = online
+server = peppe
 save_csv = True
 ports_descriptions = ["arduino", "usb", "tty"]
 
@@ -111,10 +111,11 @@ def loop(threadName, port, updateInterval=10):
         return False
 
     result, id = configuration(serial_port)
-    if result:
-        print("HIVE SUCCESFULLY AUTHENTICATED ON SERVER")
-    else:
-        print("ERROR: bridge unable to authenticate hive to " + str(server))
+    while not result:
+        result, id = configuration(serial_port)
+        print("Waiting a response from: " + str(server))
+    print("HIVE SUCCESFULLY AUTHENTICATED ON SERVER")
+
 
     updateTime = time.time()
     hiveFeedTime = time.time()

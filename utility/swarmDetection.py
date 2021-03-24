@@ -64,7 +64,7 @@ def swarmDetection(hive_id):
         delta = (now.temperature - before.temperature) - (now.ext_temperature - before.ext_temperature)
 
         # swarming start
-        if delta >= 1:
+        if delta >= 2:
             if hive.update_freq == std_interval:
                 swarm_event = SwarmEvent(hive_id=hive_id,
                                          alert_period_begin=now.timestamp, alert_period_end=None,

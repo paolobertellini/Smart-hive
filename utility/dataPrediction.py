@@ -3,13 +3,16 @@ import os
 import pandas as pd
 import requests
 from sqlalchemy import create_engine
+import pickle
+from sklearn import linear_model
 
-from config import model
+#from config import model
 from database.models import ApiaryModel, HiveModel
 
 api_key = 'c984a283dfd9a79d06e234a7c62f2e2a'
 basedir = os.path.abspath(os.path.dirname(__file__))
 engine = create_engine('sqlite:///' + basedir + '/../database/db.sqlite3')
+filename = 'finalized_model.sav'
 
 
 def honeyProductionFit():
@@ -41,7 +44,9 @@ def honeyProductionFit():
     # X_test = X[-train_lenght:]
     # Y_test = Y[-train_lenght:]
 
+    model = linear_model.LinearRegression()
     model.fit(X, Y)
+    pickle.dump(model, open(filename, 'wb'))
     print("Fitting completed")
 
 
@@ -72,7 +77,8 @@ def honeyProductionPrediction(hive_id):
             {'ext_humidity': humidity, 'ext_temperature': temperature, 'wind': wind, 'month': month, 'day': day,
              'hour': hour1[:2], 'minute': hour1[3:5]}, ignore_index=True)
 
-    Y_pred = model.predict(forecast)
+    loaded_model = pickle.load(open(filename, 'rb'))
+    Y_pred = loaded_model.predict(forecast)
     # print(Y_pred)
     return Y_pred.sum()
 
