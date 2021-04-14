@@ -29,7 +29,7 @@ const int HX711_sck = 13; //mcu > HX711 sck pin
 
 //HX711 constructor:
 HX711_ADC LoadCell(HX711_dout, HX711_sck);
-
+const int tareOffsetVal_eepromAdress=15;
 const int calVal_eepromAdress = 6;
 unsigned long t = 0;
 
@@ -100,7 +100,18 @@ void calibrate() {
     if (Serial.available() > 0) {
       if (Serial.available() > 0) {
         char inByte = Serial.read();
-        if (inByte == 't') LoadCell.tareNoDelay();
+        if (inByte == 't') {
+            long _offset = 0;
+            Serial.println("Calculating tare offset value...");
+            LoadCell.tare(); // calculate the new tare / zero offset value (blocking)
+            _offset = LoadCell.getTareOffset(); // get the new tare / zero offset value
+            EEPROM.put(tareOffsetVal_eepromAdress, _offset); // save the new tare / zero offset value to EEprom
+            LoadCell.setTareOffset(_offset); // set value as library parameter (next restart it will be read from EEprom)
+            Serial.print("New tare offset value:");
+            Serial.print(_offset);
+            Serial.print(", saved to EEprom adr:");
+            Serial.println(tareOffsetVal_eepromAdress);
+        }
       }
     }
     if (LoadCell.getTareStatus() == true) {
