@@ -42,9 +42,12 @@ StaticJsonDocument<200> input;
 //eeprom
 int eeAddressId = 0;
 int eeAddressCal = 6;
+int eeAddrressOff = 15;
 char saved_id[6] = "none";
 char new_id[6];
 String id = String(saved_id);
+unsigned long tareoffset = 0;
+
 
 void setup() {
   // initialize serial communications
@@ -66,25 +69,26 @@ void setup() {
   //weight
   LoadCell.begin();
   unsigned long stabilizingtime = 2000; // tare preciscion can be improved by adding a few seconds of stabilizing time
-  boolean _tare = true; //set this to false if you don't want tare to be performed in the next step
   EEPROM.get(eeAddressCal, calibrationValue);
   LoadCell.setCalFactor(calibrationValue);
-  LoadCell.start(stabilizingtime, _tare);
-
+  EEPROM.get(eeAddrressOff, tareoffset);
+  LoadCell.setTareOffset(tareoffset);
   //servo
   myservo.attach(servoPin);
-  closeServo();
+  myservo.write(pos);
   startMillis = millis();
 }
-
+float i;
 void loop() { //0 IDLE
   //1 READ
   //2 CHECK
   //3 AUTHENTICATION
   //4 DATA
   //5 READ SENSORS
-
-
+  if (LoadCell.update()) {
+      i = LoadCell.getData();
+      output["w"] = i;
+  }
   //IDLE --> READ
   if (iState == 0 && Serial.available() > 0) {
     iState = 1;
@@ -128,7 +132,7 @@ void loop() { //0 IDLE
   if (iState == 3) {
     if (input["id"] == "None") {
       output["type"] = "A";
-      output["a_c"] = 22222;
+      output["a_c"] = 33333;
       output["id"] = input["id"];
       serializeJson(output, Serial);
       Serial.println();
@@ -171,13 +175,9 @@ void loop() { //0 IDLE
         output["h"] = hum;
         output["t"] = temp;
       }
-      if (!LoadCell.update()) {
-        output["type"] = "E";
-      }
-      else {
-        output["w"] = LoadCell.getData();
-      }
-      serializeJson(output, Serial);
+
+
+      serializeJson(output, Serial);ààààààààààà
       Serial.println();
     }
     iState = 0;
