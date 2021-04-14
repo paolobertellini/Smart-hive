@@ -73,6 +73,7 @@ void setup() {
   LoadCell.setCalFactor(calibrationValue);
   EEPROM.get(eeAddrressOff, tareoffset);
   LoadCell.setTareOffset(tareoffset);
+
   //servo
   myservo.attach(servoPin);
   myservo.write(pos);
@@ -177,7 +178,7 @@ void loop() { //0 IDLE
       }
 
 
-      serializeJson(output, Serial);ààààààààààà
+      serializeJson(output, Serial);
       Serial.println();
     }
     iState = 0;
